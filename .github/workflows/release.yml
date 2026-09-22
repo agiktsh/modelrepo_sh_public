@@ -1,8 +1,8 @@
 name: Release
 
-# Runs after every merge to main: packages the current repo/ content (the
-# model repository as served at models.geo.sh.ch) as a timestamped ZIP and
-# publishes it as a GitHub release.
+# Runs after every merge to main: packages the current repository/ content
+# (the model repository as served at models.geo.sh.ch) as a timestamped ZIP
+# and publishes it as a GitHub release.
 on:
   push:
     branches:
@@ -20,14 +20,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Zips the *contents* of repo/ (not the folder itself), so the archive
-      # root matches the layout served at models.geo.sh.ch (ilidata.xml,
-      # AGI/, FA/, ... directly at the top level).
+      # Zips the *contents* of repository/ (not the folder itself), so the
+      # archive root matches the layout served at models.geo.sh.ch
+      # (ilidata.xml, AGI/, FA/, ... directly at the top level).
       - name: Build release archive
         id: archive
         run: |
           name="models.geo.sh.ch_$(date -u +%Y%m%d%H%M)"
-          (cd repo && zip -rq "../${name}.ZIP" .)
+          (cd repository && zip -rq "../${name}.ZIP" .)
           echo "name=$name" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub release

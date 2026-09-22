@@ -1,5 +1,5 @@
 #!/bin/bash
-# Fails if repo/ilimodels.xml is out of date w.r.t. the .ili files in repo/.
+# Fails if repository/ilimodels.xml is out of date w.r.t. the .ili files in repository/.
 #
 # ilimanager --updateIliModels assigns TIDs by filesystem scan order, which is
 # not stable across machines, so a raw byte-diff would false-positive on every
@@ -14,18 +14,18 @@ canonicalize() {
     | sort
 }
 
-canonicalize repo/ilimodels.xml > /tmp/ilimodels-before.txt
+canonicalize repository/ilimodels.xml > /tmp/ilimodels-before.txt
 
-java -jar "$ILIMANAGER_JAR" --updateIliModels --repos repo --out repo/ilimodels.xml
+java -jar "$ILIMANAGER_JAR" --updateIliModels --repos repository --out repository/ilimodels.xml
 
-canonicalize repo/ilimodels.xml > /tmp/ilimodels-after.txt
+canonicalize repository/ilimodels.xml > /tmp/ilimodels-after.txt
 
 if ! diff -u /tmp/ilimodels-before.txt /tmp/ilimodels-after.txt; then
-  git -C repo diff -- ilimodels.xml || true
-  git -C repo checkout -- ilimodels.xml
-  echo "::error::repo/ilimodels.xml is out of date. Run ilimanager locally (--updateIliModels --repos repo --out repo/ilimodels.xml) and commit the result."
+  git -C repository diff -- ilimodels.xml || true
+  git -C repository checkout -- ilimodels.xml
+  echo "::error::repository/ilimodels.xml is out of date. Run ilimanager locally (--updateIliModels --repos repository --out repository/ilimodels.xml) and commit the result."
   exit 1
 fi
 
-git -C repo checkout -- ilimodels.xml
-echo "repo/ilimodels.xml is up to date."
+git -C repository checkout -- ilimodels.xml
+echo "repository/ilimodels.xml is up to date."

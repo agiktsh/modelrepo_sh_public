@@ -1,5 +1,5 @@
 #!/bin/bash
-# Fails if repo/ilidata.xml references a data file that no longer exists.
+# Fails if repository/ilidata.xml references a data file that no longer exists.
 #
 # ilimanager's --updateIliData only supports updating a single dataset entry
 # at a time (--datasetId/--data), it has no repository-wide "rescan and
@@ -11,14 +11,14 @@ export LC_ALL=C.UTF-8
 
 missing=0
 while IFS= read -r path; do
-  if [ ! -f "repo/$path" ]; then
-    echo "::error::repo/ilidata.xml references missing file: $path"
+  if [ ! -f "repository/$path" ]; then
+    echo "::error::repository/ilidata.xml references missing file: $path"
     missing=1
   fi
-done < <(grep -oP '(?<=<path>)[^<]+' repo/ilidata.xml)
+done < <(grep -oP '(?<=<path>)[^<]+' repository/ilidata.xml)
 
 if [ "$missing" -ne 0 ]; then
   exit 1
 fi
 
-echo "All paths referenced in repo/ilidata.xml exist."
+echo "All paths referenced in repository/ilidata.xml exist."

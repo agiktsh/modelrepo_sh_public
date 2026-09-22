@@ -12,8 +12,8 @@ on:
     branches-ignore:
       - main
     paths:
-      - "repo/**/*.ili"
-      - "repo/**/*.xml"
+      - "repository/**/*.ili"
+      - "repository/**/*.xml"
 
 permissions:
   contents: write
@@ -73,29 +73,29 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.ilicache
-          key: ilicache-${{ hashFiles('repo/**/*.ili') }}
+          key: ilicache-${{ hashFiles('repository/**/*.ili') }}
           restore-keys: |
             ilicache-
 
       # Regenerates ilimodels.xml in place so new (not yet indexed) models
       # are picked up before the ili2c check below.
       - name: Update ilimodels.xml
-        run: java -jar "$ILIMANAGER_JAR" --updateIliModels --repos repo --out repo/ilimodels.xml
+        run: java -jar "$ILIMANAGER_JAR" --updateIliModels --repos repository --out repository/ilimodels.xml
 
       # Compiles every model now listed in ilimodels.xml, including the
       # change that was just pushed. Fails the job (and leaves the working
       # tree's ilimodels.xml change uncommitted) on any INTERLIS error.
       - name: Run ili2c --check-repo-ilis
-        run: java -jar "$ILI2C_JAR" --check-repo-ilis repo
+        run: java -jar "$ILI2C_JAR" --check-repo-ilis repository
 
       - name: Commit updated ilimodels.xml
         run: |
-          if git diff --quiet -- repo/ilimodels.xml; then
+          if git diff --quiet -- repository/ilimodels.xml; then
             echo "ilimodels.xml already up to date, nothing to commit."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add repo/ilimodels.xml
+          git add repository/ilimodels.xml
           git commit -m "Update ilimodels.xml [skip ci]"
           git push origin HEAD:"${{ github.ref_name }}"

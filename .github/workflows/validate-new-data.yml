@@ -1,16 +1,16 @@
 name: Validate and index new data files
 
-# Runs when a pull request adds a new *.xml data/catalogue file under repo/.
-# The new file is first validated against its model with ilivalidator; only
-# if that succeeds is repo/ilidata.xml extended with an entry for it, and the
-# change committed back onto the PR branch.
+# Runs when a pull request adds a new *.xml data/catalogue file under
+# repository/. The new file is first validated against its model with
+# ilivalidator; only if that succeeds is repository/ilidata.xml extended with
+# an entry for it, and the change committed back onto the PR branch.
 on:
   pull_request:
     branches:
       - main
     paths:
-      - "repo/*.xml"
-      - "repo/**/*.xml"
+      - "repository/*.xml"
+      - "repository/**/*.xml"
 
 permissions:
   contents: write
@@ -35,9 +35,9 @@ jobs:
         run: |
           files=$(git diff --name-only --diff-filter=A \
             "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" \
-            -- 'repo/*.xml' 'repo/**/*.xml' \
+            -- 'repository/*.xml' 'repository/**/*.xml' \
             | grep -vE '/(ilidata|ilimodels|ilisite)\.xml$' \
-            | sed 's#^repo/##')
+            | sed 's#^repository/##')
           echo "New data files:"
           echo "$files"
           {
@@ -76,7 +76,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.ilicache
-          key: ilicache-${{ hashFiles('repo/**/*.ili') }}
+          key: ilicache-${{ hashFiles('repository/**/*.ili') }}
           restore-keys: |
             ilicache-
 
@@ -91,12 +91,12 @@ jobs:
       - name: Commit updated ilidata.xml
         if: steps.new-files.outputs.files != ''
         run: |
-          if git diff --quiet -- repo/ilidata.xml; then
+          if git diff --quiet -- repository/ilidata.xml; then
             echo "ilidata.xml already up to date, nothing to commit."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add repo/ilidata.xml
+          git add repository/ilidata.xml
           git commit -m "Add ilidata.xml entries for new data files [skip ci]"
           git push origin HEAD:"${{ github.event.pull_request.head.ref }}"

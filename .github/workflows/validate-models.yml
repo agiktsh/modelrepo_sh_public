@@ -48,15 +48,15 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.ilicache
-          key: ilicache-${{ hashFiles('repo/**/*.ili') }}
+          key: ilicache-${{ hashFiles('repository/**/*.ili') }}
           restore-keys: |
             ilicache-
 
-      # Validates every model referenced in repo/ilimodels.xml: resolves all
-      # dependsOnModel imports (fetched from models.interlis.ch etc.) and
+      # Validates every model referenced in repository/ilimodels.xml: resolves
+      # all dependsOnModel imports (fetched from models.interlis.ch etc.) and
       # compiles each model file, failing the job on any INTERLIS error.
       - name: Run ili2c --check-repo-ilis
-        run: java -jar "$ILI2C_JAR" --check-repo-ilis repo
+        run: java -jar "$ILI2C_JAR" --check-repo-ilis repository
 
   ilimanager-check-index:
     runs-on: ubuntu-latest
@@ -92,19 +92,19 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.ilicache
-          key: ilicache-${{ hashFiles('repo/**/*.ili') }}
+          key: ilicache-${{ hashFiles('repository/**/*.ili') }}
           restore-keys: |
             ilicache-
 
-      # Regenerates repo/ilimodels.xml in place with ilimanager and diffs it
-      # (order-independent) against the committed version. Catches models that
-      # were added/changed without updating the index.
-      - name: Check repo/ilimodels.xml is up to date
+      # Regenerates repository/ilimodels.xml in place with ilimanager and
+      # diffs it (order-independent) against the committed version. Catches
+      # models that were added/changed without updating the index.
+      - name: Check repository/ilimodels.xml is up to date
         run: .github/scripts/check-ilimodels-index.sh
 
       # ilimanager has no repo-wide "update" mode for ilidata.xml (only a
       # single-dataset --updateIliData), so this only checks referential
       # integrity: every <path> in ilidata.xml must point at a file that
-      # actually exists in repo/.
-      - name: Check repo/ilidata.xml has no dangling paths
+      # actually exists in repository/.
+      - name: Check repository/ilidata.xml has no dangling paths
         run: .github/scripts/check-ilidata-paths.sh

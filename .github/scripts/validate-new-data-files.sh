@@ -1,5 +1,5 @@
 #!/bin/bash
-# Validates each given data file (path relative to repo/) with ilivalidator
+# Validates each given data file (path relative to repository/) with ilivalidator
 # against its associated model. Validates all of them and fails if any one
 # of them is invalid.
 #
@@ -15,9 +15,9 @@ fi
 status=0
 for path in "$@"; do
   echo "::group::ilivalidator $path"
-  if ! java -jar "$ILIVALIDATOR_JAR" --modeldir "repo;%ILI_DIR;http://models.interlis.ch/;%JAR_DIR" "repo/$path"; then
+  if ! java -jar "$ILIVALIDATOR_JAR" --modeldir "repository;%ILI_DIR;http://models.interlis.ch/;%JAR_DIR" "repository/$path"; then
     echo "::endgroup::"
-    echo "::error::repo/$path failed ilivalidator validation."
+    echo "::error::repository/$path failed ilivalidator validation."
     status=1
   else
     echo "::endgroup::"
