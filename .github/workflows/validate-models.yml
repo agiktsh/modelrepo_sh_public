@@ -1,0 +1,58 @@
+name: Validate INTERLIS models
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  ILI2C_VERSION: "5.6.9"
+
+jobs:
+  ili2c-check-repo:
+    runs-on: ubuntu-latest
+    name: ili2c --check-repo-ilis
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Cache ili2c distribution
+        uses: actions/cache@v4
+        with:
+          path: ~/ilitools/ili2c-${{ env.ILI2C_VERSION }}
+          key: ili2c-${{ env.ILI2C_VERSION }}
+
+      - name: Download ili2c
+        run: |
+          installDir=~/ilitools/ili2c-${ILI2C_VERSION}
+          if [ ! -f "$installDir/ili2c.jar" ]; then
+            mkdir -p "$installDir"
+            curl -sSL -o /tmp/ili2c.zip "https://downloads.interlis.ch/ili2c/ili2c-${ILI2C_VERSION}.zip"
+            unzip -q -o /tmp/ili2c.zip -d "$installDir"
+          fi
+          echo "ILI2C_JAR=$installDir/ili2c.jar" >> "$GITHUB_ENV"
+
+      - name: Cache resolved external models
+        uses: actions/cache@v4
+        with:
+          path: ~/.ilicache
+          key: ilicache-${{ hashFiles('repo/**/*.ili') }}
+          restore-keys: |
+            ilicache-
+
+      # Validates every model referenced in repo/ilimodels.xml: resolves all
+      # dependsOnModel imports (fetched from models.interlis.ch etc.) and
+      # compiles each model file, failing the job on any INTERLIS error.
+      - name: Run ili2c --check-repo-ilis
+        run: java -jar "$ILI2C_JAR" --check-repo-ilis repo
