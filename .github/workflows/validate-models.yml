@@ -11,6 +11,7 @@ on:
 
 env:
   ILI2C_VERSION: "5.6.9"
+  ILIMANAGER_VERSION: "0.9.1"
 
 jobs:
   ili2c-check-repo:
@@ -56,3 +57,54 @@ jobs:
       # compiles each model file, failing the job on any INTERLIS error.
       - name: Run ili2c --check-repo-ilis
         run: java -jar "$ILI2C_JAR" --check-repo-ilis repo
+
+  ilimanager-check-index:
+    runs-on: ubuntu-latest
+    name: ilimanager index freshness
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Cache ilimanager distribution
+        uses: actions/cache@v4
+        with:
+          path: ~/ilitools/ilimanager-${{ env.ILIMANAGER_VERSION }}
+          key: ilimanager-${{ env.ILIMANAGER_VERSION }}
+
+      - name: Download ilimanager
+        run: |
+          installDir=~/ilitools/ilimanager-${ILIMANAGER_VERSION}
+          if [ ! -f "$installDir/ilimanager-${ILIMANAGER_VERSION}.jar" ]; then
+            mkdir -p "$installDir"
+            curl -sSL -o /tmp/ilimanager.zip "https://downloads.interlis.ch/ilimanager/ilimanager-${ILIMANAGER_VERSION}.zip"
+            unzip -q -o /tmp/ilimanager.zip -d "$installDir"
+          fi
+          echo "ILIMANAGER_JAR=$installDir/ilimanager-${ILIMANAGER_VERSION}.jar" >> "$GITHUB_ENV"
+
+      - name: Cache resolved external models
+        uses: actions/cache@v4
+        with:
+          path: ~/.ilicache
+          key: ilicache-${{ hashFiles('repo/**/*.ili') }}
+          restore-keys: |
+            ilicache-
+
+      # Regenerates repo/ilimodels.xml in place with ilimanager and diffs it
+      # (order-independent) against the committed version. Catches models that
+      # were added/changed without updating the index.
+      - name: Check repo/ilimodels.xml is up to date
+        run: .github/scripts/check-ilimodels-index.sh
+
+      # ilimanager has no repo-wide "update" mode for ilidata.xml (only a
+      # single-dataset --updateIliData), so this only checks referential
+      # integrity: every <path> in ilidata.xml must point at a file that
+      # actually exists in repo/.
+      - name: Check repo/ilidata.xml has no dangling paths
+        run: .github/scripts/check-ilidata-paths.sh
