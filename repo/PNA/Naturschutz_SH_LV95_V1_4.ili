@@ -1,0 +1,453 @@
+TRANSFER Interlis1;
+ !! INTERLIS 1 Beschreibung Naturschutz Kanton Schaffhausen
+ !! schwarze, gerade Schrift:    Datenmodell
+ !! rote, gerade Schrift:        offene Fragen
+ !! blau markiert:               Aenderungen gegenueber Version 1.3
+ !! grau hinterlegte Schrift:    optionale Attribute
+ !!
+ !! + ======================================================================== +
+ !!                                                                         
+ !! Das Datenmodell Naturschutz Kanton Schaffhausen ist ein                 
+ !! eigenstaendiges Modell, das der Erfassung und Verwaltung der            
+ !! entsprechenden Objekte dient.                                           
+ !!                                                                         
+ !! Details zum Modell:                                                     
+ !! - Name:             Naturschutz_SH                                      
+ !! - Version:          1.4                                                 
+ !! - Datei:            Naturschutz_SH_LV95_V1_4.ili/ *.docx / *.pdf        
+ !! - Sprache:          deutsch (de)                                        
+ !! - Verwalter:        Amt fuer Geoinformation Kt. SH, GIS-Fachstelle      
+ !! - Kontakt:          www.gis.sh.ch                                       
+ !! - Download:         www.gis.sh.ch                                       
+ !! - abgebildete Datensaetze, Identifikatoren gemaess GeoIV:               
+ !!   - 23.1, 23.2, 23.3  Uebrige Biotope von regionaler und lokaler        
+ !!                       Bedeutung                                         
+ !!   - 26.1 Kantonales Inventar der Auengebiete von nationaler, regionaler 
+ !!                       und lokaler Bedeutung                             
+ !!   - 27.1 Kantonales Inventar der Hoch- und Uebergangsmoore von          
+ !!                       nationaler, regionaler und lokaler Bedeutung      
+ !!   - 28.1 Kantonales Inventar der Flachmoore von                         
+ !!                       nationaler, regionaler und lokaler Bedeutung      
+ !!   - 29.1, 29.2 Kantonales Inventar der Amphibienlaichgebiete von        
+ !!                       nationaler, regionaler und lokaler Bedeutung      
+ !!   - 160.1 Waldreservate                                                 
+ !!   - 172.1 Vogelreservate kantonal                                       
+ !!   - 189.1 Kantonales Inventar der Trockenwiesen und Weiden von          
+ !!                       nationaler, regionaler und lokaler Bedeutung      
+ !!   - 195.1, 195.2 Ruhezonen fuer Wildtiere (inkl. Routennetz)            
+ !!                                                                         
+ !! Aenderungen gegenueber Version 1.3 blau markiert                        
+ !!                                                                         
+ !! Letzter Update: 2. November 2018 / fb                                   
+ !!                                                                         
+ !! Erarbeitet durch:                                                       
+ !! - Dr. Herbert Billing, Planungs- und Naturschutzamt Kanton SH           
+ !! - Petra Bachmann, Planungs- und Naturschutzamt Kanton SH                
+ !! - Rolf Wildberger, Wildberger Schuler Partner AG, Schaffhausen          
+ !! - Romedi Filli, Amt fuer Geoinformation                                 
+ !!                                                                         
+ !! INTERLIS-Modell erstellt durch:                                         
+ !! - Felix Berger, Amt fuer Geoinformation des Kantons Schaffhausen        
+ !!                                                                         
+ !!                                                                         
+ !! + ------------------------------------------------------------------------ +
+ !!                                                                         
+ !! Hinweise zu Attributwerten und Datenerfassung:                          
+ !!                                                                         
+ !! - In den meisten Datentabellen ist das Attribut "Bemerkungen" vorgesehen
+ !!   fuer allgemeine, individuelle Hinweise zum Objekt.                    
+ !!                                                                         
+ !! - Es sind keine Textbeschriftungs-Positionstabellen modelliert; die     
+ !!   Anschriften sollen im Zielsystem automatisch erfolgen.                
+ !!                                                                         
+ !! + ------------------------------------------------------------------------ +
+ !!                                                                         
+ !! Organisatorische Aspekte:                                               
+ !!                                                                         
+ !! - Datenmodellaenderungen und -erweiterungen erfolgen nur durch          
+ !!   das Amt fuer Geoinformation (AGI).                                    
+ !!                                                                         
+ !! - Vor jeder Datenerfassung oder Datennachfuehrung ist das neueste       
+ !!   Datenmodell beim AGI (online) zu beziehen und anzuwenden.             
+ !!                                                                         
+ !! - Verifikation nach Datenerfassungsarbeiten : Inhaltliche Belange sind  
+ !!   durch das PNA zu ueberpruefen; die INTERLIS-Daten wer-                
+ !!   den durch das AGI lediglich bezueglich Syntax untersucht.             
+ !!                                                                         
+ !! + ======================================================================== +
+
+ !!    Definition der globalen Variabeln resp. Wertebereiche
+ !! ---------------------------------------------------------------------------
+
+MODEL Naturschutz_SH_LV95_V1_4                    !! Version 1.4 vom 02.11.2018
+                                             !! Modell des Naturschutzes Kt. SH
+
+  DOMAIN
+ !! Referenzsystem der amtlichen Vermessung (DM01, LV95)
+
+    LKoord =     COORD2    2480000.000  1060000.000   !! in m
+                           2850000.000  1320000.000;  !! in m
+
+    Linienzug =        POLYLINE WITH (ARCS, STRAIGHTS) VERTEX LKoord;
+
+    Einzelflaeche =    SURFACE WITH (ARCS, STRAIGHTS) VERTEX LKoord;
+
+    Name_Text =        TEXT*60;
+
+    Abk_Text =         TEXT*16;
+
+    Langtext =         TEXT*250;
+
+    Beschreibungstext = TEXT*1999;
+
+    Orientierung =     GRADS 0.0 399.9;
+
+    Groesse =         (klein, mittel, gross);
+
+    Rechtsstatus =    (rechtsgueltig, inBearbeitung, geloescht);
+
+    ID_CH =            TEXT*6;
+
+    SH_Code =         [101 .. 999];
+
+    Gemeinden_Ortsteile =          !! Nr. Kt. SH  / ID        / BFS-Nr.
+                  (Altdorf,        !! Gde. Nr. 01 / AVS_Id 0  / wie Thayngen
+                   Bargen,         !! Gde. Nr. 02 / AVS_Id 1  / BFS-Nr. 2931
+                   Barzheim,       !! Gde. Nr. 03 / AVS_Id 2  / wie Thayngen
+                   Beggingen,      !! Gde. Nr. 04 / AVS_Id 3  / BFS-Nr. 2951
+                   Beringen,       !! Gde. Nr. 05 / AVS_Id 4  / BFS-Nr. 2932
+                   Bibern,         !! Gde. Nr. 06 / AVS_Id 5  / wie Thayngen
+                   Buch,           !! Gde. Nr. 07 / AVS_Id 6  / BFS-Nr. 2961
+                   Buchberg,       !! Gde. Nr. 08 / AVS_Id 7  / BFS-Nr. 2933
+                   Buettenhardt,   !! Gde. Nr. 09 / AVS_Id 8  / BFS-Nr. 2914
+                   Doerflingen,    !! Gde. Nr. 10 / AVS_Id 9  / BFS-Nr. 2915
+                   Gaechlingen,    !! Gde. Nr. 11 / AVS_Id 10 / BFS-Nr. 2901
+                   Guntmadingen,   !! Gde. Nr. 12 / AVS_Id 11 / BFS-Nr. 2902
+                   Hallau,         !! Gde. Nr. 13 / AVS_Id 12 / BFS-Nr. 2971
+                   Hemishofen,     !! Gde. Nr. 14 / AVS_Id 13 / BFS-Nr. 2962
+                   Hemmental,      !! Gde. Nr. 15 / AVS_Id 14 / wie Schaffhausen
+                   Hofen,          !! Gde. Nr. 16 / AVS_Id 15 / wie Thayngen
+                   Loehningen,     !! Gde. Nr. 17 / AVS_Id 16 / BFS-Nr. 2903
+                   Lohn,           !! Gde. Nr. 18 / AVS_Id 17 / BFS-Nr. 2917
+                   Merishausen,    !! Gde. Nr. 19 / AVS_Id 18 / BFS-Nr. 2936
+                   Neuhausen,      !! Gde. Nr. 20 / AVS_Id 19 / BFS-Nr. 2937
+                   Neunkirch,      !! Gde. Nr. 21 / AVS_Id 20 / BFS-Nr. 2904
+                   Oberhallau,     !! Gde. Nr. 22 / AVS_Id 21 / BFS-Nr. 2972
+                   Opfertshofen,   !! Gde. Nr. 23 / AVS_Id 22 / wie Thayngen
+                   Osterfingen,    !! Gde. Nr. 24 / AVS_Id 23 / wie Wilchingen
+                   Ramsen,         !! Gde. Nr. 25 / AVS_Id 24 / BFS-Nr. 2963
+                   Ruedlingen,     !! Gde. Nr. 26 / AVS_Id 25 / BFS-Nr. 2938
+                   Schaffhausen,   !! Gde. Nr. 27 / AVS_Id 26 / BFS-Nr. 2939
+                   Schleitheim,    !! Gde. Nr. 28 / AVS_Id 27 / BFS-Nr. 2952
+                   Siblingen,      !! Gde. Nr. 29 / AVS_Id 28 / BFS-Nr. 2953
+                   Stein_am_Rhein, !! Gde. Nr. 30 / AVS_Id 29 / BFS-Nr. 2964
+                   Stetten,        !! Gde. Nr. 31 / AVS_Id 30 / BFS-Nr. 2919
+                   Thayngen,       !! Gde. Nr. 32 / AVS_Id 31 / BFS-Nr. 2920
+                   Trasadingen,    !! Gde. Nr. 33 / AVS_Id 32 / BFS-Nr. 2973
+                   Wilchingen,     !! Gde. Nr. 34 / AVS_Id 33 / BFS-Nr. 2974
+                   alle_Ortsteile); !!              AVS_Id 34 / wie Hauptgde.
+
+ !! + ======================================================================= +
+
+
+ !! Topic Naturschutz
+ !! ----------------------------------------------------------------------------
+
+TOPIC Naturschutz =
+
+
+ !! Definitionen Kanton und Zuweisungen CH
+ !! ----------------------------------------------------------------------------
+
+    TABLE Naturschutzobj_Typ_Kt =   !! Inhalt der Tabelle wird durch Kanton zur
+                                    !! Verfuegung gestellt; Bedeutung siehe
+                                    !! Objektkatalog
+      SH_Code:              SH_Code;
+      Bezeichnung:          Name_Text;
+      ID_Modell_CH:         ID_CH;
+      Datenmodell_CH:       Langtext;
+      Attribut_CH:          OPTIONAL Abk_Text;
+      Attributinhalt_CH:    OPTIONAL Abk_Text;
+      Bedeutung_CH:         OPTIONAL Langtext;
+      Zustaendigkeit:       Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+    IDENT
+      SH_Code;
+    END Naturschutzobj_Typ_Kt;
+
+
+ !! Standardisierte Auswahllisten CH
+ !! ----------------------------------------------------------------------------
+
+    TABLE Bedeutung =               !! Inhalt der Tabelle wird durch Kanton zur
+                                    !! Verfuegung gestellt; Auswahlliste lautet:
+                                    !! B1 = national
+                                    !! B2 = kantonal (entspricht regional)
+                                    !! B3 = kommunal (entspricht lokal)
+      Code:                 Abk_Text;
+      Raeumliche_Bedeutung: Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+    IDENT
+      Code;
+    END Bedeutung;
+
+
+    TABLE Kartierungsgrundlage =    !! Inhalt der Tabelle wird durch Kanton zur
+                                    !! Verfuegung gestellt; Auswahlliste lautet:
+                                    !! K1 = Landeskarte 1:25'000
+                                    !! K2 = Andere Landeskarte
+                                    !! K3 = Kantonale Plangrundlage (auch AV)
+                                    !! K4 = Luftbild, Orthophoto
+                                    !! K5 = andere (auch GNNS)
+                                    !! K6 = unbekannt
+      Code:                 Abk_Text;
+      Kartierungsgrundlage: Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+    IDENT
+      Code;
+    END Kartierungsgrundlage;
+
+
+ !! Definitionen Naturschutzobjekte der Gemeinde
+ !! ----------------------------------------------------------------------------
+
+    TABLE Naturschutzobj_Typ_Gde =         !! Inhalt der Tabelle wird durch die
+                                           !! Gemeinde erstellt
+      Name:                 Name_Text;
+      Bedeutung_Gde:        OPTIONAL Langtext;
+      Bemerkungen:          OPTIONAL Langtext;
+      Ortsteil:             Gemeinden_Ortsteile;
+      Naturschutzobj_Kt_Ref:    -> Naturschutzobj_Typ_Kt;     !! Beziehung 1-mc
+    IDENT
+      Name, Ortsteil;
+    END Naturschutzobj_Typ_Gde;
+
+!! Erfassung Naturschutzobjekte Kanton / CH gemaess kantonalem Richtplan
+ !! ----------------------------------------------------------------------------
+
+    TABLE Naturschutzobjekt_Kt = 
+      Obj_Nr_Kt:            Name_Text;
+      Obj_Nr_CH:            OPTIONAL Name_Text;  !! bei mehreren Bundes-Nr.
+                                                 !! kommagetrennt erfassen
+      Name:                 Langtext;
+      Herkunft:             Name_Text;
+      Status_NSInv:         Rechtsstatus;
+      Schutz_Verfuegung:    (ja, nein);                       !! Default = nein
+      Schutz_Vertrag:       (ja, nein);                       !! Default = nein
+      Schutz_Grundbuch:     (ja, nein);                       !! Default = nein
+      Schutz_Zonenplan:     (ja, nein);                       !! Default = nein
+      Schutz_Richtplan:     (ja, nein);                       !! Default = nein
+      Schutz_Bundesinventar: (ja, nein);                      !! Default = nein
+      Gemeinde:             Gemeinden_Ortsteile;
+      Ortsteil:             Gemeinden_Ortsteile;     !! wenn kein Ortsteil vor-
+                                    !! handen ist, nochmals Gemeinde auswaehlen
+      Aufnahmedatum:        OPTIONAL DATE;       !! Genehmigung kt. RP durch BR
+      Mutationsdatum:       OPTIONAL DATE;       !! Genehmigung kt. RP durch BR
+      Mutationsgrund:       OPTIONAL Name_Text;
+      im_Web:               OPTIONAL Langtext;      !! allfaellige URL zum Obj.
+      Beschreibung:         OPTIONAL Beschreibungstext;    !! aus Inventarblatt
+      Schutzziele:          OPTIONAL Beschreibungstext;    !! aus Inventarblatt
+      Gefaehrdungen:        OPTIONAL Beschreibungstext;    !! aus Inventarblatt
+      Pflegemassnahmen:     OPTIONAL Beschreibungstext;    !! aus Inventarblatt
+      Weitere_Infos:        OPTIONAL Beschreibungstext;    !! aus Inventarblatt
+      Bemerkungen:          OPTIONAL Langtext;
+      Bedeutung_Ref:              -> Bedeutung;       !! national oder kantonal
+      Kartierungsgrundlage_Ref:   -> Kartierungsgrundlage;
+      Naturschutzobj_Kt_Typ_Ref:  -> Naturschutzobj_Typ_Kt;
+    IDENT
+      Obj_Nr_Kt, Ortsteil, Status_NSInv;
+    END Naturschutzobjekt_Kt;
+
+
+    TABLE Obj_Flaeche_Kt =
+      Teilobj_Nr:           OPTIONAL Name_Text;
+      Geometrie:            Einzelflaeche;
+      Bemerkungen:          OPTIONAL Langtext;
+      Naturschutzobjekt_Ref:    -> Naturschutzobjekt_Kt;
+    NO IDENT
+    END Obj_Flaeche_Kt;
+
+    TABLE Obj_Linie_Kt =
+      Teilobj_Nr:           OPTIONAL Name_Text;
+      Geometrie:            Linienzug;
+      Bemerkungen:          OPTIONAL Langtext;
+      Naturschutzobjekt_Ref:    -> Naturschutzobjekt_Kt;
+    NO IDENT
+    END Obj_Linie_Kt;
+
+
+    TABLE Obj_Punkt_Kt =
+      Teilobj_Nr:           OPTIONAL Name_Text;
+      Geometrie:            LKoord;
+      Bemerkungen:          OPTIONAL Langtext;
+      Naturschutzobjekt_Ref:    -> Naturschutzobjekt_Kt;
+    NO IDENT
+    END Obj_Punkt_Kt;
+
+
+    TABLE Obj_Text_Kt =
+      Text:                 Langtext;
+      Bemerkungen:          OPTIONAL Langtext;
+      Naturschutzobjekt_Ref:    -> Naturschutzobjekt_Kt;
+    NO IDENT
+    END Obj_Text_Kt;
+
+
+
+    TABLE Naturschutzobjekt_Kt_Pos = 
+                             !! beschriftet Attribut
+                             !! Naturschutzobjekt_Kt.Obj_Nr_Kt
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Naturschutzobjekt_Kt_Ref:  -> Naturschutzobjekt_Kt;     !! Beziehung 1-mc
+    NO IDENT
+    END Naturschutzobjekt_Kt_Pos;
+
+
+    TABLE Naturschutzobjekt_CH_Pos = 
+                             !! beschriftet Attribut
+                             !! Naturschutzobjekt_Kt.Obj_Nr_CH
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Naturschutzobjekt_CH_Ref:  -> Naturschutzobjekt_Kt;     !! Beziehung 1-mc
+    NO IDENT
+    END Naturschutzobjekt_CH_Pos;
+
+
+ !! Erfassung Naturschutzobjekte der Gemeinden gemaess kommunalem Natutschutzinventar
+
+ !! ----------------------------------------------------------------------------
+
+    TABLE Naturschutzobjekt_Gde =                        !! Bedeutung = kommunal
+      Obj_Nr_Gde:           Name_Text;              !! wenn moeglich gleiche Nr.
+                                                   !! wie beim kantonalen Objekt
+      Name:                 Langtext;
+      Herkunft:             Name_Text;
+      Status_NSInv:         Rechtsstatus;
+      Schutz_Verfuegung:    (ja, nein);                        !! Default = nein
+      Schutz_Vertrag:       (ja, nein);                        !! Default = nein
+      Schutz_Grundbuch:     (ja, nein);                        !! Default = nein
+      Schutz_Zonenplan:     (ja, nein);                        !! Default = nein
+      Schutz_Richtplan:     (ja, nein);                        !! Default = nein
+      Schutz_Bundesinventar: (ja, nein);                       !! Default = nein
+      Gemeinde:             Gemeinden_Ortsteile;
+      Ortsteil:             Gemeinden_Ortsteile;      !! wenn kein Ortsteil vor-
+                                     !! handen ist, nochmals Gemeinde auswaehlen
+      Aufnahmedatum:        OPTIONAL DATE;            !! RRB initiert durch Gde.
+      Mutationsdatum:       OPTIONAL DATE;            !! RRB initiert durch Gde.
+      Mutationsgrund:       OPTIONAL Name_Text;
+      im_Web:               OPTIONAL Langtext;       !! allfaellige URL zum Obj.
+      Beschreibung:         OPTIONAL Beschreibungstext;     !! aus Inventarblatt
+      Schutzziele:          OPTIONAL Beschreibungstext;     !! aus Inventarblatt
+      Gefaehrdungen:        OPTIONAL Beschreibungstext;     !! aus Inventarblatt
+      Pflegemassnahmen:     OPTIONAL Beschreibungstext;     !! aus Inventarblatt
+      Weitere_Infos:        OPTIONAL Beschreibungstext;     !! aus Inventarblatt
+      Bemerkungen:          OPTIONAL Langtext;
+      Bedeutung_Ref:               -> Bedeutung;          !! national, kantonal,
+                                                                !! oder kommunal
+      Kartierungsgrundlage_Ref:    -> Kartierungsgrundlage;
+      Naturschutzobj_Gde_Typ_Ref:  -> Naturschutzobj_Typ_Gde;
+      Naturschutzobj_Kt_Ref:       OPTIONAL -> Naturschutzobjekt_Kt;
+    IDENT
+      Obj_Nr_Gde, Ortsteil, Status_NSInv;
+    END Naturschutzobjekt_Gde;
+
+
+    TABLE Obj_Flaeche_Gde =
+      Teilobj_Nr:           OPTIONAL Name_Text;
+      Geometrie:            Einzelflaeche;
+      Bemerkungen:          OPTIONAL Langtext;
+      Naturschutzobjekt_Ref:    -> Naturschutzobjekt_Gde;
+    NO IDENT
+    END Obj_Flaeche_Gde;
+
+    TABLE Obj_Linie_Gde =
+      Teilobj_Nr:           OPTIONAL Name_Text;
+      Geometrie:            Linienzug;
+      Bemerkungen:          OPTIONAL Langtext;
+      Naturschutzobjekt_Ref:    -> Naturschutzobjekt_Gde;
+    NO IDENT
+    END Obj_Linie_Gde;
+
+
+    TABLE Obj_Punkt_Gde =
+      Teilobj_Nr:           OPTIONAL Name_Text;
+      Geometrie:            LKoord;
+      Bemerkungen:          OPTIONAL Langtext;
+      Naturschutzobjekt_Ref:    -> Naturschutzobjekt_Gde;
+    NO IDENT
+    END Obj_Punkt_Gde;
+
+
+    TABLE Obj_Text_Gde =
+      Text:                 Langtext;
+      Bemerkungen:          OPTIONAL Langtext;
+      Naturschutzobjekt_Ref:    -> Naturschutzobjekt_Gde;
+    NO IDENT
+    END Obj_Text_Gde;
+
+
+
+    TABLE Naturschutzobjekt_Gde_Pos = 
+                             !! beschriftet Attribut
+                             !! Naturschutzobjekt_Gde.Obj_Nr_Gde
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Naturschutzobjekt_Gde_Ref:  -> Naturschutzobjekt_Gde;   !! Beziehung 1-mc
+    NO IDENT
+    END Naturschutzobjekt_Gde_Pos;
+
+  END Naturschutz.
+
+
+
+ !! TOPIC Transfer-Metadaten 
+ !! ----------------------------------------------------------------------------
+
+    TOPIC Transfer_Metadaten =
+
+      TABLE Organisation =         !! entspricht der Klasse "Amt" bei CH-Modell
+        Name:                    Name_Text;         !! z.B. Planungsamt Kt. SH,
+                                                !! oder Buero resp. Lieferanten
+        Organisation_im_Web:     OPTIONAL Langtext;          !! Angabe Homepage
+      NO IDENT
+      END Organisation;
+
+
+      TABLE Datenbestand =
+        Datensatzidentifikator:  TEXT*14;  !! pro Datenlieferung Gde an den Kt.
+                                      !! <Gde>-<Ortsteil>-<Jahr>-<laufende Nr.>
+                                      !! Identischer Mechanismus wie bei
+                                      !! Mutationshinweis.Identifikator
+        Beschreibung_Stand:      OPTIONAL Name_Text;
+        Datenstand:              DATE;   !! Stand der Erfassung
+        Lieferdatum:             DATE;   !! Datum der Lieferung
+        Buero:                -> Organisation;
+        zustaendige_Stelle:   -> Organisation;
+        Bemerkungen:             OPTIONAL Langtext;
+      IDENT
+        Datensatzidentifikator;
+      END Datenbestand;
+
+    END Transfer_Metadaten.
+
+
+
+END Naturschutz_SH_LV95_V1_4.
+
+
+FORMAT FREE;                                          !! Fuer Datentransfer
+
+CODE
+  BLANK = DEFAULT, UNDEFINED = DEFAULT, CONTINUE = DEFAULT;
+  TID = ANY;
+END.

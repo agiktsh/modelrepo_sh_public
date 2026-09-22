@@ -1,0 +1,255 @@
+INTERLIS 2.3;
+
+/** Projektdatenbank Ressort Naturschutz Kanton Schaffhausen.
+Projektverwaltung des Ressort Naturschutz im Kanton Schaffhausen.
+ */
+
+/*
+Version    | Who | Modification
+------------------------------------------------------------------------------
+0000-00-00 | --- | Version 1.1
+                 | - 
+                 | - 
+                 | - 
+------------------------------------------------------------------------------
+2023-05-31 | AGI | Version 1.0
+------------------------------------------------------------------------------
+
+Fachtechnische Auskunft
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+Planungs- und Naturschutzamt
+Ressort Naturschutz
+Telefon +41 52 632 73 24
+https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Baudepartement/Planungs--und-Naturschutzamt/Naturschutz-3598-DE.html
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Allgemeines zum Datenmodell                                 
+-------------------------------------------------------------------------------
+- Das Ziel ist die Verwaltung und Visualisierung von Naturschutzprojekten 
+  (Flora und Fauna) des Ressort Naturschutz.
+
+- Die abgebildeten Daten beschränken sich auf das Wesentliche.         
+  (möglichst eine einfache und übersichtliche Modellierung).          
+
+- Als Objektidentifikator wird eine UUID (z.B. 
+  d89778ed-242a-4642-9a32-1e1954675b0a) festgelegt.
+-------------------------------------------------------------------------------
+
+Beteiligte
+-------------------------------------------------------------------------------
+Erarbeitet durch:                                                                     
+- Jeaninne Klaiber, Planungs- und Naturschutzamt des Kantons Schaffhausen (PNA)
+- Romedi Filli, Amt für Geoinformation des Kantons Schaffhausen (AGI)                                     
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen (AGI)      
+ 
+INTERLIS-Modell erstellt durch:                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen
+-------------------------------------------------------------------------------
+
+Organisatorische Aspekte                                              
+-------------------------------------------------------------------------------    
+- Datenmodelländerungen und -erweiterungen dürfen nur durch das AGI erfolgen.                                               
+   
+- Die inhaltliche Überprüfung sowie Validierung der Modellkonformität leistet 
+  das PNA durch die systemischen Mechanismen.          
+-------------------------------------------------------------------------------                        
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ author=agi-sh
+!!@ tags="Kanton Schaffhausen, Naturschutz, Flora, Fauna, Projektverwaltung, Projektdaten, Aufträge, Berichte"
+
+MODEL SH_ProjektdatenDB_Naturschutz_V1_0 (de)
+AT "http://geo.sh.ch"
+VERSION "2023-05-31" =
+  IMPORTS CatalogueObjects_V1;
+  IMPORTS GeometryCHLV95_V1;
+  IMPORTS Units;
+
+  TOPIC Codeliste =
+
+	CLASS Projekttyp_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+	  /** Attribute werden aus bestehendem Katalog importiert */
+	  Projekt : MANDATORY TEXT*100;
+	  /** Optionale Beschreibung */
+	  Beschreibung: TEXT*200;
+	  /** Optionaler Filter zum Deaktivieren */
+	  inaktiv: MANDATORY BOOLEAN;
+	  !!@ ilivalid.msg_de = "Bei Codeliste Projekttyp_Code sind doppelte Werte ungültig"
+	  UNIQUE Projekt;
+	END Projekttyp_Code;
+	
+    STRUCTURE Projekttyp_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel fuer die Projekttyp_Codeliste */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Projekttyp_Code;
+    END Projekttyp_CodeRef;
+	
+	CLASS Finanzierung_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+	  /** Attribute werden aus bestehendem Katalog importiert */
+	  Finanzierung : MANDATORY TEXT*100;
+	  /** Optionale Beschreibung */
+	  Beschreibung: TEXT*200;
+	  /** Optionaler Filter zum Deaktivieren */
+	  inaktiv: MANDATORY BOOLEAN;
+	  !!@ ilivalid.msg_de = "Bei Finanzierung_Code sind doppelte Werte ungültig"
+	  UNIQUE Finanzierung;
+	END Finanzierung_Code;
+	
+    STRUCTURE Finanzierung_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel fuer die Finanzierung_Codeliste */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Finanzierung_Code;
+    END Finanzierung_CodeRef;
+	
+	CLASS Datenursprung_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+	  /** Attribute werden aus bestehendem Katalog importiert */
+	  Datenursprung : MANDATORY TEXT*50;
+	  /** Optionale Beschreibung */
+	  Beschreibung: TEXT*200;
+	  /** Optionaler Filter zum Deaktivieren */
+	  inaktiv: MANDATORY BOOLEAN;
+	  !!@ ilivalid.msg_de = "Bei Datenursprung_Code sind doppelte Werte ungültig"
+	  UNIQUE Datenursprung;
+	END Datenursprung_Code;
+	
+    STRUCTURE Datenursprung_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel fuer die Datenursprung_Codeliste */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Datenursprung_Code;
+    END Datenursprung_CodeRef;
+
+	CLASS Organismengruppe_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+	  /** Attribute werden aus bestehendem Katalog importiert */
+	  Organismengruppe : MANDATORY TEXT*200;
+	  /** Optionale Beschreibung */
+	  Beschreibung: TEXT*200;
+	  /** Optionaler Filter zum Deaktivieren */
+	  inaktiv: MANDATORY BOOLEAN;
+	  !!@ ilivalid.msg_de = "Bei Organismengruppe_Code sind doppelte Werte ungültig"
+	  UNIQUE Organismengruppe;
+	END Organismengruppe_Code;
+	
+    STRUCTURE Organismengruppe_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel fuer die Datenursprung_Codeliste */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Organismengruppe_Code;
+    END Organismengruppe_CodeRef;
+	
+  END Codeliste;
+
+  TOPIC Projektdaten =
+	OID AS INTERLIS.UUIDOID;
+	DEPENDS ON SH_ProjektdatenDB_Naturschutz_V1_0.Codeliste;
+
+	DOMAIN
+    Polygon = SURFACE WITH (STRAIGHTS,ARCS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;
+
+	CLASS Mitarbeitende =
+	  /** Optionale Angabe */
+	  Name : TEXT*50;
+	END Mitarbeitende;
+
+	STRUCTURE Finanzierung =
+	  /** Zwingende Angabe */
+	  Finanzierungstyp : MANDATORY SH_ProjektdatenDB_Naturschutz_V1_0.Codeliste.Finanzierung_CodeRef;
+	  /** Zwingende Angabe sobald Beiträge geleistet werden */
+	  Beitrag : 0.00 .. 999999999.95 [Units.CHF];
+    END Finanzierung;
+
+	CLASS Projektgruppe =
+	  /** Wird automatisch durch System als Autozähler abgefüllt */
+	  ProjektgruppenNr : MANDATORY 1 .. 999999;
+	  /** Zwingende Angabe */
+	  Projekttitel : MANDATORY TEXT*200;
+	  /** Optionale Angabe */
+	  Bemerkung : MTEXT;
+    END Projektgruppe;
+
+	CLASS Projekt =
+	  /** Zwingende Angabe */
+	  Projekttyp : MANDATORY SH_ProjektdatenDB_Naturschutz_V1_0.Codeliste.Projekttyp_CodeRef;
+	  /** Zwingende Angabe */
+	  UntersuchteOrganismusgruppe : BAG {1..*} OF SH_ProjektdatenDB_Naturschutz_V1_0.Codeliste.Organismengruppe_CodeRef;
+	  /** Zwingende Angabe */
+	  NFA_PZ : MANDATORY TEXT*100;
+	  /** Zwingende Angabe */
+	  NFA_LI : MANDATORY TEXT*100;
+	  /** Wird automatisch durch System als Autozähler abgefüllt */
+	  ProjektID_SH : MANDATORY 1 .. 999999;
+	  /** Zwingende Angabe */
+	  Projekttitel_SH : MANDATORY TEXT*200;
+	  /** Zwingende Angabe */
+	  ProjektID_natDB_Flora : TEXT*200;
+	  /** Optionale Angabe */
+	  Projekttitel_natDB_Fauna : TEXT*200;
+	  /** Optionale Angabe */
+	  Finanzierung : BAG {0..*} OF Finanzierung;
+	  /** Zwingende Angabe */
+	  Berichtstitel : MANDATORY TEXT*200;
+	  /** Zwingende Angabe */
+	  Jahr : MANDATORY 1900 .. 2999;
+	  /** Zwingende Angabe */
+	  AuftragnehmerFirma : MANDATORY TEXT*200;
+	  /** Zwingende Angabe */
+	  Projektant : MANDATORY TEXT*50;
+	  /** Zwingende Angabe */
+	  Auftraggeber : MANDATORY TEXT*200;
+	  /** Zwingende Angabe */
+	  AuftraggeberProjektleitung : MANDATORY TEXT*50;
+	  /** Zwingende Angabe */
+	  Datenursprung : MANDATORY SH_ProjektdatenDB_Naturschutz_V1_0.Codeliste.Datenursprung_CodeRef;
+	  /** Wird automatisch durch System auch bei Änderung des Datensatzes abgefüllt */
+	  erfasstAm : MANDATORY INTERLIS.XMLDate;
+	  /** Wird automatisch durch System auch bei Änderung des Datensatzes abgefüllt */
+	  ErfasstDurch : MANDATORY TEXT*50;
+	  /** Optionale Angabe */
+	  Bemerkung : MTEXT;
+	  /** Zwingende Verzeichnisangabe sobald Schlussbericht vorhanden */
+	  Schlussbericht : TEXT*1023;
+	  /** Optionale Angabe */
+	  Dossier : TEXT*1023;
+	  /** Optionale Angabe */
+	  Geodaten : TEXT*1023;
+    END Projekt;
+
+	CLASS Objekt (ABSTRACT) =
+	  /** Wird automatisch durch System auch bei Änderung des Datensatzes abgefüllt */
+	  DigitalisiertAm : MANDATORY INTERLIS.XMLDate;
+	  /** Wird automatisch durch System auch bei Änderung des Datensatzes abgefüllt */
+	  DigitalisiertDurch : MANDATORY TEXT*50;
+    END Objekt;
+
+    CLASS Objekt_Punkt EXTENDS Objekt =
+	  /** Zwingend Geometrie erfassen */
+	  Point : MANDATORY GeometryCHLV95_V1.Coord2;
+    END Objekt_Punkt;
+
+	CLASS Objekt_Flaeche EXTENDS Objekt =
+	  /** Zwingend Geometrie erfassen */
+	  Polygon : MANDATORY Polygon;
+    END Objekt_Flaeche;
+
+	ASSOCIATION ProjektgruppeProjektAssc =
+	  Projektgruppe -- {0..1} Projektgruppe;
+	  Projekt -- {1..*} Projekt;
+	END ProjektgruppeProjektAssc;
+
+    ASSOCIATION ProjektObjektAssoc =
+	  Projekt -- {1..*} Projekt;
+	  Objekt -- {1..*} Objekt;
+	END ProjektObjektAssoc;
+
+	ASSOCIATION MitarbeitendeProjektAssoc =
+	  Mitarbeitende -- {1..*} Mitarbeitende;
+	  Projekt -- {1..*} Projekt;
+	END MitarbeitendeProjektAssoc;
+
+  END Projektdaten;
+
+END SH_ProjektdatenDB_Naturschutz_V1_0.

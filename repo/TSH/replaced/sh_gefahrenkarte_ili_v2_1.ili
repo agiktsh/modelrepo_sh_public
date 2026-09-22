@@ -1,0 +1,747 @@
+TRANSFER INTERLIS1;
+
+ !!    INTERLIS 1 Beschreibung Naturgefahrenkarte Kanton Schaffhausen
+ !! + ======================================================================== +
+ !! ¦                                                                          ¦
+ !! ¦ Das Datenmodell "Naturgefahrenkarte Kanton Schaffhausen" ist ein         ¦
+ !! ¦ eigenstaendiges Modell, welches mit dem BAFU abgesprochen ist.           ¦
+ !! ¦                                                                          ¦
+ !! ¦ Version: 1.5                                                             ¦
+ !! ¦                                                                          ¦
+ !! ¦ Filename: *.DOC, *ILI* bzw. *FMT* (siehe Kopfzeile)                      ¦
+ !! ¦                                                                          ¦
+ !! ¦ Letzter Update: 11. September 2015 / fb                                  ¦
+ !! ¦ Modifiziert: 24. Mai 2007 / ps (Pascal Sieber, Niederer + Pozzi)         ¦
+ !! ¦              >Ergaenzung Extremereignis Intensitaet Rutschung und Sturz  ¦
+ !! ¦              >Ergaenzung Erfassungsbueros 11 und 12                      ¦
+ !! ¦              >Ergaenzung Matrixfeld_Typ 'MF0' keine Intensitaet          ¦
+ !! ¦                                                                          ¦
+ !! ¦              26. Juni 2007 / ps (Pascal Sieber, Niederer + Pozzi)        ¦
+ !! ¦              >Ergaenzung Schutzziel Extremereignis                       ¦
+ !! ¦              >Aenderung Objektkategorie_Typ analog Techn. Bericht:       ¦
+ !! ¦                                              Kategorie1   > A            ¦
+ !! ¦                                              Kategorie2_1 > B            ¦
+ !! ¦                                              Kategorie2_2 > C            ¦
+ !! ¦                                              Kategorie2_3 > D            ¦
+ !! ¦                                              Kategorie3_1 > E            ¦
+ !! ¦                                              Kategorie3_2 > F            ¦
+ !! ¦                                                                          ¦
+ !! ¦              24. August 2007 / fb (Vermessungsamt SH)                    ¦
+ !! ¦              >2 neue Tabellen: - Schadenpotenzial_Sonderrisiken          ¦
+ !! ¦                                - Schutzdefizit_Sonderrisiken             ¦
+ !! ¦                                                                          ¦
+ !! ¦              16. Juli 2015 / fb (AGI)                                    ¦
+ !! ¦              >diverse Modifikationen für die geplante Nachfuehrung des   ¦
+ !! ¦               Datensatzes; Anpassungen ans MGDM V1.1 des Bundes          ¦
+ !! ¦              >alle TextPos-Tabellen wurden geloescht                     ¦
+ !! ¦                                                                          ¦
+ !! ¦              11. September 2015 / fb (AGI)                               ¦
+ !! ¦              >weitere Anpassungen des Entwurfs vom 16.7.2015             ¦
+ !! ¦              >Textlaengen generell auf TEXT*100 gestellt                 ¦
+ !! ¦                                                                          ¦
+ !! ¦              17. Dezember 2015 / rfi (AGI)                               ¦
+ !! ¦              >Anpassung Modellname mit Bezugsrahmen und Version          ¦
+ !! ¦              >Keine Overlaps in Flaechen                                 ¦
+ !! ¦              >Herkunft in Table Perimeter geloescht                      ¦
+ !! ¦              >Einfuegen mobile Massnahmen                                ¦
+ !! ¦                                                                          ¦
+ !! ¦ Erarbeitet durch:                                                        ¦
+ !! ¦ - Juerg Schulthess, Tiefbauamt des Kantons Schaffhausen                  ¦
+ !! ¦ - Juerg Sturzenegger, Tiefbauamt des Kantons Schaffhausen                ¦
+ !! ¦ - Thomas Marti, Niederer + Pozzi, Uznach                                 ¦
+ !! ¦ - Mathias Ulmer, Ernst Basler und Partner                                ¦
+ !! ¦ - Romedi Filli, Amt fuer Geoinformation des Kantons Schaffhausen         ¦
+ !! ¦                                                                          ¦
+ !! ¦ INTERLIS-Modell erstellt durch:                                          ¦
+ !! ¦ - Felix Berger, Amt fuer Geoinformation des Kantons Schaffhausen         ¦
+ !! ¦                                                                          ¦
+ !! + ------------------------------------------------------------------------ +
+ !! ¦                                                                          ¦
+ !! ¦ Legende:                                                                 ¦
+ !! ¦ - grau hinterlegt  = Optionale Themen, Tabellen oder Attribute           ¦
+ !! ¦ - gelb hinterlegt  = Änderungen gegenüber Version 2.0                    ¦
+ !! ¦ - Farbe rot        = offene Fragen / Pendenzen                           ¦
+ !! ¦                                                                          ¦
+ !! + ------------------------------------------------------------------------ +
+ !! ¦                                                                          ¦
+ !! ¦ Allgemeine Bemerkungen zum Datenmodell:                                  ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Die Erfassung der Naturgefahrenkarten verfolgt das Ziel,               ¦
+ !! ¦   Grundlagen fuer die Gemeinden zu liefern, um ihre Zonenplanungen und   ¦
+ !! ¦   Bauordnungen auf Grund des Gefahrenpotentials anzupassen. Die          ¦
+ !! ¦   Erfassung soll im ganzen Kanton einheitlich erfolgen und auch          ¦
+ !! ¦   einheitlich dargestellt werden.                                        ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Die abgebildeten Daten beschraenken sich auf das Wesentliche.          ¦
+ !! ¦   (moeglichst eine einfache und uebersichtliche Modellierung).           ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Die jetzige Version des Datenmodells hat den Status "Entwurf".         ¦
+ !! ¦   Erkenntnisse aus der Bearbeitung der Nachfuehrung koennen              ¦
+ !! ¦   noch zu kleinen Modellanpassungen fuehren.                             ¦
+ !! ¦                                                                          ¦
+ !! + ------------------------------------------------------------------------ +
+ 
+ !! ¦                                                                          ¦
+ !! ¦ Hinweise zu Attributwerten und Datenerfassung:                           ¦
+ !! ¦                                                                          ¦
+ !! ¦ - In jeder Datentabelle ist das Attribut "Bemerkung" vorgesehen fuer     ¦
+ !! ¦   allgemeine, individuelle Hinweise zum Objekt.                          ¦
+ !! ¦ - Definition ID_Gefahrenquelle: 1000 - 3999 = ID fuer Wasser             ¦
+ !! ¦                                 4000 - 4999 = ID fuer Rutschung          ¦
+ !! ¦                                 5000 - 5999 = ID fuer Sturz.             ¦
+ !! ¦   bei mehreren Gefahrenquellen kommagetrennt erfassen                    ¦
+ !! ¦                                                                          ¦
+ !! + ------------------------------------------------------------------------ +
+ !! ¦                                                                          ¦
+ !! ¦ Darstellungsmodell:                                                      ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Es wird von einem Plantyp ausgegangen (Uebersichtsplan, Massstab       ¦
+ !! ¦   in der Regel 1:5000).                                                  ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Die Planeinteilung fuer den Kanton Schaffhausen wird                   ¦
+ !! ¦   durch das Tiefbauamt des Kantons Schaffhausen festgelegt.              ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Die Darstellung der verschiedenen Plaene sind aus den Vorschriften     ¦
+ !! ¦   des Bundes zu entnehmen (Flaechenfuellung, Strichstaerken, Strich-     ¦
+ !! ¦   farbe, Textgroesse, Textfarbe).                                        ¦
+ !! ¦                                                                          ¦
+ !! ¦                                                                          ¦
+ !! + ------------------------------------------------------------------------ +
+ !! ¦ Organisatorische Aspekte:                                                ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Datenmodellaenderungen und -erweiterungen duerfen nur durch            ¦
+ !! ¦   das Amt fuer Geoinformation (AGI) erfolgen.                            ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Vor jeder Datenerfassung oder Datennachfuehrung ist das neueste        ¦
+ !! ¦   Datenmodell beim AGI zu beziehen resp. anzuwenden.                     ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Verifikation nach Datenerfassungsarbeiten : Inhaltliche Belange sind   ¦
+ !! ¦   durch das Tiefbauamt zu ueberpruefen; die INTERLIS-Daten wer-          ¦
+ !! ¦   den durch das AGI lediglich bezueglich Syntax untersucht.              ¦
+ !! ¦                                                                          ¦
+ !! ¦ - Der Abgleich mit dem neuen minimalen Geodatenmodell des BAFU           ¦
+ !! ¦   (Version 1.1) muss noch im Detail erfolgen.                            ¦
+ !! ¦                                                                          ¦
+ !! + ======================================================================== +
+
+ !!    Definition der globalen Variabeln resp. Wertebereiche
+ !! ----------------------------------------------------------------------------
+
+MODEL Naturgefahrenkarte_Kt_SH_LV03_V2_1   !! Version 2.1 vom 17. Dezember 2015 (LV03)
+                                           !! Modell Naturgefahren Kt. SH
+
+  DOMAIN
+
+    LKoordmm =      COORD2    480000.000     70000.000   !! in m
+                              840000.000    300000.000;  !! in m
+
+    Einzelflaeche = SURFACE WITH (STRAIGHTS)                  !! neu ohne Radien
+                    VERTEX LKoordmm;                          !! [m]
+
+    Flaechennetz =  AREA WITH (STRAIGHTS)                     !! neu ohne Radien
+                    VERTEX LKoordmm WITHOUT OVERLAPS > 0.000; !! [m]
+
+    Linienzug =     POLYLINE WITH (STRAIGHTS) VERTEX LKoordmm;     !! [m]
+
+    Bestimmungsmethodentyp = (
+                    nicht_rekonstruierbar,
+                    Modellauswertung,
+                    Gutachten);
+
+
+ !!  ------------ spezielle Variabeln Naturgefahrenkarte -----------------------
+
+    Objektkategorie_Typ = (
+                    A,  !! Landwirtschaftszone, Wald, Gewaesser
+                    B,  !! Freihaltezone, Materialabbauzone, Gemeindestrasse
+                    C,  !! Kantonsstrasse, Materialdeponiestandort
+                    D,  !! Nationalstrasse, Kantonsstrasse mit hoher 
+                        !! Bedeutung, Bahnlinie
+                    E,  !! Siedlungsgebiet
+                    F); !! oeffentliche Bauten und Anlagen, Friedhofzone,
+                        !! Sonderrisiken
+
+    Prozessart_Typ = (
+                    Ueberschwemmung,                !! jetzt verwendet
+                    Steinschlag,                    !! jetzt verwendet
+                    Felssturz_Bergsturz,            !! jetzt verwendet
+                    Rutschung,                      !! jetzt verwendet
+                    Hangmure);                      !! jetzt verwendet
+
+    Beurteilungstyp_komplex = (
+                    nicht_beurteilt,
+                    Beurteilung_nicht_noetig,
+                    beurteilt_und_vollstaendig,
+                    beurteilt_und_nicht_vollstaendig,
+                    beurteilt_und_nicht_bestimmbar,
+                    beurteilt_und_in_Abklaerung);
+
+    Fliesstiefe_Typ = (
+                    h_0,                                !! Angaben in cm
+                    h_0_bis_25,
+                    h_25_bis_50,
+                    h_50_bis_75,
+                    h_75_bis_100,
+                    h_100_bis_150,
+                    h_150_bis_200,
+                    h_200_bis_300,
+                    h_300_bis_400,
+                    h_ueber_400);
+
+    Fliessgeschwindigkeit_Typ = (
+                    v_0,                   !! Angaben in m/s
+                    v_0_bis_0_5,           !! 0   bis 0.5 m/s
+                    v_0_5_bis_1,           !! 0.5 bis 1   m/s
+                    v_1_bis_2,             !! 1   bis 2   m/s
+                    v_2_bis_3,             !! 2   bis 3   m/s
+                    v_3_bis_4,             !! 3   bis 4   m/s
+                    v_4_bis_5,             !! 4   bis 5   m/s
+                    v_ueber_5);            !! mehr als 5  m/s
+
+    Matrixfeld_Typ = ( !! muss allenfalls noch abgeglichen werden mit MGDM Bund
+                    MF0,   !! keine Intensitaet,        keine Haeufigkeit
+                    MF1,   !! Intensitaet schwach,      Haeufigkeit gering
+                    MF2,   !! Intensitaet schwach,      Haeufigkeit mittel
+                    MF3,   !! Intensitaet schwach,      Haeufigkeit hoch
+                    MF4,   !! Intensitaet mittel,       Haeufigkeit gering
+                    MF5,   !! Intensitaet mittel,       Haeufigkeit mittel
+                    MF6,   !! Intensitaet mittel,       Haeufigkeit hoch
+                    MF7,   !! Intensitaet stark,        Haeufigkeit gering
+                    MF8,   !! Intensitaet stark,        Haeufigkeit mittel
+                    MF9,   !! Intensitaet stark,        Haeufigkeit hoch
+                    MF10); !! Intensitaet unbestimmt,   Haeufigkeit sehr gering
+
+    Hauptprozess_Typ = (
+                    Wasser,
+                    Rutschung,
+                    Sturz);
+
+    Gefahrenstufe_Typ = (                !! (Synonym: Gefahrenstufe synoptisch)
+                    nicht_gefaehrdet,    !! weiss             (frueher „keine“)
+                    Restgefaehrdung,     !! gelb_weiss
+                    gering,              !! gelb
+                    mittel,              !! blau
+                    erheblich);          !! rot
+
+
+    Intensitaet_Typ = (
+                    keine_Einwirkung,
+                    schwach,
+                    mittel,
+                    stark);
+
+
+!! Grundlagen
+ !! ----------------------------------------------------------------------------
+
+  TOPIC Perimeter =
+
+    TABLE Perimeter_Modellierung =
+      Geometrie:          Einzelflaeche;
+      Perimeter_Name:     OPTIONAL TEXT*100;
+      Ersteller:          TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:   DATE;
+      Bemerkungen:        OPTIONAL TEXT*100;
+    NO IDENT
+    END Perimeter_Modellierung;
+
+
+    TABLE Erhebungsgebiet =
+      Geometrie:                              Flaechennetz;
+      Erhebungsstand_Ueberschwemmung:         Beurteilungstyp_komplex;
+      Erhebungsstand_Stein_Blockschlag:       Beurteilungstyp_komplex;
+      Erhebungsstand_Fels_Bergsturz:          Beurteilungstyp_komplex;
+      Erhebungsstand_Rutschung:               Beurteilungstyp_komplex;
+      Erhebungsstand_Hangmure:                Beurteilungstyp_komplex;
+      Ersteller:          TEXT*100;                 !! Erfassungsbuero
+      Erstellungsdatum:   DATE;
+      Bemerkungen:        OPTIONAL TEXT*100;
+    NO IDENT
+    END Erhebungsgebiet;
+
+
+  END Perimeter.
+
+
+
+
+
+ !! Gefahrenquellen
+ !! ----------------------------------------------------------------------------
+
+  TOPIC Gefahrenquellen =
+
+
+    TABLE Gefahrenquelle_Wasser =
+      Geometrie:          Linienzug;
+      ID_Gefahrenquelle:  TEXT*100;
+      Name:               TEXT*100;
+      Bemerkungen:        OPTIONAL TEXT*100;
+    IDENT ID_Gefahrenquelle;               !! fuer den ganzen Kanton muss die
+                                           !! ID_Gefahrenquelle eindeutig sein,
+                                           !! organisatorisch loesen!
+    END Gefahrenquelle_Wasser;
+
+
+    TABLE Gefahrenquelle_Rutschung =
+      Geometrie:          Flaechennetz;     !! siehe Konsistenzbedingungen oben
+      ID_Gefahrenquelle:  TEXT*100;
+      Name:               TEXT*100;
+      Bemerkungen:        OPTIONAL TEXT*100;
+    IDENT ID_Gefahrenquelle;               !! fuer den ganzen Kanton muss die
+                                           !! ID_Gefahrenquelle eindeutig sein,
+                                           !! organisatorisch loesen!
+    END Gefahrenquelle_Rutschung;
+
+
+    TABLE Gefahrenquelle_Sturz =
+      Geometrie:          Flaechennetz;     !! siehe Konsistenzbedingungen oben
+      ID_Gefahrenquelle:  TEXT*100;
+      Name:               TEXT*100;
+      Bemerkungen:        OPTIONAL TEXT*100;
+    IDENT ID_Gefahrenquelle;               !! fuer den ganzen Kanton muss die
+                                           !! ID_Gefahrenquelle eindeutig sein,
+                                           !! organisatorisch loesen!
+    END Gefahrenquelle_Sturz;
+
+
+
+  END Gefahrenquellen.
+
+
+ !! Sonderrisiken
+ !! ----------------------------------------------------------------------------
+
+  TOPIC Sonderrisiken =     !! Die flaechenhaften Schadenpotenziale sollen
+                            !! ueber eine Auswertung (dynamisch) abgeleitet
+                            !! werden.
+
+
+    TABLE Schadenpotenzial_Sonderrisiken =
+      Geometrie:                  LKoordmm;
+      Objektkategorie:            Objektkategorie_Typ;
+      Schutzziel_Intensitaet_30:  Intensitaet_Typ;
+      Schutzziel_Intensitaet_100: Intensitaet_Typ;
+      Schutzziel_Intensitaet_300: Intensitaet_Typ;
+      Schutzziel_Intensitaet_Ext: Intensitaet_Typ;
+      Ersteller:                  TEXT*100;       !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Schadenpotenzial_Sonderrisiken;
+
+
+  END Sonderrisiken.
+
+
+
+ !! Wasser
+ !! ----------------------------------------------------------------------------
+
+  TOPIC Wasser =
+
+    TABLE Intensitaet_W_30 =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_W_30;
+
+
+    TABLE Intensitaet_W_100 =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_W_100;
+
+
+    TABLE Intensitaet_W_300 =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_W_300;
+
+
+    TABLE Intensitaet_W_EHQ =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_W_EHQ;
+
+
+    TABLE Fliesstiefe_skaliert_30 =
+      Geometrie:                  Einzelflaeche;
+      Fliesstiefe:                Fliesstiefe_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Fliesstiefe_skaliert_30;
+
+
+    TABLE Fliesstiefe_skaliert_100 =
+      Geometrie:                  Einzelflaeche;
+      Fliesstiefe:                Fliesstiefe_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Fliesstiefe_skaliert_100;
+
+
+    TABLE Fliesstiefe_skaliert_300 =
+      Geometrie:                  Einzelflaeche;
+      Fliesstiefe:                Fliesstiefe_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Fliesstiefe_skaliert_300;
+
+
+    TABLE Fliesstiefe_skaliert_EHQ =
+      Geometrie:                  Einzelflaeche;
+      Fliesstiefe:                Fliesstiefe_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Fliesstiefe_skaliert_EHQ;
+
+
+    TABLE Fliessgeschwindigkeit_30 =
+      Geometrie:                  Einzelflaeche;
+      Fliessgeschwindigkeit:      Fliessgeschwindigkeit_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Fliessgeschwindigkeit_30;
+
+
+    TABLE Fliessgeschwindigkeit_100 =
+      Geometrie:                  Einzelflaeche;
+      Fliessgeschwindigkeit:      Fliessgeschwindigkeit_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Fliessgeschwindigkeit_100;
+
+
+    TABLE Fliessgeschwindigkeit_300 =
+      Geometrie:                  Einzelflaeche;
+      Fliessgeschwindigkeit:      Fliessgeschwindigkeit_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Fliessgeschwindigkeit_300;
+
+
+
+    TABLE Fliessgeschwindigkeit_EHQ =
+      Geometrie:                  Einzelflaeche;
+      Fliessgeschwindigkeit:      Fliessgeschwindigkeit_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Fliessgeschwindigkeit_EHQ;
+
+  END Wasser.
+
+
+ !! Rutschungen
+ !! ----------------------------------------------------------------------------
+
+  TOPIC Rutschungen =
+
+    TABLE Intensitaet_R_30 =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_R_30;
+
+    TABLE Intensitaet_R_100 =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_R_100;
+
+    TABLE Intensitaet_R_300 =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_R_300;
+
+    TABLE Intensitaet_R_Ext =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_R_Ext;
+
+
+    TABLE Intensitaet_R_permanent =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_R_permanent;
+
+  END Rutschungen.
+
+
+ !! Sturz
+ !! ----------------------------------------------------------------------------
+
+  TOPIC Sturz =
+
+
+    TABLE Intensitaet_S_30 =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_S_30;
+
+
+    TABLE Intensitaet_S_100 =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_S_100;
+
+
+    TABLE Intensitaet_S_300 =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_S_300;
+
+
+    TABLE Intensitaet_S_Ext =
+      Geometrie:                  Einzelflaeche;
+      Intensitaet:                Intensitaet_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Prozessart:                 Prozessart_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Intensitaet_S_Ext;
+
+
+  END Sturz.
+
+
+
+ !! Gefahrenkarte
+ !! ----------------------------------------------------------------------------
+
+  TOPIC Gefahrenkarte =
+
+    TABLE Wassergefahren =
+      Geometrie:                  Einzelflaeche;
+      Matrixfeld:                 Matrixfeld_Typ;
+      Gefaehrdung:                Gefahrenstufe_Typ;
+      Prozessart:                 Prozessart_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Wassergefahren;
+
+
+    TABLE Rutschgefahren =
+      Geometrie:                  Einzelflaeche;
+      Matrixfeld:                 Matrixfeld_Typ;
+      Gefaehrdung:                Gefahrenstufe_Typ;
+      Prozessart:                 Prozessart_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Rutschgefahren;
+
+
+    TABLE Sturzgefahren =
+      Geometrie:                  Einzelflaeche;
+      Matrixfeld:                 Matrixfeld_Typ;
+      Gefaehrdung:                Gefahrenstufe_Typ;
+      Prozessart:                 Prozessart_Typ;
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Sturzgefahren;
+
+
+    TABLE synoptische_Gefahrenkarte =
+      Geometrie:                  Flaechennetz;
+      Matrixfeld:                 Matrixfeld_Typ;
+      Gefaehrdung:                Gefahrenstufe_Typ;
+      massgebender_Hauptprozess:  Hauptprozess_Typ;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END synoptische_Gefahrenkarte;
+
+
+
+  END Gefahrenkarte.
+
+
+
+ !! Schutzdefizit
+ !! ----------------------------------------------------------------------------
+
+  TOPIC Schutzdefizit =   !! Die flaechenhaften Schutzdefizite (Wassergefahren,
+                          !! Rutschgefahren und Sturzgefahren) werden ueber eine
+                          !! Auswertung durch das Amt fuer Geoinformation,
+                          !! Schaffhausen dynamisch abgeleitet und zur Verfuegung
+                          !! gestellt.
+                          !! Der Mechanismus der Auswertung definiert das
+                          !! Tiefbauamt des Kantons Schaffhausen zusammen mit der
+                          !! nachfuehrenden Stelle.
+
+
+
+    TABLE Schutzdefizit_Sonderrisiken =
+      Geometrie:                  LKoordmm;
+      Objektkategorie:            Objektkategorie_Typ;
+      Schutzdefizit:             (klein, mittel, gross);
+      ID_Gefahrenquelle:          TEXT*100;
+      Ersteller:                  TEXT*100;        !! Erfassungsbuero
+      Erstellungsdatum:           DATE;
+      Herkunft:                   Bestimmungsmethodentyp;
+      Bemerkungen:                OPTIONAL TEXT*100;
+    NO IDENT
+    END Schutzdefizit_Sonderrisiken;
+
+
+  END Schutzdefizit. 
+
+
+
+ !! Schutzmassnahmen
+ !! ----------------------------------------------------------------------------
+
+  TOPIC Schutzmassnahmen =   !! Fuer die Erfassung von Schutzmassnahmen
+
+
+
+    TABLE Mobile_Schutzmassnahmen =
+      Geometrie:                  Einzelflaeche;
+      Bezeichnung:                TEXT*100;
+      Art:                        TEXT*100;
+      NO IDENT
+    END Mobile_Schutzmassnahmen;
+
+
+  END Schutzmassnahmen.
+
+
+
+END Naturgefahrenkarte_Kt_SH_LV03_V2_1.
+
+FORMAT FREE;                                             !! Fuer Datentransfer
+
+CODE
+  BLANK = DEFAULT, UNDEFINED = DEFAULT, CONTINUE = DEFAULT;
+  TID = ANY;
+END.

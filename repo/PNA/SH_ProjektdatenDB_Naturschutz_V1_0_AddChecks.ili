@@ -1,0 +1,68 @@
+INTERLIS 2.3;
+
+/** Datenvalidierung - Projektdatenbank Ressort Naturschutz Kanton Schaffhausen.
+Datenvalidierung - Projektverwaltung des Ressort Naturschutz im Kanton Schaffhausen.
+ */
+
+CONTRACTED MODEL SH_ProjektdatenDB_Naturschutz_V1_0_AddChecks (de)
+AT "http://geo.sh.ch"
+VERSION "2023-10-17"  =
+  IMPORTS SH_ProjektdatenDB_Naturschutz_V1_0;
+
+  VIEW TOPIC SH_ProjektdatenDB_Naturschutz_V1_0_Validierung =
+    DEPENDS ON SH_ProjektdatenDB_Naturschutz_V1_0.Projektdaten;
+    
+    VIEW v_Mitarbeitende
+      PROJECTION OF SH_ProjektdatenDB_Naturschutz_V1_0.Projektdaten.Mitarbeitende;
+    =
+      ALL OF Mitarbeitende;
+      !!@ name = checkNameDuplikate
+      !!@ ilivalid.msg = "Duplikater Name {Name} verletzt Eindeutigkeit"
+	    UNIQUE Name;
+      !!@ name = checkMitarbeitendeCount
+      !!@ ilivalid.msg = "Mitarbeitende {Name} sollte mindenstens mit einem Projekt assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(Projekt)>=1;
+    END v_Mitarbeitende;
+
+    VIEW v_Projektgruppe
+      PROJECTION OF SH_ProjektdatenDB_Naturschutz_V1_0.Projektdaten.Projektgruppe;
+    =
+      ALL OF Projektgruppe;
+      !!@ name = checkProjektgruppenNrDuplikate
+      !!@ ilivalid.msg = "Duplikate ProjektgruppenNr {ProjektgruppenNr} verletzt Eindeutigkeit"
+	    UNIQUE ProjektgruppenNr;
+      !!@ name = checkProjektgruppeCount
+      !!@ ilivalid.msg = "Projektgruppe {Projekttitel} sollte mindenstens mit einem Projekt assoziieren (anstatt 0)"
+      MANDATORY CONSTRAINT INTERLIS.objectCount(Projekt)>=1;
+    END v_Projektgruppe;
+
+    VIEW v_Projekt
+      PROJECTION OF SH_ProjektdatenDB_Naturschutz_V1_0.Projektdaten.Projekt;
+    =
+      ALL OF Projekt;
+      !!@ name = checkProjektID_SHDuplikate
+      !!@ ilivalid.msg = "Duplikate ProjektID_SH '{ProjektID_SH}' verletzt Eindeutigkeit"
+	    UNIQUE ProjektID_SH;
+      !!@ name = checkProjektGeometrieCount
+      !!@ ilivalid.msg = "Projekt {Projekttitel_SH} sollte mindenstens mit einem Geometrieobjekt assoziieren (anstatt 0)"
+      MANDATORY CONSTRAINT INTERLIS.objectCount(Objekt)>=1;
+      !!@ name = checkUntersuchteOrganismusgruppeCount
+      !!@ ilivalid.msg = "Beim Projekt {ProjektID_SH} hat das Attribut 'UntersuchteOrganismusgruppe' eine falsche Anzahl an Werten (anstatt 0)"
+      MANDATORY CONSTRAINT INTERLIS.elementCount(UntersuchteOrganismusgruppe)>=1;
+      !!@ name = checkProjektMitarbeitendeCount
+      !!@ ilivalid.msg = "Projekt {Projekttitel_SH} sollte mindenstens mit einer Mitarbeitende assoziieren (anstatt 0)"
+      MANDATORY CONSTRAINT INTERLIS.objectCount(Mitarbeitende)>=1;
+    END v_Projekt;
+
+    VIEW v_Objekt
+      PROJECTION OF SH_ProjektdatenDB_Naturschutz_V1_0.Projektdaten.Objekt;
+    =
+      ALL OF Objekt;
+      !!@ name = checkObjektCount
+      !!@ ilivalid.msg = "Geometrieobjekt sollte mindenstens mit einem Projekt assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(Projekt)>=1;
+    END v_Objekt;
+  
+  END SH_ProjektdatenDB_Naturschutz_V1_0_Validierung;
+  
+END SH_ProjektdatenDB_Naturschutz_V1_0_AddChecks.

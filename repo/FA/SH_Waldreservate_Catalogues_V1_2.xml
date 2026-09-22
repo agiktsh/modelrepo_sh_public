@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- File Waldreservate_Catalogues_V1_2_20211208.xml 2021-12-08(https://models.geo.admin.ch/BAFU/) -->
+<TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://models.geo.admin.ch/BAFU//Waldreservate_V1.xsd">
+  <HEADERSECTION VERSION="2.3" SENDER="BAFU">
+    <MODELS>
+      <MODEL NAME="CoordSys" URI="http://www.interlis.ch/models" VERSION="2015-11-24"/>
+      <MODEL NAME="Units" URI="http://www.interlis.ch/models" VERSION="2012-02-20"/>
+      <MODEL NAME="LocalisationCH_V1" URI="http://www.geo.admin.ch" VERSION="2011-08-30"/>
+      <MODEL NAME="CatalogueObjects_V1" URI="http://www.geo.admin.ch" VERSION="2011-08-30"/>
+      <MODEL NAME="GeometryCHLV03_V1" URI="http://www.geo.admin.ch" VERSION="2015-11-12"/>
+      <MODEL NAME="GeometryCHLV95_V1" URI="http://www.geo.admin.ch" VERSION="2015-11-12"/>
+      <MODEL NAME="SH_Waldreservate_V1_2" URI="https://models.geo.admin.ch/BAFU/" VERSION="2021-12-08"/>
+    </MODELS>
+  </HEADERSECTION>
+
+  <DATASECTION>
+
+    <SH_Waldreservate_V1_2.Codelisten BID="ch.admin.bafu.waldreservate_catalogues_v1_2">
+
+      <SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_Catalogue TID="2001">
+        <Symbol>
+       <BINBLBOX>iVBORw0KGgoAAAANSUhEUgAAAWMAAACyCAMAAACgCV7tAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJUExURXCoADyoAD+oAHBuUeEAAAADdFJOU7K/zbok4toAAAAJcEhZcwAAFxEAABcRAcom8z8AAAGASURBVHhe7dAxAQAwEAOhfvyLrgq2QwLvFuveXqx1zHXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17O3dQu0+IsYISeSymxgAAAAASUVORK5CYII=</BINBLBOX>
+        </Symbol>
+        <Code>MCPFE1.1</Code>
+        <Description>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Keine aktiven Eingriffe</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Pas d’interventions actives</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Nessun intervento attivo</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>No active intervention</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Description>
+      </SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_Catalogue>
+      <SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_Catalogue TID="2002">
+        <Symbol>
+       <BINBLBOX>iVBORw0KGgoAAAANSUhEUgAAAWMAAACyCAMAAACgCV7tAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJUExURZjnAD+sAESvAGXMZ0sAAAADdFJOU7K/zbok4toAAAAJcEhZcwAAFxEAABcRAcom8z8AAAGASURBVHhe7dAxAQAwEAOhfvyLrgq2QwLvFuveXqx1zHXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17O3dQu0+IsYISeSymxgAAAAASUVORK5CYII=</BINBLBOX>
+        </Symbol>
+        <Code>MCPFE1.2</Code>
+        <Description>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Minimale Eingriffe</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Interventions minimales</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Interventi minimi</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Minimum intervention</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Description>
+      </SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_Catalogue>
+      <SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_Catalogue TID="2003">
+        <Symbol>
+          <BINBLBOX>iVBORw0KGgoAAAANSUhEUgAAAWMAAACzCAMAAABrVY1IAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJUExURdP/v0OvDUyzGQVNJNQAAAADdFJOU7K/zbok4toAAAAJcEhZcwAAFxEAABcRAcom8z8AAAGCSURBVHhe7dAxAQAwEAOhfvyLrgq2QwLvFuveXqx1zHXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXs7d1C7T7YewhNjBfxbwAAAABJRU5ErkJggg==</BINBLBOX>
+        </Symbol>
+        <Code>MCPFE1.3</Code>
+        <Description>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Biodiversitätsförderung durch gezielte Eingriffe</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text>Promotion de la biodiversité par des interventions ciblées</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text>Promozione delle biodiversità per mezzo di interventi specifici</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text>Conservation through active management</Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Description>
+      </SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_Catalogue>
+
+    </SH_Waldreservate_V1_2.Codelisten>
+
+  </DATASECTION>
+</TRANSFER>

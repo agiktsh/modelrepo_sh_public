@@ -1,0 +1,485 @@
+INTERLIS 2.3;
+
+/** Thermische Nutzungen Kanton Schaffhausen.
+Konzessionen der Fassungsbrunnen und Rueckgabeanlagen für die thermische Nutzung im Kanton Schaffhausen.
+*/
+
+/* 
+Version    | Who | Modification
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+           |     | 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+2023-03-14 | AGI | Version 1.0
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Fachtechnische Auskunft
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Tiefbau Schaffhausen, Abteilung Gewaesser und Materialabbau
+Telefon: +41 52 632 73 29
+URL: https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Baudepartement/Tiefbau-Schaffhausen/Abteilung-Gew-sser-und-Materialabbau-403883-DE.html
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+Allgemeines zum Datenmodell                                 
+-------------------------------------------------------------------------------
+- Die Erfassung der thermischen Nutzung verfolgt das Ziel, ein Konzessions-
+  verfahren für Fassungs- und Rückgabebrunnen abzubilden, in der auch die
+  jährlichen Verbrauchsleistungen der Anlagen verwaltet werden.                                       
+   
+- Die abgebildeten Daten beschränken sich auf das Wesentliche.         
+  (möglichst eine einfache und übersichtliche Modellierung).          
+
+- Diese Version des Datenmodells erfüllt die minimalen Anforderungen der 
+  Fassungs- und Rückgabebrunnen gemäss Grundwasseraustritte (Version 1.0)
+  des BAFU. Der Datentransfer neuer konzessionierter Anlagen erfolgt über eine
+  Schnittstelle des AGI.
+
+- Als Objektidentifikator wird eine UUID (z.B. 
+  d89778ed-242a-4642-9a32-1e1954675b0a) festgelegt.
+-------------------------------------------------------------------------------
+
+Beteiligte
+-------------------------------------------------------------------------------
+Erarbeitet durch:                                                                     
+- Jürg Sturzenegger, Tiefbau Schaffhausen (TSH)                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen (AGI)        
+ 
+INTERLIS-Modell erstellt durch:                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen 
+-------------------------------------------------------------------------------
+
+Organisatorische Aspekte                                              
+-------------------------------------------------------------------------------    
+- Datenmodelländerungen und -erweiterungen dürfen nur durch das AGI erfolgen.                                               
+   
+- Die inhaltliche Überprüfung sowie Validierung der Modellkonformität leistet 
+  das TSH durch die systemischen Mechanismen.          
+-------------------------------------------------------------------------------                       
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Thermische Nutzungen, Anlagen, Fassungsbrunnen, Rückgabeanlagen, Entnahme, Konzession, Sondierbohrung"
+
+MODEL SH_ThermischeNutzungen_V1_0 (de)
+AT "http://geo.sh.ch"
+VERSION "2023-03-14"  =
+
+  IMPORTS Units, GeometryCHLV95_V1;
+  IMPORTS CatalogueObjects_V1;
+
+  UNIT
+
+    LiterPerMinute [lmin] = (Units.L / Units.min);
+	CubicmeterPerYear [m3Y] = (Units.m3 / INTERLIS.Y);
+  
+  DOMAIN
+
+  	LiterMinute = 0 .. 99999 [lmin];
+	KubikmeterJahr = 0 .. 99999999 [m3Y];
+
+	!! Minimale Anforderungen gemäss CH-Datenmodell 'Grundwasseraustritte_LV95_V1'
+	JaNein = (
+      ja,
+      nein
+    ); 
+
+	!! Minimale Anforderungen gemäss CH-Datenmodell 'Grundwasseraustritte_LV95_V1'
+    JaNeinUnbestimmt = (
+        ja,
+        nein,
+        unbestimmt
+    );
+
+	!! Minimale Anforderungen gemäss CH-Datenmodell 'Grundwasseraustritte_LV95_V1'
+	IdentifikatorTyp = TEXT*255; !! value = <Kantonscode:CHAdminCodes_V1.CHCantonCode>-<Kantonsidentifikator>
+
+	!! Minimale Anforderungen gemäss CH-Datenmodell 'Grundwasseraustritte_LV95_V1'
+	Nutzungszustand = (
+        genutzt,
+        ungenutzt,
+        aufgehoben,
+        unbestimmt
+    );
+
+	!! Minimale Anforderungen gemäss CH-Datenmodell 'Grundwasseraustritte_LV95_V1'
+	Brunnenart = (
+		Vertikalfilterbrunnen, 
+		Horizontalfilterbrunnen, 
+		Sod_Schachtbrunnen, 
+		andere
+    );
+
+    Verfahrensstatus = (
+        Vorabklaerung,
+        Sondierbohrung,
+        Konzession
+    );
+
+	Dokumentart = (
+		Bericht,
+		Bohrprofil,
+		Konzession,
+		Plan,
+		Prinzipschema,
+		Pumpendeklaration,
+		Sondierbewilligung,
+		Vorabklaerung,
+		Wasseruhrdeklaration
+	);
+
+  TOPIC Codeliste =
+  
+  	CLASS Ortsteil_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Ortsteil : MANDATORY TEXT*50;
+		Kuerzel : MANDATORY TEXT*3;
+		Polygon : MANDATORY GeometryCHLV95_V1.MultiSurface;
+	END Ortsteil_Code;
+	
+	STRUCTURE Ortsteil_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+		/** Lediglich ein Hilfsmittel */
+		Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Ortsteil_Code;
+    END Ortsteil_CodeRef;
+	
+	CLASS Gebaeudeart_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Gebaeudetyp : MANDATORY TEXT*50;
+	END Gebaeudeart_Code;
+	
+    STRUCTURE Gebaeudeart_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+		/** Lediglich ein Hilfsmittel */
+		Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Gebaeudeart_Code;
+    END Gebaeudeart_CodeRef;
+	
+  END Codeliste;
+
+  TOPIC Anlagen =
+	OID AS INTERLIS.UUIDOID;
+	DEPENDS ON SH_ThermischeNutzungen_V1_0.Codeliste;
+
+	CLASS UserDate (ABSTRACT) =
+		/** Automatische Auswertung durch System */
+		BearbeitetAm : MANDATORY INTERLIS.XMLDate;
+		/** Automatische Auswertung durch System */
+		BearbeitetDurch : MANDATORY TEXT*100;
+	END UserDate;
+
+	CLASS Adressen EXTENDS UserDate =
+		/** Minimum Firma oder Name zwingend erfassen */
+		Firma : TEXT*50;
+		/** Minimum Firma oder Name zwingend erfassen */
+		Name : TEXT*50;
+		/** Zwingende Angabe */
+		Telefon : MANDATORY TEXT*50;
+		/** Zwingende Angabe */
+		EMail : MANDATORY TEXT*50;
+		/** Zwingende Angabe */
+		StrasseNr : MANDATORY TEXT*100;
+		/** Zwingende Angabe */
+		PLZOrt : MANDATORY TEXT*100;
+		/** Optional */
+		Bemerkung : MTEXT;
+		/** Zwingend sechsstellige Zahl wenn Adresse gleich Debitor */
+		DebiNr : 100000 .. 999999;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY BOOLEAN;
+		!!@ ilivalid.msg_de = "'Firma', 'Name' und 'PLZOrt' verletzt Eindeutigkeit"
+		UNIQUE Firma, Name, PLZOrt;
+		!!@ ilivalid.msg_de = "Minimum 'Firma' oder 'Name' festlegen"
+		MANDATORY CONSTRAINT ( DEFINED (Firma) OR DEFINED (Name) ) OR ( DEFINED (Firma) AND DEFINED (Name) );
+	END Adressen;
+
+	STRUCTURE Adressen_Struc =
+		/** Lediglich ein Hilfsmittel */
+		Reference : MANDATORY REFERENCE TO Adressen;
+    END Adressen_Struc;
+
+	CLASS Anschriften =
+		/** Zwingende Angabe */
+		Konzessionaer :  MANDATORY Adressen_Struc;
+		/** Optional */
+		Debitor : Adressen_Struc;
+		/** Optional */
+		Rechnungsempfaenger : Adressen_Struc;
+		/** Optional */
+		FormularWasserverbrauch : Adressen_Struc;
+		/** Optional */
+		Verwaltung : Adressen_Struc;
+		/** Optional */
+		TechnischerUnterhalt : Adressen_Struc;
+		!!@ ilivalid.msg_de = "Bei (Adressen) fehlt die 'DebiNr' zum Debitor"
+		MANDATORY CONSTRAINT ( DEFINED (Debitor->Reference->DebiNr) );
+	END Anschriften;
+
+	CLASS Sondierbohrungen EXTENDS UserDate =
+		/** Optional */
+    	Bezeichnung : TEXT*200;
+		/** Optional */
+		Bewilligungsnehmer : TEXT*100;
+		/** Optional */
+		Geologiebuero : TEXT*100;
+		/** Optional */
+		Bohrtiefe : 0 .. 999 [INTERLIS.m];
+		/** Optional */
+		Pumpversuch : LiterMinute;
+		/** Optional */
+		Ausbau : TEXT*100;
+		/** Zwingende Angabe wenn Bohrprofil existiert */
+		Bohrprofil : URI;
+		/** Zwingende Angabe wenn Bericht existiert */
+		Bericht : URI;
+		/** Optional */
+		Bemerkung : MTEXT;
+        /** Zwingende Angabe */
+        Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+	END Sondierbohrungen;
+
+	CLASS Anlage (ABSTRACT) EXTENDS UserDate =
+		!! Formulargruppe 'Anlage'
+        /** Minimale Anforderungen gemäss Bund */
+    	Nutzungszustand : MANDATORY Nutzungszustand; !! Alias Betriebsstatus
+		/** Minimale Anforderungen gemäss Bund mit Präfix 'SH_' */
+    	Identifikator : MANDATORY IdentifikatorTyp;
+		/** Optional */
+    	Name : TEXT*500; !! Alias 'Bezeichnung'
+		/** Optional gemäss Bund */
+    	Zweck : TEXT*500;
+		/** Minimale Anforderungen gemäss Bund */
+    	Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+		/** Optional */
+		BemerkungAnlage : MTEXT;
+        !! Formulargruppe 'Standort'
+		/** Automatische Auswertung durch System */
+		Ortschaft : MANDATORY SH_ThermischeNutzungen_V1_0.Codeliste.Ortsteil_CodeRef;
+		/** Automatische Auswertung durch System */
+		GB_Nr : TEXT*50;
+		/** Optional */
+		Adresse : TEXT;
+		/** Zwingende Angabe */
+		Gewaesser : MANDATORY TEXT*100;
+		/** Zwingende Angabe */
+		Terrainhoehe : MANDATORY 0 .. 999 [INTERLIS.m];
+        !!@ ilivalid.msg_de = "Identifikator {Identifikator} verletzt Eindeutigkeit"
+    	UNIQUE Identifikator;
+	END Anlage;
+
+	CLASS Fassungsbrunnen EXTENDS Anlage =
+		!! Formulargruppe 'Anlage'
+        /** Zwingende Angabe */
+		Gebaeude : MANDATORY SH_ThermischeNutzungen_V1_0.Codeliste.Gebaeudeart_CodeRef;
+		/** Minimale Anforderungen gemäss Bund */
+    	Brunnenart : MANDATORY Brunnenart;
+		/** Minimale Anforderungen gemäss Bund */
+    	Foerdermethode : MANDATORY (Pumpe, Heber, artesisch, unbestimmt);
+		/** Minimale Anforderungen gemäss Bund */
+    	Trinkwasser : MANDATORY JaNein;
+		/** Minimale Anforderungen gemäss Bund */
+    	Notwasserversorgung : MANDATORY JaNeinUnbestimmt;
+		/** Minimale Anforderungen gemäss Bund */
+    	Oeffentliches_Interesse : MANDATORY JaNeinUnbestimmt;
+	END Fassungsbrunnen;
+
+	CLASS Rueckgabeanlagen EXTENDS Anlage =
+		/** Optional */
+    	Art : TEXT*200;
+    END Rueckgabeanlagen;
+
+    CLASS Konzession EXTENDS UserDate =
+        /** Zwingende Angabe wenn Anlage in Betrieb */
+		Inbetriebnahme : INTERLIS.XMLDate;
+		/** Datum der letzten Kontrolle */
+		Kontrolldatum : TEXT*100;
+		/** Zwingende Angabe */
+		Ausstelldatum : MANDATORY INTERLIS.XMLDate;
+		/** Zwingende Angabe */
+		Ablaufdatum :  MANDATORY INTERLIS.XMLDate;
+		/** Optional */
+		Bemerkung : MTEXT;
+		!!Formulargruppe 'Entnahmeanlage'
+		/** Zwingende Angabe */
+		Entnahmeanlage_AnzahlTyp : MANDATORY TEXT*100;
+		/** Zwingende Angabe */
+		Brunnentiefe : MANDATORY TEXT*100;
+		/** Optional */
+		SchutzvorkehrungEntnahme : TEXT*100;
+		/** Optional */
+		EffektiveFoerderleistung : TEXT*100;
+		/** Optionale */
+		DeltaTWasser : TEXT*100;
+		/** Optional als Einheit m³/Jahr */
+		MaxEntnahmemenge : TEXT*200;
+		/** Optional */
+		Wasseruhrdeklaration : TEXT*100;
+		!!Formulargruppe 'Rückgabeanlage'
+		/** Zwingende Angabe */
+		Rueckgabeanlage_AnzahlTyp : MANDATORY TEXT*200;
+		/** Optional */
+		Tiefe : TEXT*100;
+		/** Optional */
+		SchutzvorkehrungRueckgabe : TEXT*100;
+		!!Formulargruppe 'Grundwasserpumpe'
+		/** Optional */
+		Grundwasserpumpe_AnzahlTyp : TEXT*200;
+		/** Optional */
+		Zwischenkreis : TEXT*100;
+		/** Optional */
+		Pumpendeklaration : TEXT*100;
+		!!Formulargruppe 'Waermepumpe'
+		/** Optional */
+		Waermepumpe_AnzahlTyp : TEXT*200;
+		/** Optional */
+		Kaelteleistung : TEXT*100;
+		/** Optional */
+		Kaeltemittel : TEXT*100;
+		/** Optional */
+		Prinzipschema : TEXT*100;
+	END Konzession;
+
+    CLASS AnlagenVerfahren EXTENDS UserDate =
+		/** Automatische Auswertung durch System */
+		Ortschaft : MANDATORY SH_ThermischeNutzungen_V1_0.Codeliste.Ortsteil_CodeRef;
+		/** Automatische Auswertung durch System */
+		GB_Nr : TEXT*50;
+		/** Zwingende Angabe */
+		Bezeichnung : MANDATORY TEXT*100;
+		/** Zwingende Angabe */
+		Verfahrensstatus : MANDATORY Verfahrensstatus;
+        !! Formulargruppe 'Verfahren'
+        /** Zwingende Angabe */
+		Bewilligungsnehmer : MANDATORY TEXT*100;
+		/** Optional */
+		Nutzungsart : TEXT*200;
+		/** Optional */
+		Bemerkung : MTEXT;
+        !! Formulargruppe 'Vorabklärung'
+		/** Zwingende Angabe wenn Grundwasservorkommen betroffen */
+		Grundwasser : TEXT*200;
+		/** Abschaetzung der Hoehe ueber Meer des mittleren Grundwasserspiegels */
+		mGW : TEXT*200;
+		/** Abschaetzung des hoechsten Grundwasserspiegels */
+		hGW : TEXT*200;
+		/** Zwingende Angabe wenn Flurabstand betroffen */
+		Flurabstand : TEXT*200;
+		/** Zwingende Angabe wenn Deckschicht vorhanden */
+		Deckschicht : TEXT*200;
+		/** Zwingende Angabe wenn Quellen vorhanden */
+		Quellen : TEXT*200;
+		/** Zwingende Angabe wenn geologische Störungen vorhanden */
+		GeologischeStoerungen : TEXT*200;
+		/** Zwingende Angabe wenn Naturgefahren auftreten können */
+		Naturgefahren : TEXT*200;
+		/** Eignungszone gemäss Eignungskarte angeben */
+		Eignungskarte : TEXT*200;
+		/** Zwingende Angabe wenn Gewässerraum betroffen */
+		Gewaesserraum : TEXT*200;
+		/** Zwingende Angabe wenn überlagernde Nutzung betroffen */
+		UeberlagerndeNutzung : TEXT*200;
+		/** Automatische Ausgewertung durch Applikation */
+		Altlasten : TEXT*200;
+		/** Automatische Ausgewertung durch Applikation */
+		Bauzone : TEXT*200;
+		/** Automatische Ausgewertung durch Applikation */
+		GSchB : TEXT*10;
+		/** Optional */
+		BemerkungVorabklaerung : MTEXT;
+        /** Zwingende Angabe */
+    	Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+        !!@ ilivalid.msg_de = "Bezeichnung {Bezeichnung} verletzt Eindeutigkeit"
+		UNIQUE Bezeichnung;
+    END AnlagenVerfahren;
+
+
+	CLASS Dokumente =
+		/** Zwingende Angabe */
+		Dokumenttyp : MANDATORY Dokumentart;
+		/** Zwingende Angabe mit Dateiendung */
+		Datei : MANDATORY URI;
+        /** Optional */
+		Zusatzbezeichnung : TEXT*100;
+		/** Optional */
+		Bemerkung : MTEXT;
+	END Dokumente;
+
+	CLASS Verrechnungen EXTENDS UserDate =
+		/** Zwingende Angabe */
+		Rechnungsjahr : MANDATORY 1900..2100 [INTERLIS.Y];
+		!! Formulargruppe 'Formular Wasserverbrauch'
+		/** Angabe wann das Formular versendet wurde */
+		Formularversand: INTERLIS.XMLDate;
+		/** Angabe wenn Formular zurückerhalten */
+		ErhaltenAm : INTERLIS.XMLDate;
+		/** Optional */
+		BemerkungFormular : MTEXT;
+		!! Formulargruppe 'Nutzungsgebühr'
+		/** Optional */
+		MaxPumpenleistung : LiterMinute;
+		/** Optional */
+		Kuehlwasserverbrauch : KubikmeterJahr;
+		/** Optional */
+		AnzahlKuehltage : TEXT*100;
+		/** Optional */
+		Reduktion : TEXT*100;
+		/** Optional */
+		VerrechnetAm : INTERLIS.XMLDate;
+		/** Optional */
+		Leistungspreis : 0.00..999999.95 [Units.CHF];
+		/** Optional */
+		Arbeitspreis : 0.00..999999.95 [Units.CHF];
+		/** Optional */
+		Zwischentotal : 0.00..999999.95 [Units.CHF];
+		/** Optional */
+		Rechnungsbetrag : 0.00..999999.95 [Units.CHF];
+		/** Optional */
+		BemerkungNutzungsgebuehr : MTEXT;
+	END Verrechnungen;
+
+    ASSOCIATION AnlagenVerfahren_Sondierbohrungen =
+	  	AnlagenVerfahren -- {1} AnlagenVerfahren;
+	  	Sondierbohrungen  -- {0..*} Sondierbohrungen ;
+    END AnlagenVerfahren_Sondierbohrungen;
+
+    ASSOCIATION AnlagenVerfahren_Fassungsbrunnen =
+	  	AnlagenVerfahren -<#> {1} AnlagenVerfahren;
+	  	Fassungsbrunnen -- {0..1} Fassungsbrunnen;
+    END AnlagenVerfahren_Fassungsbrunnen;
+
+    ASSOCIATION AnlagenVerfahren_Rueckgabeanlagen =
+	  	AnlagenVerfahren -<#> {1} AnlagenVerfahren;
+	  	Rueckgabeanlagen -- {0..1} Rueckgabeanlagen;
+    END AnlagenVerfahren_Rueckgabeanlagen;
+
+	ASSOCIATION AnlagenVerfahren_Dokumente =
+	  	AnlagenVerfahren -- {1} AnlagenVerfahren;
+	  	Dokumente -- {0..*} Dokumente;
+    END AnlagenVerfahren_Dokumente;
+
+    ASSOCIATION AnlagenVerfahren_Konzession =
+	  	AnlagenVerfahren -<#> {1} AnlagenVerfahren;
+	  	Konzession -- {0..1} Konzession;
+    END AnlagenVerfahren_Konzession;
+
+	ASSOCIATION AnlagenVerfahren_Anschriften =
+	  	AnlagenVerfahren -<#> {1} AnlagenVerfahren;
+	  	Anschriften -- {0..1} Anschriften;
+    END AnlagenVerfahren_Anschriften;
+
+	ASSOCIATION AnlagenVerfahren_Verrechnungen =
+	  	AnlagenVerfahren -<#> {1} AnlagenVerfahren;
+	  	Verrechnungen  -- {0..*} Verrechnungen;
+    END AnlagenVerfahren_Verrechnungen;
+
+    CONSTRAINTS OF AnlagenVerfahren =
+		!!@ ilivalid.msg_de = "Kombination Verfahrensstatus {Verfahrensstatus}, (Konzession), (Fassungbrunnen), (Rückgabeanlage) sowie (Anschriften) nicht zulässig."
+		MANDATORY CONSTRAINT 
+		Verfahrensstatus == #Konzession AND DEFINED (Fassungsbrunnen) AND DEFINED (Rueckgabeanlagen) AND DEFINED (Anschriften)
+		OR
+		Verfahrensstatus != #Konzession AND NOT ( DEFINED (Fassungsbrunnen) OR DEFINED (Rueckgabeanlagen) OR DEFINED (Anschriften) );
+	END;
+	
+  END Anlagen;
+
+END SH_ThermischeNutzungen_V1_0.

@@ -1,0 +1,37 @@
+INTERLIS 2.3;
+
+/** Risikokarte Kanton Schaffhausen.
+Modellierung der Risikokarte im Kanton Schaffhausen.
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ IDGeoIV=113
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen,Störfallverordnung, Betriebe, Chemie, Risiko, Gefahr, StFV, Konsultationsbereich"
+!!@ furtherMetadata=https://www.geocat.ch/geonetwork/srv/ger/catalog.search#/metadata/07f5e602-389e-466e-8afc-3f7be5cb2ce2
+
+MODEL Risikokarte_LV95_V1_0 (de)
+AT "http://geo.sh.ch" VERSION "2018-05-3"  =
+  IMPORTS GeometryCHLV95_V1;
+  TOPIC Risikokarte =
+	DOMAIN
+	RisikonutzungsTyp = (
+		gering,
+		mittel,
+		hoch,
+		sehr_hoch
+	);
+	CLASS Risikokarte =
+	
+	  Risiko: RisikonutzungsTyp;
+	  Standorteigenschaft: TEXT*20;
+	  Bemerkungen: TEXT;
+	  Geometry: GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
+	  
+	  
+      
+    END Risikokarte;
+
+  END Risikokarte;
+
+END Risikokarte_LV95_V1_0.

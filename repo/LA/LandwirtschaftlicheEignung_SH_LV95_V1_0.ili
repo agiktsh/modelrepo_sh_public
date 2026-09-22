@@ -1,0 +1,39 @@
+INTERLIS 2.3;
+
+/** Landwirtschaftliche Eignung im Kanton Schaffhausen.
+Modellierung der Landwirtschaftlichen Eignung im Kanton Schaffhausen.
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Landwirtschaft, Eignung"
+
+MODEL LandwirtschaftlicheEignung_LV95_V1_0 (de)
+AT "http://geo.sh.ch" VERSION "2018-05-3"  =
+  IMPORTS GeometryCHLV95_V1;
+  TOPIC LandwirtschaftlicheEignung =
+	DOMAIN
+	BodennutzungsTyp = (
+		Uneingeschraenkte_Fruchtfolge,
+		Vielseitige_Fruchtfolge,
+		Vielseitige_Fruchtfolge_mit_Einschraenkungen,
+		Vielseitige_Fruchtfolge_Getreidebau_bevorzugt,
+		Getreidebetonte_Fruchtfolge,
+		Getreidebetonte_Fruchtfolge_mit_Einschraenkungen,
+		Futterbaubetonte_Fruchtfolge_gutes_Wiesland,
+		Futterbaubetonte_Fruchtfolge_maessig_gutes_Wiesland,
+		Ausschliesslich_Futterbau_aus_Maehweide,
+		Ausschliesslich_Futterbau_als_Weide
+	);
+	CLASS LandwirtschaftlicheEignung =
+	
+	  Fruchtfolge: BodennutzungsTyp;
+	  Geometry: GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
+	  
+	  
+      
+    END LandwirtschaftlicheEignung;
+
+  END LandwirtschaftlicheEignung;
+
+END LandwirtschaftlicheEignung_LV95_V1_0.

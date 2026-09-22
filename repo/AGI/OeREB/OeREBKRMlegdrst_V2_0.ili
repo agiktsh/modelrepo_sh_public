@@ -1,0 +1,61 @@
+INTERLIS 2.3;
+
+/** Ein Übergangsmodell für das Projekt mgdm2oereb.
+Mit diesem Modell kann der DarstellungDienst zu einem ÖREB-Thema defniert und deren Zuweisung zum LegendeEintrag hergestellt werden. Diese Informationen fehlen, um die ÖREB-Transferstruktur aus einem MGDM abzubilden. 
+*/
+
+/*
+Wird für das Projekt mgdm2oereb benötigt. In einer nächsten Überarbeitung des ÖREB-Rahmenmodells und der MGDMs ist sicherzustellen, dass diese Zuweisung im ÖREB-Rahmenmodell als Katalog offiziell abbildbar ist oder der Darstellungsdienst im MGDM verknüpft wird.
+*/
+
+!!@ technicalContact=mailto:romedi.filli@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+
+MODEL OeREBKRMlegdrst_V2_0 (de)
+AT "https://geo.sh.ch/"
+VERSION "2022-08-10"  =
+  IMPORTS OeREBKRM_V2_0,LocalisationCH_V1;
+
+  /** Dieses Teilmodell ist ein Subelement von OeREBKRMtrsfr_V2_0 und dient dazu, die Legendeneinträge mit einem Darstellungsdienst zu verknüpfen. Mit dieser Grundlage können aus den minimalen Geodatenmodell (MGDM) und den Katalogen nach OeREBKRMkvs_V2_0 die Transferstruktur im OeREBKRMtrsfr_V2_0 erstellt werden.
+   */
+  TOPIC Transferstruktur =
+
+    /** Angaben zum Darstellungsdienst
+     */
+    CLASS DarstellungsDienst =
+      /** WMS GetMap-Request (für Maschine-Maschine-Kommunikation) inkl. alle benötigten Parameter, z.B. «https://wms.geo.admin.ch/?SERVICE=WMS&REQUEST=GetMap&VERSION=1.3.0&STYLES=default&CRS=EPSG:2056&BBOX=2475000,1060000,2845000,1310000&WIDTH=740&HEIGHT=500&FORMAT=image/png&LAYERS=ch.bazl.kataster-belasteter-standorte-zivilflugplaetze.oereb»
+       */
+      VerweisWMS : MANDATORY OeREBKRM_V2_0.MultilingualUri;
+    END DarstellungsDienst;
+
+    /** Ein Eintrag in der Planlegende
+     */
+    CLASS LegendeEintrag =
+      /** Grafischer Teil des Legendeneintrages für die Darstellung im PNG-Format mit 300dpi oder im SVG-Format
+       */
+      Symbol : MANDATORY BLACKBOX BINARY;
+      /** Text des Legendeneintrages
+       */
+      LegendeText : MANDATORY LocalisationCH_V1.MultilingualText;
+      /** Art der Eigentumsbeschränkung, die durch diesen Legendeneintrag dargestellt wird
+       */
+      ArtCode : MANDATORY OeREBKRM_V2_0.ArtEigentumsbeschraenkung;
+      /** Codeliste der Eigentumsbeschränkung, die durch diesen Legendeneintrag dargestellt wird
+       */
+      ArtCodeliste : MANDATORY URI;
+      /** Zu welchem ÖREB-Thema der Legendeneintrag gehört
+       */
+      Thema : MANDATORY OeREBKRM_V2_0.Thema;
+      /** Z.B. für «Überlagernde Festlegungen» innerhalb Nutzungsplanung
+       */
+      SubThema : OeREBKRM_V2_0.Thema;
+    END LegendeEintrag;
+
+    ASSOCIATION LegendeDarstellungsdienst =
+      Legende -- {1..*} LegendeEintrag;
+      DarstellungsDienst -<#> {1} DarstellungsDienst;
+    END LegendeDarstellungsdienst;
+
+  END Transferstruktur;
+
+END OeREBKRMlegdrst_V2_0.

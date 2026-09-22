@@ -1,0 +1,326 @@
+TRANSFER INTERLIS1;
+!!    INTERLIS 1 Beschreibung Strassenrichtplan Kanton Schaffhausen
+!! + ======================================================================== +
+!! ¦                                                                          ¦
+!! ¦ Das Datenmodell "Strassenrichtplan Kanton Schaffhausen" ist ein          ¦
+!! ¦ eigenstaendiges Modell.                                                  ¦
+!! ¦                                                                          ¦
+!! ¦ Version: 1.6                                                             ¦
+!! ¦                                                                          ¦
+!! ¦ Filename: *.DOC, *ILI* bzw. *FMT* (siehe Kopfzeile)                      ¦
+!! ¦                                                                          ¦
+!! ¦ Modifiziert: gelb hinterlegt = Aenderungen gegenueber Version 1.5        ¦
+!! ¦                                                                          ¦
+!! ¦ Letzter Update:                                                          ¦
+!! ¦    3.2.2016 (V1.6) / fb                                                  ¦
+!! ¦    - Angabe Eigentum bei Tabelle Strassenstueck neu optional             ¦
+!! ¦                                                                          ¦
+!! ¦    14.3.2014 (V1.5) / fb                                                 ¦
+!! ¦    - Modellname geaendert                                                ¦
+!! ¦    - Auswahllisten "Status_Str" und "Bauzone" erweitert                  ¦
+!! ¦    - Bei allen Haupttabellen Attribut "USER" neu eingefügt               ¦
+!! ¦    - Unterscheidung zwischen baulichem und betrieblichem Unterhalt       ¦
+!! ¦    - Nur noch eine Geometrietabelle mit Auswahlliste Strassentyp         ¦
+!! ¦    - Attribute "Mutation" + "Erfassungsjahr" + "Vertrag" eingefuegt      ¦
+!! ¦                                                                          ¦
+!! ¦    8.3.2013 (V1.4) / fb                                                  ¦
+!! ¦    - Zwischenversion ohne Verbindlichkeit                                ¦
+!! ¦                                                                          ¦
+!! ¦    1.2.2011 (V1.3) / fb                                                  ¦
+!! ¦    - Tabellen "Lokalisation" und "LokalisationsName" wurden geloescht    ¦
+!! ¦    - Neu eingefuegt wurden: Status der Strasse; Ortsteile                ¦
+!! ¦    - Eigentum und Unterhalt werden bei "Strassenstueck" separat gefuehrt ¦
+!! ¦    - bei div. Tabellen zus. Attribut "Bemerkung" eingefuegt              ¦
+!! ¦    - Tabellen "Ortstafel","SH_Info_Text","SH_Info_Linie" neu eingefuegt  ¦
+!! ¦                                                                          ¦
+!! ¦    5.5.2008 / fb                                                         ¦
+!! ¦    - Strassenstueck.Eigentum_spez neu eingefuegt                         ¦
+!! ¦    - diverse Kommentare eingefuegt                                       ¦
+!! ¦                                                                          ¦
+!! ¦    16. April 2008 / fb                                                   ¦
+!! ¦    - Auswahlliste Eigentum: neu ohne "Kantonsstr_im_Eigt_Gde"            ¦
+!! ¦    - CH_SH_Strasse.Geometrie nicht mehr OPTIONAL                         ¦
+!! ¦    - Gde_Strasse.Geometrie nicht mehr OPTIONAL                           ¦
+!! ¦                                                                          ¦
+!! ¦                                                                          ¦
+!! ¦ Erarbeitet durch:                                                        ¦
+!! ¦ - Peter Eberlin, Tiefbauamt des Kantons Schaffhausen                     ¦
+!! ¦ - Hans- Joerg Walter, Tiefbauamt der Stadt Schaffhausen                  ¦
+!! ¦                                                                          ¦
+!! ¦ INTERLIS-Modell erstellt durch:                                          ¦
+!! ¦ - Hannes Schaerer, Bechaz + Fluekiger, Trasadingen                       ¦
+!! ¦ - Felix Berger, Vermessungsamt des Kantons Schaffhausen                  ¦
+!! ¦                                                                          ¦
+!! + ------------------------------------------------------------------------ +
+
+!!    Definition der globalen Variabeln resp. Wertebereiche
+!! ----------------------------------------------------------------------------
+
+MODEL Strassenrichtplan_SH_LV95_V1_6         !! Version 1.6 vom 3.2.2016
+                                             !! Modell Strassenrichtplan Kt. SH
+  DOMAIN
+    LKoord   =      COORD2    2480000.000    1070000.000   !! in m
+                              2840000.000    1300000.000;  !! in m
+    Orientierung =  GRADS 0.0 399.9;
+
+    REAL42 =       [0.00 .. 9999.99];
+
+    Schriftgroesse =
+                   (klein, mittel, gross);
+
+    Status_Str =   (bestehend,
+                    projektiert,
+                    aufzuheben);
+
+    Gemeinde_Nummer_Typ = [1000 .. 9999];                              !! BFSNr
+
+
+    Gemeinden_Ortsteile =
+                  (Altdorf,        !! Gde. Nr. 01 / BFS Nr. 2911 / AVS_Id  0
+                   Bargen,         !! Gde. Nr. 02 / BFS Nr. 2931 / AVS_Id  1
+                   Barzheim,       !! Gde. Nr. 03 / BFS Nr. 2912 / AVS_Id  2
+                   Beggingen,      !! Gde. Nr. 04 / BFS Nr. 2951 / AVS_Id  3
+                   Beringen,       !! Gde. Nr. 05 / BFS Nr. 2932 / AVS_Id  4
+                   Bibern,         !! Gde. Nr. 06 / BFS Nr. 2913 / AVS_Id  5
+                   Buch,           !! Gde. Nr. 07 / BFS Nr. 2961 / AVS_Id  6
+                   Buchberg,       !! Gde. Nr. 08 / BFS Nr. 2933 / AVS_Id  7
+                   Buettenhardt,   !! Gde. Nr. 09 / BFS Nr. 2914 / AVS_Id  8
+                   Doerflingen,    !! Gde. Nr. 10 / BFS Nr. 2915 / AVS_Id  9
+                   Gaechlingen,    !! Gde. Nr. 11 / BFS Nr. 2901 / AVS_Id 10
+                   Guntmadingen,   !! Gde. Nr. 12 / BFS Nr. 2902 / AVS_Id 11
+                   Hallau,         !! Gde. Nr. 13 / BFS Nr. 2971 / AVS_Id 12
+                   Hemishofen,     !! Gde. Nr. 14 / BFS Nr. 2962 / AVS_Id 13
+                   Hemmental,      !! Gde. Nr. 15 / BFS Nr. 2934 / AVS_Id 14
+                   Hofen,          !! Gde. Nr. 16 / BFS Nr. 2916 / AVS_Id 15
+                   Loehningen,     !! Gde. Nr. 17 / BFS Nr. 2903 / AVS_Id 16
+                   Lohn,           !! Gde. Nr. 18 / BFS Nr. 2917 / AVS_Id 17
+                   Merishausen,    !! Gde. Nr. 19 / BFS Nr. 2936 / AVS_Id 18
+                   Neuhausen,      !! Gde. Nr. 20 / BFS Nr. 2937 / AVS_Id 19
+                   Neunkirch,      !! Gde. Nr. 21 / BFS Nr. 2904 / AVS_Id 20
+                   Oberhallau,     !! Gde. Nr. 22 / BFS Nr. 2972 / AVS_Id 21
+                   Opfertshofen,   !! Gde. Nr. 23 / BFS Nr. 2918 / AVS_Id 22
+                   Osterfingen,    !! Gde. Nr. 24 / BFS Nr. 2905 / AVS_Id 23
+                   Ramsen,         !! Gde. Nr. 25 / BFS Nr. 2963 / AVS_Id 24
+                   Ruedlingen,     !! Gde. Nr. 26 / BFS Nr. 2938 / AVS_Id 25
+                   Schaffhausen,   !! Gde. Nr. 27 / BFS Nr. 2939 / AVS_Id 26
+                   Schleitheim,    !! Gde. Nr. 28 / BFS Nr. 2952 / AVS_Id 27
+                   Siblingen,      !! Gde. Nr. 29 / BFS Nr. 2953 / AVS_Id 28
+                   Stein_am_Rhein, !! Gde. Nr. 30 / BFS Nr. 2964 / AVS_Id 29
+                   Stetten,        !! Gde. Nr. 31 / BFS Nr. 2919 / AVS_Id 30
+                   Thayngen,       !! Gde. Nr. 32 / BFS Nr. 2920 / AVS_Id 31
+                   Trasadingen,    !! Gde. Nr. 33 / BFS Nr. 2973 / AVS_Id 32
+                   Wilchingen,     !! Gde. Nr. 34 / BFS Nr. 2974 / AVS_Id 33
+                   alle_Ortsteile); !!                             AVS_Id 34
+
+    Eigentum =     (Bund,
+                    Kanton,
+                    Gemeinde,
+                    Gueterkorporation,
+                    privat,
+                    weitere,
+                    unbekannt);
+
+    Bauzone =      (Bauzone (einseitig, beidseitig),
+                    Nichtbauzone (einseitig, beidseitig),
+                    unbekannt);
+
+    innerorts =    (ja,                 !! Massgebend Standort der Ortstafel
+                    nein,               !! fuer Winterdienst und Unterhalt
+                    unbekannt);
+
+    Strassentyp =              !! Definiert nur die Funktion nicht das Eigentum
+                   (Kanton
+                      (Nationalstrasse,
+                       ueberregionale_Strasse,
+                       regionale_Strasse,
+                       ueber_lokale_Strasse,
+                       Radroute_kantonal,
+                       Radroute_Ergaenzung_kantonal,
+                       Wanderweg_kantonal),
+                    Gemeinde
+                      (Hauptstrasse,                !! auch Hauptsammelstrassen
+                       Sammelstrasse,
+                       Erschliessungsstrasse,                 !! auch Zufahrten
+                       Gueterstrasse,                  !! auch entlang Waldrand
+                       Waldstrasse,
+                       Radroute_kommunal,
+                       Gehweg,                  !! reine Fusswege ohne Trottoir
+                       Wanderweg_kommunal),
+                    unbestimmt);
+
+
+
+!! TOPIC Administration
+!! ----------------------------------------------------------------------------
+
+  TOPIC Administration =
+
+
+    TABLE Gemeinde =
+      Gemeinde:           Gemeinden_Ortsteile;
+      Ortsteil:           Gemeinden_Ortsteile;       !! wenn kein Ortsteil vor-
+                                    !! handen ist, nochmals Gemeinde auswaehlen
+      BFSNr:              Gemeinde_Nummer_Typ;                         !! BFSNr
+      GdeNrSH:           [1..34];                   !! Gemeindenummer Kanton SH
+    IDENT BFSNr;
+    END Gemeinde;
+
+
+    TABLE Admin_Info =
+      Gemeinde_von:   -> Gemeinde;
+      Erlassen_durch:    OPTIONAL TEXT*60;    !! i.d.R. erlassen durch die Gde.
+      Erlassen_am:       OPTIONAL DATE;
+      Genehmigt_durch:   OPTIONAL TEXT*60;    !! i.d.R. erlassen durch den RR
+      Genehmigt_am:      OPTIONAL DATE;
+      Erfasst_durch:     OPTIONAL TEXT*60;
+      Dokument_Nr_Gde:   OPTIONAL TEXT*100;
+      Bemerkung:         OPTIONAL TEXT*100;
+      USER:              OPTIONAL TEXT*30;
+    NO IDENT
+    END Admin_Info;
+
+
+    TABLE Bauzonen = !! nur erfassen, wenn noch kein digitaler, rechtsgueltiger
+                     !! Zonenplan - gemaess Datenmodell Kt. SH - vorhanden ist.
+      Geometrie:         OPTIONAL SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord
+                         WITHOUT OVERLAPS > 0.050;
+      Bemerkung:         OPTIONAL TEXT*100;
+      USER:              OPTIONAL TEXT*30;
+    NO IDENT
+    END Bauzonen;
+
+
+  END Administration.
+
+
+
+!! TOPIC Strassenrichtplan
+!! ----------------------------------------------------------------------------
+  TOPIC Strassenrichtplan =
+!! Die Tabelle Strassenstueck wurde vom Datenmodell der Amtlichen Vermessung
+!! Version 24 uebernommen (kursive Schrift)
+!! Die Tabelle Strassenstueck wurde mit Attributen fuer den Strassenrichtplan
+!! ergaenzt.
+
+
+    TABLE Strassenstueck =
+      Geometrie:          POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+                          !! keine Radien erfassen, nur Linien
+      Eigentum:           OPTIONAL Eigentum;
+      Eigentum_spez:      OPTIONAL TEXT*60;  !! zur zusaetzlichen Spezifikation
+                                             !! des Eigentums; bei Eigentum =
+                                             !! "weitere" Angabe obligatorisch
+      Unterhalt_betrieblich:      OPTIONAL Eigentum;
+      Unterhalt_betrieblich_spez: OPTIONAL TEXT*60; !! zur zusaetzlichen Spezi-
+                                   !! fikation des Unterhalts; bei Unterhalt =
+                                   !! "weitere" ist Angabe obligatorisch
+      Unterhalt_baulich:  OPTIONAL TEXT*60; !! nur Ausnahmen eintragen, weil
+                                            !! i.d.R. der Eigentuemer
+                                            !! zustaendig ist
+      Bauzone:            Bauzone;
+      innerorts:          innerorts;
+      Laenge:             REAL42;                  !! gerechnet aus Koordinaten
+                                       !! massgebend fuer die Laengenberechnung
+                                                         !! je Strassenfunktion
+      Mut_Eigentum:                OPTIONAL TEXT*60;  !! pro Mut-Art eine
+      Mut_Unterhalt_betrieblich:   OPTIONAL TEXT*60;  !! naehere Beschreibung
+      Mut_Unterhalt_baulich:       OPTIONAL TEXT*60;
+      Vertrag:                     OPTIONAL TEXT*60;
+      Erfassungsjahr:     [2000 .. 2100];                   !! letzte Aenderung
+      Bemerkung:          OPTIONAL TEXT*100;
+      USER:               OPTIONAL TEXT*30;
+    NO IDENT                  !! geaendert gegenueber der AV, so dass die best.
+                              !! Geometrie einfach aufgetrennt werden kann.
+    END Strassenstueck; 
+
+
+    TABLE Strasse =  !! Definition von National-, Kantons- und Gemeindestrassen
+      StrassenstueckVon: -> Strassenstueck;
+      Geometrie: POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+           !! Geometrie zur grafischen Ausgestaltung der Plaene.
+           !! Wenn nur eine Strassenfunktion vorhanden ist, wird die
+           !! Geometrie von Strassenstueck kopiert. Alternative Strassen-
+           !! funktionen sind ebenfalls hier zu erfassen (parallele Geometrien)
+           !! keine Radien erfassen, nur Linien
+      Typ:                Strassentyp;
+      Status:             Status_Str;
+      Strasse_Nr:         OPTIONAL TEXT*20;  !! bei National- und Kantons-
+                                             !! strassen zwingend
+      Mut_Funktion:       OPTIONAL TEXT*60;
+      Erfassungsjahr:     [2000 .. 2100];                   !! letzte Aenderung
+      Bemerkung:          OPTIONAL TEXT*100;
+      USER:               OPTIONAL TEXT*30;
+    NO IDENT
+    END Strasse;
+
+
+
+    TABLE StrassePos =              !! Textposition Attribut Strasse.Strasse_Nr
+      StrasseVon:      -> Strasse                                   // 1:mc //;
+      TextPos:            LKoord;
+      TextOri:            Orientierung                   // Default = 100.0 //;
+      TextHAli:           OPTIONAL HALIGNMENT       // undefiniert = Center //;
+      TextVAli:           OPTIONAL VALIGNMENT       // undefiniert = Bottom //;
+      TextGroesse:        OPTIONAL Schriftgroesse   // undefiniert = mittel //;
+    NO IDENT
+    END StrassePos;
+
+
+        !! --------------- zusaetzliche Informationen -------------------------
+
+
+    TABLE Ortstafel =
+      Geometrie:          LKoord;
+      Bemerkung:          OPTIONAL TEXT*100;
+      USER:               OPTIONAL TEXT*30;
+    NO IDENT
+    END Ortstafel;
+
+
+    TABLE SH_Info_Text =   !! freier Text, fuer allfaellige Anschriften im Plan
+      Text:                 TEXT*100;
+      Text_Art:             OPTIONAL TEXT*100;
+                                       !! fuer zusaetzliche Unterscheidung des
+                                       !! Textes und allfaelligen Darstellungen
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Schriftgroesse // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+    NO IDENT
+    END SH_Info_Text;
+
+
+    TABLE SH_Info_Linie =            !! freie Linie, 
+                                     !! fuer allfaellige Hinweisstriche im Plan
+      Geometrie:            POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+      Linien_Art:           OPTIONAL TEXT*100;
+                                        !! fuer zusaetzliche Unterscheidung der
+                                        !! Linie und allfaelligen Darstellungen
+    NO IDENT
+    END SH_Info_Linie;
+
+
+    TABLE SH_Info_Punkt =            !! freies Symbol, 
+                                     !! fuer allfaellige Informationen im Plan
+      Geometrie:            LKoord;
+      Punkt_Art:            OPTIONAL TEXT*100;
+                                     !! fuer zusaetzliche Unterscheidung der
+                                     !! Punkte und allfaelligen Darstellungen
+      PunktOri:             OPTIONAL Orientierung       // Default = 100.0 //;
+    NO IDENT
+    END SH_Info_Punkt;
+
+
+  END Strassenrichtplan.
+
+END Strassenrichtplan_SH_LV95_V1_6.
+
+
+FORMAT FREE;                                              !! Fuer Datentransfer
+!! FORMAT FIX WITH LINESIZE = 120, TIDSIZE = 10;      !! Fuer INTERLIS-Compiler
+
+CODE
+  BLANK = DEFAULT, UNDEFINED = DEFAULT, CONTINUE = DEFAULT;
+  TID = ANY;
+END.

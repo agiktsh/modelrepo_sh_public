@@ -1,0 +1,151 @@
+INTERLIS 2.3;
+
+/** KANTONALE ERWEITERUNG SH.
+Grundwasseraustritte im Kanton Schaffhausen.
+*/
+
+/* 
+Version     | Who | Modification
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+            |     | 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 2023-12-06 | AGI | Version 1.0
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Fachtechnische Auskunft
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Tiefbau Schaffhausen, Abteilung Gewaesser und Materialabbau
+Telefon: +41 52 632 73 29
+URL: https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Baudepartement/Tiefbau-Schaffhausen/Abteilung-Gew-sser-und-Materialabbau-403883-DE.html
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+Allgemeines zum Datenmodell                                 
+-------------------------------------------------------------------------------
+- Die SH-Erweiterung Version basiert auf dem minimalen Geodatenmodell der 
+  Grundwasseraustritte_LV95_V1 (ID 141.1) des BAFU.
+
+- Als Objektidentifikator wird eine UUID (z.B. 
+  d89778ed-242a-4642-9a32-1e1954675b0a) festgelegt.
+
+- Die abgebildeten Daten beschränken sich auf das Wesentliche         
+  (möglichst eine einfache und übersichtliche Modellierung).
+-------------------------------------------------------------------------------
+
+Beteiligte
+-------------------------------------------------------------------------------
+Erarbeitet durch:                                                                     
+- Jürg Sturzenegger, Tiefbau Schaffhausen (TSH)                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen (AGI)        
+ 
+INTERLIS-Modell erstellt durch:                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen 
+-------------------------------------------------------------------------------
+
+Organisatorische Aspekte                                              
+-------------------------------------------------------------------------------    
+- Datenmodelländerungen und -erweiterungen dürfen nur durch das AGI erfolgen.                                               
+- Die inhaltliche Überprüfung sowie Validierung der Modellkonformität leistet 
+  das TSH durch die systemischen Mechanismen.          
+-------------------------------------------------------------------------------                       
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Grundwasseraustritte, Quelle, Fassungsbrunnen, Rückgabebrunnen, Anreicherungsanlage, Fassungsstrang, Stollen"
+!!@ author=agi-sh
+!!@ IDGeoIV=141.1-SH
+
+MODEL SH_Grundwasseraustritte_V1_0 (de)
+AT "http://geo.sh.ch"
+VERSION "2023-12-02"  =
+
+  IMPORTS Grundwasseraustritte_LV95_V1;
+  IMPORTS GeometryCHLV95_V1;
+  IMPORTS CatalogueObjects_V1;
+
+  DOMAIN
+
+    TypeID = OID TEXT*200;
+
+  TOPIC Codeliste =
+	BASKET OID AS INTERLIS.UUIDOID;
+  OID AS TypeID;
+  
+    CLASS Ortsteil_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      /** Attribute werden aus bestehendem Katalog importiert */
+      Ortsteil : MANDATORY TEXT*50;
+      Kuerzel : MANDATORY TEXT*3;
+      Polygon : MANDATORY GeometryCHLV95_V1.MultiSurface;
+    END Ortsteil_Code;
+	
+    STRUCTURE Ortsteil_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+      /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Ortsteil_Code;
+    END Ortsteil_CodeRef;
+	
+    CLASS Gebaeudeart_Code
+	  EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      /** Attribute werden aus bestehendem Katalog importiert */
+      Gebaeudetyp : MANDATORY TEXT*50;
+    END Gebaeudeart_Code;
+
+    STRUCTURE Gebaeudeart_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+      /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Gebaeudeart_Code;
+    END Gebaeudeart_CodeRef;
+	
+  END Codeliste;
+
+  TOPIC Grundwasseraustritte EXTENDS Grundwasseraustritte_LV95_V1.Grundwasseraustritte =
+	BASKET OID AS INTERLIS.UUIDOID;
+  OID AS INTERLIS.UUIDOID;
+	DEPENDS ON SH_Grundwasseraustritte_V1_0.Codeliste;
+
+    CLASS Fassungsbrunnen (EXTENDED) =
+      /** Zwingende Angabe */
+      Gebaeude : MANDATORY SH_Grundwasseraustritte_V1_0.Codeliste.Gebaeudeart_CodeRef;
+      /** Optional */
+      BemerkungAnlage : MTEXT;
+      /** Zwingende Angabe */
+      Ortschaft : MANDATORY SH_Grundwasseraustritte_V1_0.Codeliste.Ortsteil_CodeRef;
+      /** Grundstücksnummer Optional */
+      GB_Nr : TEXT*50;
+      /** Optional */
+      Adresse : TEXT;
+      /** Zwingende Angabe */
+      Gewaesser : MANDATORY TEXT*100;
+      /** Zwingende Angabe */
+      Terrainhoehe : MANDATORY 0 .. 999 [INTERLIS.m];
+      /** Automatische Auswertung durch System */
+      BearbeitetAm : MANDATORY INTERLIS.XMLDate;
+      /** Automatische Auswertung durch System */
+      BearbeitetDurch : MANDATORY TEXT*100;
+	END Fassungsbrunnen;
+
+	CLASS Rueckgabebrunnen (EXTENDED) =
+      /** Optional */
+      Art : TEXT*200;
+      /** Optional */
+      BemerkungAnlage : MTEXT;
+      /** Zwingende Angabe */
+      Ortschaft : MANDATORY SH_Grundwasseraustritte_V1_0.Codeliste.Ortsteil_CodeRef;
+      /** Grundstücksnummer Optional */
+      GB_Nr : TEXT*50;
+      /** Optional */
+      Adresse : TEXT;
+      /** Zwingende Angabe */
+      Gewaesser : MANDATORY TEXT*100;
+      /** Zwingende Angabe */
+      Terrainhoehe : MANDATORY 0 .. 999 [INTERLIS.m];
+      /** Automatische Auswertung durch System */
+      BearbeitetAm : MANDATORY INTERLIS.XMLDate;
+      /** Automatische Auswertung durch System */
+      BearbeitetDurch : MANDATORY TEXT*100;
+    END Rueckgabebrunnen;
+
+  END Grundwasseraustritte;
+
+END SH_Grundwasseraustritte_V1_0.

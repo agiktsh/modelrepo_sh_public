@@ -1,0 +1,357 @@
+INTERLIS 2.3;
+
+/** KANTONALE ERWEITERUNG SH.
+Binnenschifffahrt im Kanton Schaffhausen.
+*/
+
+/* 
+Version     | Who | Modification
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+            |     | 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 2023-12-14 | AGI | Version 1.0
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Fachtechnische Auskunft
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Tiefbau Schaffhausen
+Abteilung Gewaesser und Materialabbau
+Telefon +41 52 632 73 29
+https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Baudepartement/Tiefbau-Schaffhausen/Abteilung-Gew-sser-und-Materialabbau-403883-DE.html
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+Allgemeines zum Datenmodell                                 
+-------------------------------------------------------------------------------
+- Version 1.0 basiert auf minimalem Geodatenmodell
+  EinschraenkungenBinnenschifffahrt_LV95_V1 (ID 100) vom BAV.
+-------------------------------------------------------------------------------
+
+Beteiligte
+-------------------------------------------------------------------------------
+Erarbeitet durch:
+- Fabian Hablützel, Tiefbau Schaffhausen (TSH)                                                                     
+- Delia Erb, Amt für Geoinformation des Kantons Schaffhausen (AGI)
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen (AGI)                                   
+ 
+INTERLIS-Modell erstellt durch:                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen (AGI)
+-------------------------------------------------------------------------------
+
+Organisatorische Aspekte                                              
+-------------------------------------------------------------------------------    
+- Datenmodelländerungen und -erweiterungen dürfen nur durch das AGI erfolgen.                                               
+- Inhaltliche Belange werden durch das TSH überprüft und gewährleistet.
+- Modellkonformität werden durch die systemischen Mechanismen vom 
+  Datenerfasser gecheckt.
+-------------------------------------------------------------------------------
+
+Hinweise zur Modellerweiterung                                             
+-------------------------------------------------------------------------------    
+- Zum bestehenden Basismodells (MGDM) werden zusätzlich Anlegepfähle, 
+  Wiffen/Bojen sowie die jährliche Kontrolle und im Frühling auszuführenden 
+  Instandsetzungen festgehalten. Die Unfallstatistik ist weiterer Bestandteil
+  der SH-Erweiterung.
+-------------------------------------------------------------------------------                     
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ author=agi-sh
+!!@ tags="Kanton Schaffhausen, Einschränkungen Binnenschifffahrt, Unterhalt, Unfallstatistik"
+!!@ IDGeoIV=100-SH
+
+MODEL SH_Binnenschifffahrt_V1_0 (de)
+AT "http://geo.sh.ch"
+VERSION "2023-12-14" =
+  IMPORTS EinschraenkungenBinnenschifffahrt_LV95_V1;
+  IMPORTS CatalogueObjects_V1;
+  IMPORTS GeometryCHLV95_V1;
+  IMPORTS Units;
+
+  DOMAIN 
+
+    TypeID = OID TEXT*200;
+
+    Zustand = (
+      Einwandfrei,
+      Beobachten,
+      Ersetzen
+    );
+
+  TOPIC Codeliste =
+    BASKET OID AS INTERLIS.UUIDOID;
+    OID AS TypeID;
+
+    CLASS Zustaendigkeit_Code
+      EXTENDS CatalogueObjects_V1.Catalogues.Item =
+	  	/** Attribute werden aus bestehendem Katalog importiert */
+	  	Bezeichnung : MANDATORY TEXT*50;
+      /** Optional */
+	  	Beschreibung : TEXT*200;
+	  	!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Bezeichnung}"
+	  	UNIQUE Bezeichnung;
+	  END Zustaendigkeit_Code;
+
+    STRUCTURE Zustaendigkeit_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	    /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Zustaendigkeit_Code;
+    END Zustaendigkeit_CodeRef;
+
+    CLASS Material_Code
+      EXTENDS CatalogueObjects_V1.Catalogues.Item =
+	  	/** Attribute werden aus bestehendem Katalog importiert */
+	  	Material : MANDATORY TEXT*50;
+      /** Optional */
+	  	Beschreibung : TEXT*200;
+      /** Optionaler Filter */
+		  Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+	  	!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Material}"
+	  	UNIQUE Material;
+	  END Material_Code;
+
+    STRUCTURE Material_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	    /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Material_Code;
+    END Material_CodeRef;
+
+    CLASS Massnahmen_Code
+      EXTENDS CatalogueObjects_V1.Catalogues.Item =
+	  	/** Attribute werden aus bestehendem Katalog importiert */
+	  	Massnahmen : MANDATORY TEXT*50;
+      /** Optional */
+	  	Beschreibung : TEXT*200;
+      /** Zwingende Massnahmenzuordnung */
+      Wiffe : MANDATORY BOOLEAN;
+      /** Zwingende Massnahmenzuordnung */
+      Boje : MANDATORY BOOLEAN;
+      /** Zwingende Massnahmenzuordnung */
+      Anlegepfahl : MANDATORY BOOLEAN;
+      /** Zwingende Massnahmenzuordnung */
+      Schifffahrtszeichen : MANDATORY BOOLEAN;
+	  	!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Massnahmen}"
+	  	UNIQUE Massnahmen;
+	  END Massnahmen_Code;
+
+    STRUCTURE Massnahmen_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	    /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Massnahmen_Code;
+    END Massnahmen_CodeRef;
+
+    CLASS Standort_Code
+      EXTENDS CatalogueObjects_V1.Catalogues.Item =
+	  	/** Attribute werden aus bestehendem Katalog importiert */
+	  	Standort : MANDATORY TEXT*50;
+      /** Optional */
+	  	Beschreibung : TEXT*200;
+      /** Optionaler Filter */
+		  Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+	  	!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Standort}"
+	  	UNIQUE Standort;
+	  END Standort_Code;
+
+    STRUCTURE Standort_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	    /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Standort_Code;
+    END Standort_CodeRef;
+
+    CLASS WiffenAnbauten_Code
+      EXTENDS CatalogueObjects_V1.Catalogues.Item =
+	  	/** Attribute werden aus bestehendem Katalog importiert */
+	  	Anbau : MANDATORY TEXT*50;
+      /** Optional */
+	  	Beschreibung : TEXT*200;
+      /** Optionaler Filter */
+		  Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+	  	!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Anbau}"
+	  	UNIQUE Anbau;
+	  END WiffenAnbauten_Code;
+
+    STRUCTURE WiffenAnbauten_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	    /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) WiffenAnbauten_Code;
+    END WiffenAnbauten_CodeRef;
+  
+  END Codeliste;
+
+  TOPIC EBSf EXTENDS EinschraenkungenBinnenschifffahrt_LV95_V1.EBSf =
+    BASKET OID AS INTERLIS.UUIDOID;
+    OID AS INTERLIS.UUIDOID;
+    DEPENDS ON SH_Binnenschifffahrt_V1_0.Codeliste;
+
+    CLASS Schifffahrtszeichen (EXTENDED) =
+      /** SH: Zwingende Auswahl */
+      MaterialHalterung : MANDATORY SH_Binnenschifffahrt_V1_0.Codeliste.Material_CodeRef;
+      /** SH: Zwingende Auswahl */
+      ZustandHalterungSignal : MANDATORY Zustand;
+    END Schifffahrtszeichen;
+
+  END EBSf;
+
+  TOPIC PfahlBoje =
+    BASKET OID AS INTERLIS.UUIDOID;
+    OID AS INTERLIS.UUIDOID;
+	  DEPENDS ON SH_Binnenschifffahrt_V1_0.Codeliste, SH_Binnenschifffahrt_V1_0.EBSf;
+
+    STRUCTURE WiffendatenStruc =
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      RahmentiefeRheingrund : 0.00 .. 20.00 [INTERLIS.m];
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      PfahllaengeGesamt : 0.00 .. 15.00 [INTERLIS.m];
+      /** SH: Zwingende Angabe, wenn Masse bekannt: Flusssohle bis Oberkante Pfahl */
+      Pfahllaenge_Flusssohle_OKPfahl : 0.00 .. 10.00 [INTERLIS.m];
+      /** SH: Zwingende Angabe, wenn Anzahl bekannt */
+      AnzahlStummel : 0 .. 10;
+    END WiffendatenStruc;
+
+    STRUCTURE BojendatenStruc =
+      /** SH: Zwingende Angabe */
+      Radarreflektor : MANDATORY BOOLEAN;
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      Kettenlaenge : 0.00 .. 20.00 [INTERLIS.m];
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      GewichtBojenstein : 0 .. 200 [INTERLIS.kg];
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      SteinLaenge : 0 .. 200 [Units.cm];
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      SteinBreite : 0 .. 200 [Units.cm];
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      SteinHoehe : 0 .. 200 [Units.cm];
+    END BojendatenStruc;
+
+    CLASS ObjektdatenFahrwasser =
+      /** SH: Zwingende Standortangabe */
+      Lage : MANDATORY SH_Binnenschifffahrt_V1_0.Codeliste.Standort_CodeRef;
+      /** SH: Zwingende Angabe */
+      Zustaendigkeit : MANDATORY SH_Binnenschifffahrt_V1_0.Codeliste.Zustaendigkeit_CodeRef;
+      /** SH: Zwingende Angabe, wenn Datum bekannt */
+      DatumInstallation : INTERLIS.XMLDate;
+      /** SH: Zwingende Angabe, wenn Masse bekannt: Blick Fliessrichtung */
+      DistanzUferLinks : 0 .. 50 [INTERLIS.m];
+      /** SH: Zwingende Angabe, wenn Masse bekannt: Blick Fliessrichtung */
+      DistanzUferRechts : 0 .. 50 [INTERLIS.m];
+      /** SH: Zwingende Angabe */
+      Materialart : MANDATORY SH_Binnenschifffahrt_V1_0.Codeliste.Material_CodeRef;
+      /** SH: Bei montierten Auf- oder Anbauten zwingende Angabe */
+      Anbauten : BAG {0..*} OF SH_Binnenschifffahrt_V1_0.Codeliste.WiffenAnbauten_CodeRef;
+      /** SH: Wiffendaten */
+      Wiffendaten : WiffendatenStruc;
+      /** SH: Bojendaten */
+      Bojendaten : BojendatenStruc;
+      /** SH: Zwingende Auswahl */
+      Zustand : MANDATORY Zustand;
+    END ObjektdatenFahrwasser;
+    
+    CLASS Anbindepfahl =
+      /** SH: Zwingende Angabe */
+      Pfahlart : MANDATORY (Anbindepfahl, Wehrpfahl);
+      /** SH: Zwingende Angabe */
+      Materialart : MANDATORY SH_Binnenschifffahrt_V1_0.Codeliste.Material_CodeRef;
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      GesamtlaengePfahl : 0.00 .. 20.00 [INTERLIS.m];
+      /** SH: Zwingende Angabe, wenn Masse bekannt: Rheinsohle - Pfahl OK */
+      PfahllaengeOKRheinsohle_OKPfahl : 0.00 .. 15.00 [INTERLIS.m];
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      Rammtiefe : 0.00 .. 15.00 [INTERLIS.m];
+      /** SH: Optional 1996 für Meereshöhe */
+      OberkanteRheinsohle : 0.00 .. 25.00 [INTERLIS.m];
+      /** SH: Zwingende Angabe, wenn Masse bekannt */
+      Durchmesser : 0.00 .. 1.00 [INTERLIS.m];
+      /** SH: Zwingende Angabe, wenn Anzahl bekannt */
+      AnzahlStummel : 0 .. 10;
+      /** SH: Zwingend geometrischer Punk digitalisieren */
+      Standort : MANDATORY GeometryCHLV95_V1.Coord2;
+      /** SH: Zwingende Auswahl */
+      Zustand : MANDATORY Zustand;
+    END Anbindepfahl;
+
+    ASSOCIATION ObjektdatenFahrwasserSchifffahrtszeichenAssoc =
+      ObjektdatenFahrwasser -- {0..1} ObjektdatenFahrwasser;
+      Schifffahrtszeichen (EXTERNAL) -- {1..*} SH_Binnenschifffahrt_V1_0.EBSf.Schifffahrtszeichen;
+    END ObjektdatenFahrwasserSchifffahrtszeichenAssoc;
+
+  END PfahlBoje;
+
+  TOPIC Unterhalt =
+    BASKET OID AS INTERLIS.UUIDOID;
+    OID AS INTERLIS.UUIDOID;
+	  DEPENDS ON SH_Binnenschifffahrt_V1_0.Codeliste, SH_Binnenschifffahrt_V1_0.EBSf, SH_Binnenschifffahrt_V1_0.PfahlBoje;
+
+    CLASS Erfassung (ABSTRACT) =
+		  /** SH: Zwingend Datum erfassen */
+		  Datum : MANDATORY INTERLIS.XMLDate;
+		  /** SH: Optional */
+		  Bemerkung : MTEXT;
+    END Erfassung;
+
+    CLASS Kontrolle EXTENDS Erfassung =
+      /** SH: Zwingende Angabe der Fachstelle */
+		  KontrolliertDurch : MANDATORY SH_Binnenschifffahrt_V1_0.Codeliste.Zustaendigkeit_CodeRef;
+    END Kontrolle;
+
+    CLASS Instandsetzung EXTENDS Erfassung =
+		  /** SH: Zwingende Angabe wenn kein Beobachtungsstatus */
+		  Massnahmen : BAG {1..*} OF SH_Binnenschifffahrt_V1_0.Codeliste.Massnahmen_CodeRef;
+      /** SH: Zwingende Angabe wenn kein Beobachtungsstatus */
+      Massnahmenfrist : INTERLIS.XMLDate;
+      /** SH: Zwingend Angabe, wenn Arbeiten ausgeführt */
+		  AusgefuehrtAm : INTERLIS.XMLDate;
+      /** SH: Zwingende Angabe wenn Arbeiten ausgeführt */
+		  AusgefuehrtDurch : SH_Binnenschifffahrt_V1_0.Codeliste.Zustaendigkeit_CodeRef;
+      /** SH: Verzeichnis der Fotoablage optional */
+		  Foto : TEXT*1023;
+    END Instandsetzung;
+
+    CLASS Unfallstatistik EXTENDS Erfassung =
+		  /** SH: Zwingend Angabe des Unfallhergangs */
+		  Unfallhergang : MANDATORY MTEXT;
+      /** SH: Zwingende Angabe bei entstandenen Sachschaden */
+		  Schadenaufnahme : MANDATORY MTEXT;
+		  /** SH: Zwingende Angabe durch wenn festgestellt */
+		  FeststellungDurch : BAG {1..*} OF SH_Binnenschifffahrt_V1_0.Codeliste.Zustaendigkeit_CodeRef;
+      /** SH: Verzeichnis der Fotoablage optional */
+		  Foto : TEXT*1023;
+    END Unfallstatistik;
+
+    ASSOCIATION SchifffahrtszeichenKontrolleAssoc =
+      Schifffahrtszeichen (EXTERNAL) -- {0..*} SH_Binnenschifffahrt_V1_0.EBSf.Schifffahrtszeichen;
+      Kontrolle -- {0..*} Kontrolle;
+    END SchifffahrtszeichenKontrolleAssoc;
+
+    ASSOCIATION SchifffahrtszeichenInstandsetzungAssoc =
+      Schifffahrtszeichen (EXTERNAL) -<#> {0..1} SH_Binnenschifffahrt_V1_0.EBSf.Schifffahrtszeichen;
+      Instandsetzung -- {0..*} Instandsetzung;
+    END SchifffahrtszeichenInstandsetzungAssoc;
+
+    ASSOCIATION ObjektdatenFahrwasserKontrolleAssoc =
+      ObjektdatenFahrwasser (EXTERNAL) -- {0..*} SH_Binnenschifffahrt_V1_0.PfahlBoje.ObjektdatenFahrwasser;
+      Kontrolle -- {0..*} Kontrolle;
+    END ObjektdatenFahrwasserKontrolleAssoc;
+
+    ASSOCIATION ObjektdatenFahrwasserInstandsetzungAssoc =
+      ObjektdatenFahrwasser (EXTERNAL) -- {0..*} SH_Binnenschifffahrt_V1_0.PfahlBoje.ObjektdatenFahrwasser;
+      Instandsetzung -- {0..*} Instandsetzung;
+    END ObjektdatenFahrwasserInstandsetzungAssoc;
+
+    ASSOCIATION AnbindepfahlKontrolleAssoc =
+      Anbindepfahl (EXTERNAL) -- {0..*} SH_Binnenschifffahrt_V1_0.PfahlBoje.Anbindepfahl;
+      Kontrolle -- {0..*} Kontrolle;
+    END AnbindepfahlKontrolleAssoc;
+
+    ASSOCIATION AnbindepfahlInstandsetzungAssoc =
+      Anbindepfahl (EXTERNAL) -<#> {0..1} SH_Binnenschifffahrt_V1_0.PfahlBoje.Anbindepfahl;
+      Instandsetzung -- {0..*} Instandsetzung;
+    END AnbindepfahlInstandsetzungAssoc;
+
+    ASSOCIATION ObjektdatenFahrwasserUnfallstatistikAssoc =
+      ObjektdatenFahrwasser (EXTERNAL) -<#> {1} SH_Binnenschifffahrt_V1_0.PfahlBoje.ObjektdatenFahrwasser;
+      Unfallstatistik -- {0..*} Unfallstatistik;
+    END ObjektdatenFahrwasserUnfallstatistikAssoc;
+
+  END Unterhalt;
+
+END SH_Binnenschifffahrt_V1_0.

@@ -1,0 +1,174 @@
+INTERLIS 2.3;
+
+/** Waldfunktionsplanung Kanton Schaffhausen.
+Modellierung der Waldfunktionsplanung des Kantons Schaffhausen.
+*/
+
+/*
+Version    | Who   | Modification
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+2022-11-01 | AGI   | Version 3.1
+                   | Attribut:
+                   |   LOESCHEN -> Eigentum
+                   | Codeliste:
+                   |   LOESCHEN -> Eigentuemer_Code 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+2022-02-22 | AGI   | Version 3.0
+                   | Interlismodell:
+                   |	  Interlis 1 zu Interlis 2.3
+                   | Attribut:
+                   |   LOESCHEN -> Identifikator, Drittrangfunktion, Rechtsstatus, Herkunft, Erfassungsbuero
+                   |   NEU -> Erlassdatum_Gemeinde, Inkraftsetzung_Kanton
+                   |	  Aenderung -> Gemarkung zu Gemeinde, User zu Bemerkungen
+                   | Waldfunktion: 
+                   |   LOESCHEN -> Wohlfahrt - Auenwaldfunktion (10)
+                   |   NEU -> Lebensraum u. Naturschutz - Ruhefunktion (9)
+                   |   AENDERUNG -> Besondere Schutzfunktion wird zu Schutzfunktion (1)
+                   |             -> Schutzfunktion wird zu Wohlfahrt - Wald-Erlebnis (2)
+                   | Stilisierung:
+                   |	  ANPASSUNG -> siehe unter Legende
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+2013-08-19 | AGI   | Version 2.1
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Fachtechnische Auskunft
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Kantonsforstamt
+Telefon +41 52 632 73 54
+https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Baudepartement/Kantonsforstamt-3610-DE.html
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+Legende
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Code | Waldfunktion                               | Farbezeichnung | RGB		 | Vorrang      | Zweitrang 			| Transparenz
+   1 | Schutz		                              | Rot			   | 255/  0/  0 | vollflaechig | 		 			    | 30%
+   2 | Wohlfahrt - Wald-Erlebnis			 	  | Gelb		   | 254/240/ 19 | vollflaechig | horizonal schraffiert | 30%
+   3 | Wohlfahrt - im Allgemeinen		 		  | Gelb 		   | 254/240/ 19 | vollflaechig | horizonal schraffiert | 30%
+   4 | Wohlfahrt - Erholung			     		  | Gelb 		   | 254/240/ 19 | vollflaechig | horizonal schraffiert | 30%
+   5 | Wohlfahrt - Landschaftschutz		 		  | Gelb 		   | 254/240/ 19 | vollflaechig | horizonal schraffiert | 30%
+   6 | Lebensraum u. Naturschutz - im Allgemeinen | Orange		   | 254/179/  0 | vollflaechig | horizonal schraffiert | 30%
+   7 | Nutz - Nutzfunktion I		  	     	  | Gruen          | 211/054/ 30 | vollflaechig | horizonal schraffiert | 30%
+   8 | Nutz - Nutzfunktion II	  	              | Gruen		   | 211/054/ 30 | vollflaechig | horizonal schraffiert | 30%
+   9 | Lebensraum u. Naturschutz - Ruhefunktion   | Orange		   | 254/179/  0 | vollflaechig | horizonal schraffiert | 30%
+  
+Bezeichnung                    | Farbezeichnung | RGB		    | Linientyp  | Strickstaerke 1:5000
+Umrandung aller Waldfunktionen | Dunkelblau     | 56/33/225     | Ausgezogen | 0.13 mm
+Schraffur Zweitrangfunktion	   | s. Code  1-9   | s. Code	2-9 | Ausgezogen | 2.00 mm, 4.00 mm (Zwischraum Transparenz) Verhältnis 1:2
+  
+Schriftart | Stil | Groesse 1:5000 | Attributzusammensetzung
+Arial      | Fett | 11 pt.         | nummer || abkuerzung ||'(' || gis_code (vorrang) || gis_code (zweitrang)|| ')' Bsp. 1BAG(10)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ */
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ IDGeoIV=161
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Waldfunktion, Erstrang, Zweitrang, Drittrang"
+!!@ furtherMetadata=https://www.geocat.ch/geonetwork/srv/ger/catalog.search#/metadata/a33fc7ef-1600-4a71-b75c-cf6486a77cda
+
+MODEL Waldfunktionsplanung_SH_V3_1 (de)
+AT "http://models.geo.sh.ch/FA"
+VERSION "2024-06-25"  =
+  IMPORTS CatalogueObjects_V1;
+  IMPORTS GeometryCHLV95_V1;
+  IMPORTS Units;
+  
+  DOMAIN
+  
+	Integer5 = 0 .. 99999;
+	Code = 0 .. 9;
+	Flaeche = AREA WITH (STRAIGHTS, ARCS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;	
+	
+	Einwohnergemeinde = (
+		Bargen_SH,
+		Beggingen,
+		Beringen,
+		Buch_SH,
+		Buchberg,
+		Buettenhardt,
+		Doerflingen,
+		Gaechlingen,
+		Hallau,
+		Hemishofen,
+		Lohn_SH,
+		Loehningen,
+		Merishausen,
+		Neuhausen_am_Rheinfall,
+		Neunkirch,
+		Oberhallau,
+		Ramsen,
+		Ruedlingen,
+		Schaffhausen,
+		Schleitheim,
+		Siblingen,
+		Stein_am_Rhein,
+		Stetten_SH,
+		Thayngen,
+		Trasadingen,
+		Wilchingen
+	);
+
+  TOPIC Codeliste =
+
+	CLASS Kriterien_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert*/
+		GIS_Code : Code;
+		/** Attribute werden aus bestehendem Katalog importiert*/
+		Waldfunktion : TEXT*50;
+		/** Attribute werden aus bestehendem Katalog importiert*/
+		Spezifikation : MTEXT;
+		/** Attribute werden aus bestehendem Katalog importiert*/
+		Ziele : MTEXT;
+		/** Attribute werden aus bestehendem Katalog importiert*/
+		Kriterien : MTEXT;
+		/** Attribute werden aus bestehendem Katalog importiert*/
+		Grundsaetze : MTEXT;
+		UNIQUE GIS_Code;
+	END Kriterien_Code;
+	
+    STRUCTURE Kriterien_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel fuer die Kriterien_Codeliste der Rangfunktionen */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Kriterien_Code;
+    END Kriterien_CodeRef;
+	
+  END Codeliste;	
+
+  TOPIC Waldfunktionsplan =
+	DEPENDS ON Waldfunktionsplanung_SH_V3_1.Codeliste;
+  
+  	CLASS Waldfunktion =
+		/** Laufnummer pro Gemeinde beginnend mit 1 */
+		Nummer : MANDATORY Integer5;
+		/** Gemeinde zwingend angeben */
+		Gemeinde : MANDATORY Einwohnergemeinde;
+		/** 1. Rang zwingend angeben */
+		Vorrangfunktion : MANDATORY Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_CodeRef;
+		/** 2. Rang zwingend angeben */
+		Zweitrangfunktion : MANDATORY Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_CodeRef;
+		/** Erfassungsdatum oder Datum der letzten Aenderung zwingend angeben */
+		letzte_Aenderung : MANDATORY INTERLIS.XMLDate;
+		/** Ab Erlass durch den Gemeinderat muss das Datum eingetragen werden */
+		Erlassdatum_Gemeinde : INTERLIS.XMLDate;
+		/** Ab Inkraftsetzung durch den Regierungsrat muss das Datum eingetragen werden */
+		Inkraftsetzung_Kanton : INTERLIS.XMLDate;
+		/** Datenerfasser kann optional Text erfassen */
+		Bemerkungen : TEXT*250;
+		/** zwingend ohne Ueberlappung digitalisieren */
+		Geometrie : MANDATORY Flaeche;
+		!!@ ilivalid.msg_de = "Vorrangfunktion darf nicht Code = 0 haben"
+        MANDATORY CONSTRAINT Vorrangfunktion->Reference->GIS_Code != 0;
+		!!@ ilivalid.msg_de = "Zweitrangfunktion darf nicht Code = 1 haben"
+		MANDATORY CONSTRAINT Zweitrangfunktion->Reference->GIS_Code != 1;
+		!!@ ilivalid.msg_de = "Die beiden Nutzfunktionen (I und II) dürfen nicht in Kombination stehen"
+		MANDATORY CONSTRAINT NOT (Vorrangfunktion->Reference->GIS_Code == 7 AND Zweitrangfunktion->Reference->GIS_Code == 8) AND NOT (Vorrangfunktion->Reference->GIS_Code == 8 AND Zweitrangfunktion->Reference->GIS_Code == 7);
+		!!@ ilivalid.msg_de = "Zweitrangfunktion darf nicht gleichen Code wie Vorrangfunktion haben"
+		MANDATORY CONSTRAINT Zweitrangfunktion->Reference->GIS_Code != Vorrangfunktion->Reference->GIS_Code;
+		!!@ ilivalid.msg_de = "Forlaufende Nummer und Gemeinde müssen als Einheit eindeutig sein"
+		UNIQUE Nummer, Gemeinde;
+	END Waldfunktion;
+
+  END Waldfunktionsplan;
+
+END Waldfunktionsplanung_SH_V3_1.

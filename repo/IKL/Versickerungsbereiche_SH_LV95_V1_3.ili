@@ -1,0 +1,91 @@
+INTERLIS 2.3;
+
+/** Minimales Geodatenmodell Kanton Schaffhausen.
+Versickerungsbereiche - Kantonaler Geobasisdatensatz.
+ */
+
+!! Version    | Who   | Modification
+!!------------------------------------------------------------------------------
+!! 2021-08-20 | AGI   | Erstellung in Zusammenarbeit mit IKL für Vernehmlassung
+!! 2022-04-24 | AGI   | Korrekturen gemäss Rückmeldung aus Vernehmlassung
+!! 2024-01-25 | AGI   | Weitere Anpassungen und Vereinfachungen (V1.1)
+!! 2024-03-15 | AGI   | Weitere Anpassungen (V1.2)
+!! 2024-04-16 | AGI   | Weitere Anpassungen (V1.3)
+!!------------------------------------------------------------------------------
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://interkantlab.ch/CMS/Webseite/Interkantonales-Labor/Kanton-Schaffhausen/Wasser-2245599-DE.html
+!!@ IDKGeoIV=129
+MODEL Versickerungsbereiche_SH_LV95_V1_3 (de)
+AT "http://geo.sh.ch" VERSION "2024-04-16"  =
+IMPORTS GeometryCHLV95_V1;
+
+  TOPIC Versickerungsbereiche =
+  
+	DOMAIN
+	
+	Versickerungsmoeglichkeiten = (
+		gut (
+				/** sickerfähige Schicht gut durchlässig (*S > 10 l/min m2) 
+				*/
+			Anlagewahl_nicht_eingeschraenkt,
+				/** sickerfähige Schicht gut durchlässig (*S > 10 l/min m2), Einschränkung im Feld [Bemerkung] angeben
+				*/
+			Anlagewahl_eingeschraenkt
+			),
+		maessig (
+				/** sickerfähige Schicht mässig gut durchlässig (*S = 2-10 l/min m2) 
+				*/
+			Anlagewahl_nicht_eingeschraenkt,
+				/** sickerfähige Schicht mässig gut durchlässig (*S = 2-10l/min m2), Einschränkung im Feld [Bemerkung] angeben
+				*/
+			Anlagewahl_eingeschraenkt
+			),
+				/** sickerfähige Schicht uneinheitlich und vorwiegend gering durchlässig (*S = 0.5-2 l/min m2) 
+		   		*/
+		schlecht,
+				/** Bereiche mit sehr schlechter Durchlässigkeiten oder ohne Versickerungsmöglichkeiten (*S < 0.5 l/min m2);
+                                    Versickerungsbereiche, wo keine Versickerungsmöglichkeiten bestehen, müssen ebenfalls erfasst werden, damit der Geometrietyp AREA erfüllt wird.
+				*/
+		keine, 
+		unbekannt,
+				/** Bei belasteten Standorten und Auffüllungen, Grundwasserschutzzonen (S1 und S2) etc. verwenden, für Details Feld [Bemerkungen] verwenden.
+				*/
+		unzulaessig
+	);
+
+
+	CLASS Administration =
+			/** Betroffene Gemeinden, die im Datensatz erfasst wurden (Aufzählung der betroffenen Gemeinden).
+			*/
+		Gemeinde: MANDATORY TEXT*255;
+			/** Name des Ingenieurbüros, welches die Versickerungsflächen erfasst hat.
+			*/
+		Ingenieurbuero : MANDATORY TEXT*255;
+			/** Exportdatum des Datensatzes, jeweils letzter Stand.
+			*/
+		Datum_Export : MANDATORY INTERLIS.XMLDate;
+			/** Individuell nutzbares Feld für Zusatzinformationen.
+			*/
+		Bemerkung : TEXT*255;
+	END Administration;
+
+
+	CLASS Versickerungsbereich =
+			/** Gemäss Auswahlliste "Versickerungsmoeglichkeiten"
+			*/
+		Versickerungsmoeglichkeit: MANDATORY Versickerungsmoeglichkeiten;
+			/** Datum der letzten Bearbeitung der Fläche.
+			*/
+		Letzte_Aenderung : MANDATORY INTERLIS.XMLDate;
+			/** Individuell nutzbares Feld für Zusatzinformationen.
+			*/
+		Bemerkung : TEXT*255;
+			/** Geometrie der Versickerungsfläche. Flächen dürfen sich nicht überlappen und Nachbarflächen müssen am gemeinsamen Verlauf die identischen Stützpunkte haben. Flächen innerhalb des Gebiets, die keine Versickerungsmöglichkeiten bieten, müssen mit "Versickerungsmoeglichkeit = keine" erfasst werden.
+			*/
+		Perimeter : MANDATORY GeometryCHLV95_V1.Area;
+	END Versickerungsbereich;
+
+  END Versickerungsbereiche;
+
+END Versickerungsbereiche_SH_LV95_V1_3.	

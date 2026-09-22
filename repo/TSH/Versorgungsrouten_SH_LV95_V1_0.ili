@@ -1,0 +1,81 @@
+INTERLIS 2.3;
+
+/** Versorgungsroutem Kanton Schaffhausen.
+Modellierung der Versorgungsrouten im Kanton Schaffhausen.
+*/
+
+ /*
+ Version    | Who   | Modification	| description
+------------------------------------------------------------------------------
+ ---------- | ---   | Version 1.1		| 
+                    | - 				|
+                    | - 				|
+                    | - 				|
+------------------------------------------------------------------------------
+ 2020-02-06 | AGI   | Version 1.0		| New
+------------------------------------------------------------------------------
+
+ Fachtechnische Auskunft
+ -----------------------------------------------------------------------------------------------------------------------
+ Tiefbau Schaffhausen, Verkehr und Infrastrukturbau
+ Telefon: +41 52 632 71 05
+ URL: https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Baudepartement/Tiefbau-Schaffhausen-3590-DE.html
+ -----------------------------------------------------------------------------------------------------------------------
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, betriebliche kantonale Versorgungsrouten, Kraftwerk, Unterwerk"
+!!@ furtherMetadata=https://www.geocat.ch/geonetwork/srv/ger/catalog.search#/metadata/d0c252af-6e81-49e4-bf73-99776484bbd1
+
+MODEL Versorgungsrouten_SH_LV95_V1_0 (de)
+AT "http://models.geo.sh.ch" VERSION "2018-11-29"  =
+  IMPORTS CatalogueObjects_V1;
+  IMPORTS Units;
+  IMPORTS GeometryCHLV95_V1;
+  
+  DOMAIN
+
+	Werktyp = (
+		Kraftwerk,
+		Unterwerk,
+		Unterwerk_Industrie
+	);
+
+	Status = (
+		bestehend,
+		projektiert,
+		vorgesehen
+	);
+  
+	Transportroute = (
+		I_A,
+		I_B,
+		I_C,
+		II_A,
+		II_B,
+		II_C,
+		II_D,
+		II_E,
+		III,
+		IV_A,
+		IV_B
+	);	
+  
+  TOPIC Versorgung =
+
+	CLASS Werk =
+		Name: TEXT*100;
+		Versorgung: MANDATORY Werktyp;
+		Status: MANDATORY Status;
+		Geometrie: MANDATORY GeometryCHLV95_V1.Coord2;
+	END Werk;
+	
+	CLASS Route =
+		Routentyp: MANDATORY Transportroute;
+		Geometrie: MANDATORY GeometryCHLV95_V1.Line;
+	END Route;	
+	
+  END Versorgung;
+	
+END Versorgungsrouten_SH_LV95_V1_0.

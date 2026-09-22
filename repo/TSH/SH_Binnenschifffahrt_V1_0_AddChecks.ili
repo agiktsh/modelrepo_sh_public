@@ -1,0 +1,156 @@
+INTERLIS 2.3;
+
+/** Datenvalidierung - KANTONALE ERWEITERUNG SH.
+Datenvalidierung - Binnenschifffahrt im Kanton Schaffhausen.
+*/
+
+CONTRACTED MODEL SH_Binnenschifffahrt_V1_0_AddChecks (de)
+AT "https://geo.sh.ch"
+VERSION "2023-12-14"  =
+  IMPORTS SH_Binnenschifffahrt_V1_0;
+  IMPORTS EinschraenkungenBinnenschifffahrt_LV95_V1;
+
+  VIEW TOPIC SH_Binnenschifffahrt_V1_0_Validierung =
+    DEPENDS ON SH_Binnenschifffahrt_V1_0.Unterhalt, SH_Binnenschifffahrt_V1_0.PfahlBoje, SH_Binnenschifffahrt_V1_0.EBSf, EinschraenkungenBinnenschifffahrt_LV95_V1.EBSf;
+
+    /*
+    Wie kann Schifffahrtszeichen assoziieren mit ObjektdatenFahrwasser geprüft werden (Geowerkstatt)?
+     */
+
+    VIEW v_Schifffahrtszeichen
+      PROJECTION OF SH_Binnenschifffahrt_V1_0.EBSf.Schifffahrtszeichen;
+    =
+      ALL OF Schifffahrtszeichen;
+      !!@ name = checkMaterialHalterung
+      !!@ ilivalid.msg = "Bei Schifffahrtszeichen nur Auswahl 'Stahl' bei Attribut 'MaterialHalterung'zulässig"
+      MANDATORY CONSTRAINT MaterialHalterung->Reference->Material == "Stahl";
+      !!@ name = checkBeeinflussungCount
+      !!@ ilivalid.msg = "Schifffahrtszeichen muss mit Schifffahrtsbeeinflussung assoziieren (anstatt 0)"
+      MANDATORY CONSTRAINT DEFINED (rBeeinflussung);
+    END v_Schifffahrtszeichen;
+
+    VIEW v_ObjektdatenFahrwasser
+      PROJECTION OF SH_Binnenschifffahrt_V1_0.PfahlBoje.ObjektdatenFahrwasser;
+    =
+      ALL OF ObjektdatenFahrwasser;
+      !!@ name = checkObjektdatenFahrwasserSchifffahrtszeichen
+      !!@ ilivalid.msg = "ObjektdatenFahrwasser muss zwingend mit Schifffahrtszeichen des Zeichentyps 'Fahrwasserseite' assoziieren"
+      MANDATORY CONSTRAINT 
+      (DEFINED (Schifffahrtszeichen) AND DEFINED (ObjektdatenFahrwasser) AND 
+      (
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code == "747_223_1__D2_2" OR 
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code == "747_223_1__D2_1" OR 
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code == "747_201_1__D2_2" OR
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code == "747_201_1__D2_1" OR
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code == "0_747_225_1__D2_2" OR
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code == "0_747_225_1__D2_1"
+      ) )
+      OR
+      (
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code != "747_223_1__D2_2" OR 
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code != "747_223_1__D2_1" OR 
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code != "747_201_1__D2_2" OR
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code != "747_201_1__D2_1" OR
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code != "0_747_225_1__D2_2" OR
+      Schifffahrtszeichen->Schifffahrtszeichentyp->Reference->Code != "0_747_225_1__D2_1"
+      ) AND NOT (DEFINED (ObjektdatenFahrwasser) );
+      !!@ name = checkSchifffahrtszeichenZustaendigkeit
+      !!@ ilivalid.msg = "Bei ObjektdatenFahrwasser ist das Attribut 'Zustaendigkeit'{Zustaendigkeit} unzulässig"
+      MANDATORY CONSTRAINT Zustaendigkeit->Reference->Bezeichnung != "Bevölkerung";
+      !!@ name = checkWiffeBoje
+      !!@ ilivalid.msg = "Bei ObjektdatenFahrwasser muss entweder das Attribut Bojen- oder Wiffendaten definiert sein"
+      MANDATORY CONSTRAINT (NOT (DEFINED (Wiffendaten)) AND DEFINED (Bojendaten)) OR (NOT (DEFINED (Bojendaten)) AND DEFINED (Wiffendaten));
+    END v_ObjektdatenFahrwasser;
+
+    VIEW v_Kontrolle
+      PROJECTION OF SH_Binnenschifffahrt_V1_0.Unterhalt.Kontrolle;
+    =
+      ALL OF Kontrolle;
+      !!@ name = checkKontrolleCount
+      !!@ ilivalid.msg = "Kontrolle muss mindestens mit Schiffahrtszeichen, ObjektdatenFahrwasser oder einem Anbindepfahl assoziieren (anstatt 0)"
+      MANDATORY CONSTRAINT DEFINED (Schifffahrtszeichen) OR DEFINED (ObjektdatenFahrwasser) OR DEFINED (Anbindepfahl);
+      !!@ name = checkKontrolleBevoelkerung
+      !!@ ilivalid.msg = "Bei Kontrolle ist das Attribut 'KontrolliertDurch' {KontrolliertDurch} unzulässig"
+      MANDATORY CONSTRAINT KontrolliertDurch->Reference->Bezeichnung != "Bevölkerung";
+    END v_Kontrolle;
+
+    VIEW v_Instandsetzung
+      PROJECTION OF SH_Binnenschifffahrt_V1_0.Unterhalt.Instandsetzung;
+    =
+      ALL OF Instandsetzung;
+      !!@ name = checkInstandsetzungCount
+      !!@ ilivalid.msg = "Instandsetzung muss mindestens mit Schiffahrtszeichen, ObjektdatenFahrwasser oder einem Anbindepfahl assoziieren (anstatt 0)"
+      MANDATORY CONSTRAINT DEFINED (Schifffahrtszeichen) OR DEFINED (ObjektdatenFahrwasser) OR DEFINED (Anbindepfahl);
+      !!@ name = checkMassnahmenCount
+      !!@ ilivalid.msg = "Bei Instandsetzung fehlen die Angaben zu den 'Massnahmen' (anstatt 0)"
+      MANDATORY CONSTRAINT DEFINED (Massnahmen);
+      !!@ name = checkInstandsetzungBevoelkerung
+      !!@ ilivalid.msg = "Bei Instandsetzung ist das Attribut 'AusgefuehrtDurch' {AusgefuehrtDurch} unzulässig"
+      MANDATORY CONSTRAINT AusgefuehrtDurch->Reference->Bezeichnung != "Bevölkerung";
+      !!@ name = checkAnbindepfahlAusfuehrung
+      !!@ ilivalid.msg = "Bei Instandsetzung ist das Attribut AusgefuehrtDurch {AusgefuehrtDurch} unzulässig"
+      MANDATORY CONSTRAINT DEFINED (Anbindepfahl) AND Instandsetzung->AusgefuehrtDurch->Reference->Bezeichnung == "Tiefbau Schaffhausen" OR Instandsetzung->AusgefuehrtDurch->Reference->Bezeichnung == "Gemeinde";
+      !!@ name = Test
+      !!@ ilivalid.msg = "Test"
+    END v_Instandsetzung;
+
+    /* 
+    Feststellung die mit Geowerkstatt betrachteten werden muss:
+    Bei den nachstehenden Constraints der Instandsetzungen wird lediglich nur der erste Eintrag des BAG geprüft und nicht alle Einträge. Braucht es hierzu einen JOIN bzw. AGGREGATION?
+    */
+  
+    VIEW v_InstandsetzungSchifffahrtszeichen
+      PROJECTION OF SH_Binnenschifffahrt_V1_0.Unterhalt.Instandsetzung;
+    =
+      ALL OF Instandsetzung;
+      !!@ name = checkInstandsetzungSchifffahrtszeichen
+      !!@ ilivalid.msg = "Bei Instandsetzung ist das Attribut Massnahmen {Massnahmen} zum Schifffahrtszeichen unzulässig"
+      SET CONSTRAINT WHERE DEFINED (Schifffahrtszeichen):
+        Massnahmen->Reference->Schifffahrtszeichen == #true;
+    END v_InstandsetzungSchifffahrtszeichen;
+
+    VIEW v_InstandsetzungAnbindepfahl
+      PROJECTION OF SH_Binnenschifffahrt_V1_0.Unterhalt.Instandsetzung;
+    =
+      ALL OF Instandsetzung;
+      !!@ name = checkInstandsetzungAnbindepfahl
+      !!@ ilivalid.msg = "Bei Instandsetzung ist das Attribut Massnahmen zum Anbindepfahl unzulässig"
+      SET CONSTRAINT WHERE DEFINED (Anbindepfahl):
+        Massnahmen->Reference->Anlegepfahl == #false;
+    END v_InstandsetzungAnbindepfahl;
+
+    VIEW v_InstandsetzungWiffe
+      PROJECTION OF SH_Binnenschifffahrt_V1_0.Unterhalt.Instandsetzung;
+    =
+      ALL OF Instandsetzung;
+      !!@ name = checkInstandsetzungWiffe
+      !!@ ilivalid.msg = "Bei Instandsetzung ist das Attribut Massnahmen zur Wiffe unzulässig"
+      SET CONSTRAINT WHERE DEFINED (ObjektdatenFahrwasser->Wiffendaten):
+        Massnahmen->Reference->Wiffe == #true;
+    END v_InstandsetzungWiffe;
+
+    VIEW v_InstandsetzungBoje
+      PROJECTION OF SH_Binnenschifffahrt_V1_0.Unterhalt.Instandsetzung;
+    =
+      ALL OF Instandsetzung;
+      !!@ name = checkInstandsetzungBoje
+      !!@ ilivalid.msg = "Bei Instandsetzung ist das Attribut Massnahmen zur Boje unzulässig"
+      SET CONSTRAINT WHERE DEFINED (ObjektdatenFahrwasser->Bojendaten):
+        Massnahmen->Reference->Boje == #true;
+    END v_InstandsetzungBoje;
+
+    VIEW v_Unfallstatistik
+      PROJECTION OF SH_Binnenschifffahrt_V1_0.Unterhalt.Unfallstatistik;
+    =
+      ALL OF Unfallstatistik;
+      !!@ name = checkObjektdatenFahrwasserCount
+      !!@ ilivalid.msg = "Unfallstatistik muss mit ObjektdatenFahrwasser assoziieren (anstatt 0)"
+      MANDATORY CONSTRAINT INTERLIS.objectCount (ObjektdatenFahrwasser) == 1;
+      !!@ name = checkFeststellungDurch
+      !!@ ilivalid.msg = "Bei Unfallstatistik fehlen die Angaben zu FeststellungDurch (anstatt 0)"
+      MANDATORY CONSTRAINT DEFINED (FeststellungDurch);
+    END v_Unfallstatistik;
+  
+  END SH_Binnenschifffahrt_V1_0_Validierung;
+  
+END SH_Binnenschifffahrt_V1_0_AddChecks.

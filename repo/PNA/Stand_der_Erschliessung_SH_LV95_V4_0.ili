@@ -1,0 +1,95 @@
+INTERLIS 2.3;
+
+/** Stand der Erschliessungen Kanton Schaffhausen.
+Modellierung der Stand der Erschliessungen im Kanton Schaffhausen.
+*/
+
+/*
+ Version    | Who   | Modification
+------------------------------------------------------------------------------
+ 2019-04-18 | AGI SH| Anpassungen Kanton SH, Version 4.0
+------------------------------------------------------------------------------
+ 2017-09-18 | ARE   | Version 1.0
+------------------------------------------------------------------------------
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ IDGeoIV=74
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Raumplanung, Nutzungsplanung, Erschliessungsstand"
+!!@ furtherMetadata=https://www.geocat.ch/geonetwork/srv/ger/catalog.search#/metadata/34640abe-9eb7-11ec-b909-0242ac120002
+
+MODEL Stand_der_Erschliessung_SH_LV95_V4_0 (de)
+AT "http://models.geo.sh.ch/PNA"
+VERSION "2019-04-18"  =
+  IMPORTS GeometryCHLV95_V1,InternationalCodes_V1;
+
+  STRUCTURE LocalisedUri =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Text : MANDATORY URI;
+  END LocalisedUri;
+  
+  STRUCTURE MultilingualUri =
+    LocalisedText : BAG {1..*} OF Stand_der_Erschliessung_SH_LV95_V4_0.LocalisedUri;
+    UNIQUE (LOCAL) LocalisedText: Language;
+  END MultilingualUri;
+
+  TOPIC Geobasisdaten_SH =
+
+    DOMAIN
+
+      Gebietseinteilung = AREA WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.050;
+
+      Erschliessungsstand = (
+        ueberbaut,
+        nicht_ueberbaut_baureif,
+        nicht_ueberbaut_baureif_in_05_Jahren,
+        nicht_ueberbaut_baureif_in_10_Jahren,
+        nicht_ueberbaut_baureif_in_15_Jahren,
+        Verkehrsflaeche_ausgebaut,
+        Verkehrsflaeche_nicht_ausgebaut,
+        nicht_ueberbaubar,
+        Loch_in_Baugebiet
+      );
+
+
+
+    CLASS Stand_der_Erschliessung =
+      Geometrie : MANDATORY Gebietseinteilung;
+      Erschliessungsstand : MANDATORY Erschliessungsstand;
+      erstellt : MANDATORY INTERLIS.XMLDate;
+      Bemerkungen : MTEXT;
+    END Stand_der_Erschliessung;
+
+    CLASS Erschliessungsetappierung =
+      Geometrie : MANDATORY Gebietseinteilung;
+      Erschliessungsstopp : MANDATORY BOOLEAN;
+      Bemerkungen : MTEXT;
+    END Erschliessungsetappierung;
+
+  END Geobasisdaten_SH;
+
+  TOPIC TransferMetadaten =
+    DEPENDS ON Stand_der_Erschliessung_SH_LV95_V4_0.Geobasisdaten_SH;
+
+    CLASS Amt =
+      Name : MANDATORY TEXT*80;
+      AmtImWeb : Stand_der_Erschliessung_SH_LV95_V4_0.MultilingualUri;
+      UID : TEXT*12;
+    END Amt;
+
+    CLASS Datenbestand =
+      BasketID : MANDATORY TEXT*20;
+      Stand : MANDATORY INTERLIS.XMLDate;
+      Lieferdatum : INTERLIS.XMLDate;
+      Bemerkungen : MTEXT;
+    END Datenbestand;
+
+    ASSOCIATION zustStelle_Daten =
+      zustaendigeStelle -<> {1} Amt;
+      Datenbestand -- {0..*} Datenbestand;
+    END zustStelle_Daten;
+
+  END TransferMetadaten;
+
+END Stand_der_Erschliessung_SH_LV95_V4_0.

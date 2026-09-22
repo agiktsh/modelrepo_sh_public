@@ -1,0 +1,669 @@
+INTERLIS 2.3;
+
+/** Pflegeplanung Fliessgewaesser Kantons Schaffhausen.
+Pflegeplanung der Flora und Fauna sowie Bauwerke und Moebilierung entlang der Fliessgewaesser.
+*/
+
+/* 
+Version    | Who   | Modification
+------------------------------------------------------------------------------
+0000-00-00 | ---   | Version 1.1
+                   | - 
+                   | - 
+                   | - 
+------------------------------------------------------------------------------
+2023-03-12 | AGI   | Version 1.0
+------------------------------------------------------------------------------
+
+Fachtechnische Auskunft
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+Tiefbau Schaffhausen
+Abteilung Gewaesser und Materialabbau
+Telefon +41 52 632 73 29
+https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Baudepartement/Tiefbau-Schaffhausen/Abteilung-Gew-sser-und-Materialabbau-403883-DE.html
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Allgemeines zum Datenmodell                                 
+-------------------------------------------------------------------------------
+- Die Erfassung der Pflegeplanung verfolgt das Ziel, den zyklischen Unterhalt 
+  und Kontrolle der Fliessgewässer, sowie derer angrenzenden Flora, Fauna, 
+  Bauwerke sowie Möbilierung zu verwalten.
+
+- Die abgebildeten Daten beschränken sich auf das Wesentliche.         
+  (möglichst eine einfache und übersichtliche Modellierung).          
+
+- Als Objektidentifikator wird eine UUID (z.B. 
+  d89778ed-242a-4642-9a32-1e1954675b0a) festgelegt.
+-------------------------------------------------------------------------------
+
+Beteiligte
+-------------------------------------------------------------------------------
+Erarbeitet durch:                                                                     
+- Fabian Hablützel, Tiefbau Schaffhausen (TSH)                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen (AGI)      
+ 
+INTERLIS-Modell erstellt durch:                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen 
+-------------------------------------------------------------------------------
+
+Organisatorische Aspekte                                              
+-------------------------------------------------------------------------------    
+- Datenmodelländerungen und -erweiterungen dürfen nur durch das AGI erfolgen.                                               
+   
+- Die inhaltliche Überprüfung sowie Validierung der Modellkonformität leistet 
+  das TSH durch die systemischen Mechanismen.          
+-------------------------------------------------------------------------------                        
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Pflegeplanung, Fliessgewässer, Gewässerereignis, Flora, Fauna, Bauwerke, Möbilierung"
+
+MODEL SH_Pflegeplanung_Fliessgewaesser_V1_0 (de)
+AT "http://geo.sh.ch"
+VERSION "2023-03-12" =
+  IMPORTS CatalogueObjects_V1;
+  IMPORTS GeometryCHLV95_V1;
+  IMPORTS Units;
+
+  TOPIC Codeliste =
+
+	CLASS Kalendermonat_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Zwingend */
+		Monat : MANDATORY 1 .. 12 [INTERLIS.M];
+		Bezeichnung : TEXT*10;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Monat}"
+		UNIQUE Monat;
+	END Kalendermonat_Code;
+
+    STRUCTURE Kalendermonat_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Kalendermonat_Code;
+    END Kalendermonat_CodeRef;
+
+	CLASS Gerinnepflege_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Zwingend */
+		Pflege : MANDATORY TEXT*50;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Pflege}"
+		UNIQUE Pflege;
+	END Gerinnepflege_Code;
+	
+    STRUCTURE Gerinnepflege_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Gerinnepflege_Code;
+    END Gerinnepflege_CodeRef;
+
+  	CLASS Arbeitsart_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Zwingend */
+		Ausfuehrung : MANDATORY TEXT*50;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Ausfuehrung}"
+		UNIQUE Ausfuehrung;
+	END Arbeitsart_Code;
+	
+    STRUCTURE Arbeitsart_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Arbeitsart_Code;
+    END Arbeitsart_CodeRef;
+  
+	CLASS Pflegeziel_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Zwingend */
+		Pflegeziel : MANDATORY TEXT*50;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Pflegeziel}"
+		UNIQUE Pflegeziel;
+	END Pflegeziel_Code;
+	
+    STRUCTURE Pflegeziel_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Pflegeziel_Code;
+    END Pflegeziel_CodeRef;
+	
+	CLASS Zustaendigkeiten_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Bereich : MANDATORY TEXT*25;
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Zustaendigkeit : MANDATORY TEXT*100;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "{Bereich} mit {Zustaendigkeit} verletzt Eindeutigkeit"
+		UNIQUE Bereich, Zustaendigkeit;
+	END Zustaendigkeiten_Code;
+	
+    STRUCTURE Zustaendigkeiten_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+		/** Lediglich ein Hilfsmittel */
+		Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Zustaendigkeiten_Code;
+	END Zustaendigkeiten_CodeRef;
+
+	CLASS Pflege_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Pflegegruppe : MANDATORY TEXT*25;
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Pflege : MANDATORY TEXT*50;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "{Pflegegruppe} mit {Pflege} verletzt Eindeutigkeit"
+		UNIQUE Pflegegruppe, Pflege;
+	END Pflege_Code;
+	
+    STRUCTURE Pflege_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Pflege_Code;
+	END Pflege_CodeRef;
+	
+	CLASS Flora_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Bezeichnung : MANDATORY TEXT*100;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Angabe wenn Objekt als Punktgeometrie erlaubt wird */
+		Punkt : MANDATORY INTERLIS.BOOLEAN;
+		/** Angabe wenn Objekt als Flaechengeometrie erlaubt wird */
+		Flaeche : MANDATORY INTERLIS.BOOLEAN;
+		/** Angabe wenn Objekt zur Biberfrassgruppe erlaubt wird */
+		Biberfrass : MANDATORY INTERLIS.BOOLEAN;
+		/** Angabe wenn Objekt zur Biberschutzgruppe erlaubt wird */
+		Biberschutz : MANDATORY INTERLIS.BOOLEAN;
+		/** Angabe wenn Objekt zur Pilzbefallgruppe erlaubt wird */
+		Pilzbefall : MANDATORY INTERLIS.BOOLEAN;
+		/** Angabe wenn Objekt zur Schaedlingsbefallgruppe erlaubt wird */
+		Schaedlingsbefall : MANDATORY INTERLIS.BOOLEAN;
+		/** Angabe wenn Objekt zur Erstellung erlaubt wird */
+		Erstellung : MANDATORY INTERLIS.BOOLEAN;
+		/** Angabe wenn Objekt zur Erhaltung erlaubt wird */
+		Erhaltung : MANDATORY INTERLIS.BOOLEAN;
+		/** Angabe wenn Objekt zur Neophytenbekämpfung erlaubt wird */
+		Neophytenbekaempfung : MANDATORY INTERLIS.BOOLEAN;
+		/** Angabe wenn Objekt zur Pflegegruppe erlaubt wird */
+		Pflegegruppe : MANDATORY TEXT*25;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Bezeichnung}"
+		UNIQUE Bezeichnung;
+	END Flora_Code;
+	
+    STRUCTURE Flora_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Flora_Code;
+	END Flora_CodeRef;
+
+		
+	CLASS Fauna_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Bezeichnung : MANDATORY TEXT*100;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Bezeichnung}"
+		UNIQUE Bezeichnung;
+	END Fauna_Code;
+	
+    STRUCTURE Fauna_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Fauna_Code;
+	END Fauna_CodeRef;
+	
+	CLASS Bestockung_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Bestockung : MANDATORY TEXT*50;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Bestockung}"
+		UNIQUE Bestockung;
+	END Bestockung_Code;
+	
+    STRUCTURE Bestockung_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+		/** Lediglich ein Hilfsmittel */
+		Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Bestockung_Code;
+	END Bestockung_CodeRef;
+	
+	CLASS Ausfuehrung_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Ausfuehrung : MANDATORY TEXT*50;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Ausfuehrung}"
+		UNIQUE Ausfuehrung;
+	END Ausfuehrung_Code;
+	
+    STRUCTURE Ausfuehrung_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Ausfuehrung_Code;
+	END Ausfuehrung_CodeRef;
+
+	CLASS FaunaVorgehen_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Zwingend */
+		Aktivitaet : MANDATORY TEXT*25;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Aktivitaet}"
+		UNIQUE Aktivitaet;
+	END FaunaVorgehen_Code;
+	
+    STRUCTURE FaunaVorgehen_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) FaunaVorgehen_Code;
+	END FaunaVorgehen_CodeRef;
+	
+	CLASS Intervall_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		IntervallTag : MANDATORY 0..9125 [Units.d];
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Erlaubte Auswahl für Bauwerke */
+		Bauwerk: MANDATORY BOOLEAN;
+		/** Erlaubte Auswahl für Möbilierung */
+		Moebilierung: MANDATORY BOOLEAN;
+		/** Erlaubte Auswahl für Flora */
+		Flora : MANDATORY BOOLEAN;
+		/** Erlaubte Auswahl für Fauna */
+		Fauna : MANDATORY BOOLEAN;
+		/** Erlaubte Auswahl für Flora */
+		Florakalender : MANDATORY BOOLEAN;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {IntervallTag}"
+		UNIQUE IntervallTag;
+	END Intervall_Code;
+	
+    STRUCTURE Intervall_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Intervall_Code;
+	END Intervall_CodeRef;
+	
+	CLASS BauwerkMoebilierung_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert*/
+		Gruppe : MANDATORY TEXT*50;
+		/** Attribute werden aus bestehendem Katalog importiert*/
+		Bezeichnung : MANDATORY TEXT*100;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Wenn Bauwerk oder Möbilierung als Punktgeometrie erlaubt wird */
+		Punkt : MANDATORY INTERLIS.BOOLEAN;
+		/** Wenn Bauwerk oder Möbilierung als Liniengeometrie erlaubt wird */
+		Linie : MANDATORY INTERLIS.BOOLEAN;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "{Gruppe} mit {Bezeichnung} verletzt Eindeutigkeit"
+		UNIQUE Gruppe, Bezeichnung;
+	END BauwerkMoebilierung_Code;
+	
+    STRUCTURE BauwerkMoebilierung_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) BauwerkMoebilierung_Code;
+	END BauwerkMoebilierung_CodeRef;
+	
+	CLASS Baumaterial_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Baumaterial : MANDATORY TEXT*100;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Baumaterial}"
+		UNIQUE Baumaterial;
+	END Baumaterial_Code;
+	
+    STRUCTURE Baumaterial_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Baumaterial_Code;
+	END Baumaterial_CodeRef;
+	
+	CLASS Bauwerkszustand_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Zustand : MANDATORY TEXT*100;
+		/** Optional */
+		Beschreibung: TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Zustand}"
+		UNIQUE Zustand;
+	END Bauwerkszustand_Code;
+	
+    STRUCTURE Bauwerkszustand_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Bauwerkszustand_Code;
+	END Bauwerkszustand_CodeRef;
+	
+	CLASS Kontrollmassnahmen_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Materialkontrolle : MANDATORY TEXT*100;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Materialkontrolle}"
+		UNIQUE Materialkontrolle;
+	END Kontrollmassnahmen_Code;
+	
+    STRUCTURE Kontrollmassnahmen_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Kontrollmassnahmen_Code;
+	END Kontrollmassnahmen_CodeRef;
+	
+	CLASS Schaden_Code
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+		/** Attribute werden aus bestehendem Katalog importiert */
+		Mangel : MANDATORY TEXT*100;
+		/** Optional */
+		Beschreibung : TEXT*200;
+		/** Optionaler Filter */
+		Inaktiv : MANDATORY INTERLIS.BOOLEAN;
+		!!@ ilivalid.msg_de = "Verletzt Eindeutigkeit {Mangel}"
+		UNIQUE Mangel;
+	END Schaden_Code;
+	
+    STRUCTURE Schaden_CodeRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+	  /** Lediglich ein Hilfsmittel */
+      Reference (EXTENDED) : MANDATORY REFERENCE TO (EXTERNAL) Schaden_Code;
+	END Schaden_CodeRef;
+	
+  END Codeliste;
+
+  TOPIC Pflegeplanung =
+	OID AS INTERLIS.UUIDOID;
+	DEPENDS ON SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste;
+
+	DOMAIN
+
+		D_POLYLINE = DIRECTED POLYLINE WITH (STRAIGHTS,ARCS) VERTEX GeometryCHLV95_V1.Coord2;
+
+	STRUCTURE Datei =
+		Ablage : URI;
+	END Datei;
+
+	CLASS Kontrolle (ABSTRACT) =
+		/** Zwingend Datum nach Kontrolle */
+		KontrolliertAm : INTERLIS.XMLDate;
+		/** Zwingend Name der Kontrollperson */
+		KontrolliertDurch : TEXT*50;
+		/** Alle Inputs zur Kontrolle, welche nicht abgefüllt werden können, hier angeben */
+		Kontrollbemerkung : MTEXT;
+    END Kontrolle;
+
+	CLASS Bauwerkgsmoeblierungskontrolle EXTENDS Kontrolle =
+		/** Zwingend aktueller Zustand des Objektes */
+		Zustand : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Bauwerkszustand_CodeRef;
+    END Bauwerkgsmoeblierungskontrolle;
+
+    CLASS Ausfuehrung (ABSTRACT) =
+		/** Datum der Ausführung */
+		AusgefuehrtAm : INTERLIS.XMLDate;
+		/** Name des Auszuführenden */
+		AusgefuehrtDurch : TEXT*50;
+		/** Informationen zu den ausgeführten Arbeiten */
+		Ausfuehrungsbemerkung : MTEXT;
+    END Ausfuehrung;
+
+	CLASS Gewaesserabschnittspflege =
+		/** Zwingende Angabe */
+		Gemeinde : MANDATORY TEXT*50;
+		/** Zwingende Angabe */
+        Gewaessername : MANDATORY TEXT*50;
+		/** Zwingend Abschnittsnummer aufsummiert angeben */
+		Abschnitt : MANDATORY 0..99999999;
+		/** Zwingend Linie erfassen */
+		Linie :  MANDATORY D_POLYLINE;
+        UNIQUE Gemeinde, Gewaessername, Abschnitt;
+    END Gewaesserabschnittspflege;
+	 
+	CLASS Gewaesserereignis =
+		/** Zwingendes Datum der Feststellung */
+		FeststellungAm : MANDATORY INTERLIS.XMLDate;
+		/** Zwingende Angabe der Massnahme */
+		Ereignis : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Gerinnepflege_CodeRef;
+		/** Zum Hotspot erklärten Ort, wo häufig auftretendene Massnahmen durch widrige Witterungsbedingungenan entstehen */
+		Hotspot : MANDATORY INTERLIS.BOOLEAN;
+		/** Optional */
+		Bild : BAG {0..*} OF Datei;
+		/** Zwingende Angabe */
+		Zustaendigkeit : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Ausfuehrung_CodeRef;
+		/** Zwingend Punktgeometrie erfassen */
+		Punkt : MANDATORY GeometryCHLV95_V1.Coord2;
+ 	END Gewaesserereignis;
+
+	CLASS Gewaesserpflege EXTENDS Ausfuehrung =
+		/** Optional Informationen zu den Arbeiten möglich */
+		Information : MTEXT;
+		/** Zwingend Frist der Behebung */
+		Massnahmenfrist : MANDATORY INTERLIS.XMLDate;
+	END Gewaesserpflege ;
+	
+    CLASS BauwerkMoebilierung (ABSTRACT) =
+		/** Zwingend Bauwerks- oder Möbilierungsart angeben */
+		Objekt : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.BauwerkMoebilierung_CodeRef;
+		/** Zwingende Angabe bei Schutzbautenobjekten */
+		Schutzbauten_ID : TEXT*50;
+		/** Zwingend Datum der Werksabnahme angeben */
+		Baujahr : 1800..2199 [INTERLIS.Y];
+		/** Zwingende Angabe der Baumaterialien */
+		Baumaterial : BAG {1..*} OF SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Baumaterial_CodeRef;
+		/** Zwingend Zeitfolge für fällige Unterhaltsarbeiten angeben */
+		Unterhaltsintervall : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Intervall_CodeRef;
+		/** Zwingende Angabe der Kontrollmassnahme wenn Unterhaltsintervall ungleich 'nie' ist */
+		Kontrollmassnahme : BAG {0..*} OF SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Kontrollmassnahmen_CodeRef;
+		/** Optional */
+		Bemerkung : MTEXT;
+		/** Zwingende Angabe */
+		ErfasstAm : MANDATORY INTERLIS.XMLDate;
+		/** Zwingende Angabe */
+		Zustaendigkeit : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Zustaendigkeiten_CodeRef;
+		/** Häckchen zwingend deaktivieren, wenn Möbilierung nicht mehr aktiv ist */
+		Existent : MANDATORY INTERLIS.BOOLEAN;
+    END BauwerkMoebilierung;
+
+	CLASS BauwerkMoebilierungPunkt EXTENDS BauwerkMoebilierung =
+		/** Zwingende Angabe */
+		Punkt : MANDATORY GeometryCHLV95_V1.Coord2;
+		!!@ ilivalid.msg_de = "Duplikate Geometrie verletzt Eindeutigkeit"
+		UNIQUE Punkt;
+	END BauwerkMoebilierungPunkt;
+
+	CLASS BauwerkMoebilierungLinie EXTENDS BauwerkMoebilierung =
+		/** Zwingende Angabe */
+		Linie : MANDATORY GeometryCHLV95_V1.Line;
+		!!@ ilivalid.msg_de = "Duplikate Geometrie verletzt Eindeutigkeit"
+		UNIQUE Linie;
+	END BauwerkMoebilierungLinie; 
+
+	CLASS Instandsetzung EXTENDS Ausfuehrung =
+        /** Zwingende Angabe */
+		FeststellungAm : MANDATORY INTERLIS.XMLDate;
+		/** Nur angehäkeln, wenn keine Massnahmenfrist gesetzt ist */
+		Beobachten : MANDATORY INTERLIS.BOOLEAN;
+		/** Schadensart des Bauwerkes oder Moebilierung zwingend angeben */
+		Schaden : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Schaden_CodeRef;
+		/** Optionale Angabe */
+		Information : MTEXT;
+		/** Zwingende Angabe, nur wenn Beobachten inaktiv ist */
+		Massnahmenfrist : INTERLIS.XMLDate;
+		/** Optional */
+		Bild : BAG {0..*} OF Datei;
+		/** Zwingend zuständige Fachstelle angeben */
+		InstandsetzungDurch : SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Zustaendigkeiten_CodeRef;
+    END Instandsetzung;
+	
+	CLASS Flora (ABSTRACT) EXTENDS Kontrolle =
+		/** Zwingende Angabe */
+		Objekt : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Flora_CodeRef;
+		/** Bei Heckenelement zwingend Dichte angeben */
+		Bestockung : SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Bestockung_CodeRef;
+		/** Zwingende Angabe je nach Objekt*/
+		Biberschutz : MANDATORY INTERLIS.BOOLEAN;
+		/** Zwingende Angabe je nach Objekt */
+		Biberfrass : MANDATORY INTERLIS.BOOLEAN;
+		/** Zwingende Angabe je nach Objekt */
+		Pilzbefall : MANDATORY INTERLIS.BOOLEAN;
+		/** Zwingende Angabe je nach Objekt */
+		Schaedlingsbefall : MANDATORY INTERLIS.BOOLEAN;
+		/** Ziel der Pflegemassnahmen zwingend angeben */
+		Pflegeziel : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Pflegeziel_CodeRef;
+		/** Häufigkeit der Pflegemassnahme zwingend angeben */
+		Pflegeintervall : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Intervall_CodeRef;
+		/** Wo verlangt Zeitpunkt angeben */
+		Zeitpunkt : LIST {0..*} OF SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Kalendermonat_CodeRef;
+		/** Zwingende Angabe */
+		Massnahme : BAG {1..*} OF  SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Pflege_CodeRef;
+		/** Zwingende Angabe */
+		Arbeitsart : BAG {1..*} OF SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Arbeitsart_CodeRef;
+		/** Zwingende Angabe */
+		Zustaendigkeit : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Zustaendigkeiten_CodeRef;
+		/** Alle Inputs, welche nicht abgefüllt werden können, hier angeben */
+		Bemerkung : MTEXT;
+		/** Optional */
+		Datei : BAG {0..*} OF Datei;
+		/** Zwingende Angabe */
+		ErfasstAm : MANDATORY INTERLIS.XMLDate;
+		/** Datum zwingend angeben, wenn Arbeiten ausgeführt sind */
+		AusgefuehrtAm : INTERLIS.XMLDate;
+		/** Zwingende Angabe */
+		AusgefuehrtDurch: TEXT*50;
+		/** Häckchen zwingend deaktivieren, wenn Objekt nicht mehr aktiv ist */
+		Existent : MANDATORY INTERLIS.BOOLEAN;
+    END Flora;
+
+    CLASS FloraPunkt EXTENDS Flora =
+		/** Zwingende Angabe */
+		Punkt : MANDATORY GeometryCHLV95_V1.Coord2;
+		!!@ ilivalid.msg_de = "Geometrie verletzt Eindeutigkeit"
+		UNIQUE Punkt;
+	END FloraPunkt;
+
+	CLASS FloraFlaeche EXTENDS Flora =
+		/** Zwingende Angabe */
+		Flaeche : MANDATORY GeometryCHLV95_V1.MultiSurface;
+	END FloraFlaeche;
+
+	CLASS Fauna =
+		/** Zwingende Angabe des Tieres */
+		Objekt : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Fauna_CodeRef;
+		/** Optional */
+        GesichtetAm : INTERLIS.XMLDate;
+        /** Zwingende Angabe der zu treffenden Massnahme */
+		Vorgehensweise : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.FaunaVorgehen_CodeRef;
+        /** Entsprechende Fachstelle über Sichtung informieren */
+		MeldungAn : SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Zustaendigkeiten_CodeRef;
+        /** Alle Inputs zur Kontrolle, welche nicht abgefüllt werden können, hier angeben */
+		Bemerkung : MTEXT;
+		/** Optional */
+		Datei : BAG {0..*} OF Datei;
+		/** Zwingend Häufigkeit der Überprüfung im Feld angeben */
+		Kontrollintervall : MANDATORY SH_Pflegeplanung_Fliessgewaesser_V1_0.Codeliste.Intervall_CodeRef;
+		/** Zwingende Angabe der jüngsten Kontrolle */
+		LetzteKontrolle : MANDATORY INTERLIS.XMLDate;
+		/** Zwingende Angabe */
+		KontrolleDurch: MANDATORY TEXT*50;
+		/** Häckchen zwingend deaktivieren, wenn Objekt nicht mehr aktiv ist */
+		Existent : MANDATORY INTERLIS.BOOLEAN;
+		/** Zwingende Angabe */
+		Punkt : MANDATORY GeometryCHLV95_V1.Coord2;
+		!!@ ilivalid.msg_de = "Geometrie verletzt Eindeutigkeit"
+		UNIQUE Punkt;
+	END Fauna;
+
+    ASSOCIATION GewaesserabschnittspflegeFloraAssoc =
+		/** Gewässerabschnittspflege hat eine lose Beziehung zur Flora */
+		Gewaesserabschnittspflege -- {1} Gewaesserabschnittspflege;
+		/** Die Beziehung zu Flora darf keine bis mehrere Teile haben */
+		Flora -- {0..*} Flora;
+	END GewaesserabschnittspflegeFloraAssoc;
+
+    ASSOCIATION GewaesserabschnittspflegeFaunaAssoc =
+		/** Gewässerabschnittspflege hat eine lose Beziehung zur Fauna */
+		Gewaesserabschnittspflege -- {1} Gewaesserabschnittspflege;
+		/** Die Beziehung zu Fauna darf keine bis mehrere Teile haben */
+		Fauna -- {0..*} Fauna;
+	END GewaesserabschnittspflegeFaunaAssoc;
+
+    ASSOCIATION GewaesserabschnittspflegeBauwerkMoebilierungAssoc =
+		/** Gewässerabschnittspflege hat eine lose Beziehung zur BauwerkMoebilierung */
+		Gewaesserabschnittspflege -- {1} Gewaesserabschnittspflege;
+		/** Die Beziehung zu BauwerkMoebilierung darf keine bis mehrere Teile haben */
+		BauwerkMoebilierung -- {0..*} BauwerkMoebilierung;
+	END GewaesserabschnittspflegeBauwerkMoebilierungAssoc;
+
+    ASSOCIATION GewaesserabschnittspflegeGewaesserereignisAssoc =
+		/** Gewässerabschnittspflege hat eine lose Beziehung zur BauwerkMoebilierung */
+		Gewaesserabschnittspflege -- {1} Gewaesserabschnittspflege;
+		/** Die Beziehung zu Gewaesserereignis darf keine bis mehrere Teile haben */
+		Gewaesserereignis -- {0..*} Gewaesserereignis;
+	END GewaesserabschnittspflegeGewaesserereignisAssoc;
+
+	ASSOCIATION GewaesserereignisGewaesserpflegeAssoc =
+		/** Gewässerereignis hat eine starke Beziehung zur Gewässerpflege. Bei Löschung des Gewässerereignisses werden auch seine Teile der Gewässerpflege gelöscht */
+		Gewaesserereignis -<#> {1} Gewaesserereignis;
+		/** Die Beziehung zu Gewässerpflege darf eine bis mehrere Teile haben */
+		Gewaesserpflege -- {1..*} Gewaesserpflege;
+	END GewaesserereignisGewaesserpflegeAssoc;
+
+	ASSOCIATION BauwerkMoebilierungInstandsetzungAssoc =
+		/** BauwerkMoebilierung hat eine starke Beziehung zur Instandsetzung. Bei Löschung des BauwerkMoebilierung werden auch seine Teile der Instandsetzung gelöscht */
+		BauwerkMoebilierung -<#> {1} BauwerkMoebilierung;
+		/** Die Beziehung zu Instandsetzung darf keine bis mehrere Teile haben */
+		Instandsetzung -- {0..*} Instandsetzung;
+	END BauwerkMoebilierungInstandsetzungAssoc;
+
+	ASSOCIATION BauwerkMoebilierungBauwerkgsmoeblierungskontrolleAssoc =
+		/** BauwerkMoebilierung hat eine starke Beziehung zur Kontrolle. Bei Löschung des BauwerkMoebilierung werden auch seine Teile der Kontrolle gelöscht */
+		BauwerkMoebilierung -<#> {1} BauwerkMoebilierung;
+		/** Die Beziehung zu Bauwerkgsmoeblierungskontrolle darf keine bis mehrere Teile haben */
+		Bauwerkgsmoeblierungskontrolle -- {0..*} Bauwerkgsmoeblierungskontrolle;
+	END BauwerkMoebilierungBauwerkgsmoeblierungskontrolleAssoc;
+
+  END Pflegeplanung;
+
+END SH_Pflegeplanung_Fliessgewaesser_V1_0.

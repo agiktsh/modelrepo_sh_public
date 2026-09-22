@@ -1,0 +1,46 @@
+INTERLIS 2.3;
+
+CONTRACTED MODEL SH_ThermischeNutzungen_V1_1_AddChecks (de)
+AT "https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Baudepartement/Tiefbau-Schaffhausen/Abteilung-Gew-sser-und-Materialabbau-403883-DE.html"
+VERSION "2023-12-06"  =
+  IMPORTS SH_ThermischeNutzungen_V1_1;
+
+  VIEW TOPIC SH_ThermischeNutzungen_V1_1_Validierung =
+    DEPENDS ON SH_ThermischeNutzungen_V1_1.Anlagen;
+    
+    VIEW v_Adressen
+      PROJECTION OF SH_ThermischeNutzungen_V1_1.Anlagen.Adressen;
+    =
+      ALL OF Adressen;
+      !!@ name = checkAdressenUnique
+      !!@ ilivalid.msg = "Kombination 'Firma', 'Name' und 'PLZOrt' verletzt Eindeutigkeit"
+		  UNIQUE Firma, Name, PLZOrt;
+      !!@ name = checkAdressenDefined
+      !!@ ilivalid.msg = "Mindestens 'Firma' oder 'Name' festlegen"
+		  MANDATORY CONSTRAINT ( DEFINED (Firma) OR DEFINED (Name) ) OR ( DEFINED (Firma) AND DEFINED (Name) );
+    END v_Adressen;
+
+    VIEW v_AnlagenVerfahren
+    PROJECTION OF SH_ThermischeNutzungen_V1_1.Anlagen.AnlagenVerfahren;
+  =
+    ALL OF AnlagenVerfahren;
+      !!@ name = checkAnlagenVerfahrenBezeichnung
+      !!@ ilivalid.msg = "Bezeichnung {Bezeichnung} verletzt Eindeutigkeit"
+		  UNIQUE Bezeichnung;
+      !!@ name = checkAnlagenVerfahrenFassungsbrunnen
+      !!@ ilivalid.msg = "Kombination Verfahrensstatus mit Fassungbrunnen nicht zulässig."
+		  MANDATORY CONSTRAINT Verfahrensstatus == #Konzession OR NOT ( DEFINED (Fassungsbrunnen) );
+      !!@ name = checkAnlagenVerfahrenRückgabebrunnen
+      !!@ ilivalid.msg = "Kombination Verfahrensstatus mit Rückgabeanlage nicht zulässig."
+		  MANDATORY CONSTRAINT Verfahrensstatus == #Konzession OR NOT ( DEFINED (Rueckgabebrunnen) );
+      !!@ name = checkAnlagenVerfahrenKonzession
+      !!@ ilivalid.msg = "Kombination Verfahrensstatus mit Konzession nicht zulässig"
+      MANDATORY CONSTRAINT Verfahrensstatus == #Konzession OR NOT ( DEFINED (Konzession) );
+      !!@ name = checkAnschriftenDebitor
+      !!@ ilivalid.msg = "Bei Adressen fehlt die 'DebiNr' zum Debitor"
+		  MANDATORY CONSTRAINT DEFINED (Debitor->Reference->DebiNr);
+    END v_AnlagenVerfahren;
+  
+  END SH_ThermischeNutzungen_V1_1_Validierung;
+  
+END SH_ThermischeNutzungen_V1_1_AddChecks.

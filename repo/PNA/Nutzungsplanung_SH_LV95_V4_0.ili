@@ -1,0 +1,260 @@
+INTERLIS 2.3;
+
+/** Nutzungsplanung des Kantons Schaffhausen (kantonal/komunal).
+Modellierung der Nutzungsplanung im Kanton Schaffhausen
+*/
+
+/*
+Version    | Who   | Modification
+------------------------------------------------------------------------------
+ 2019-04-18 | AGI SH| Anpassungen Kanton SH, Version 4.0
+------------------------------------------------------------------------------
+ 2019-03-22 | AGI SH| Anpassungen Kanton SH, Version 0.1
+------------------------------------------------------------------------------
+ 2018-12-17 | KOGIS | OID-Definition angepasst (TypID)
+------------------------------------------------------------------------------
+ 2017-02-16 | ARE   | Version 1.1
+                    | (Folge des geaenderten 0EREB-Rahmenmodells V1.1 vom 20.08.2016)
+                    | - MODEL Nutzungsplanung_Hauptnutzung_V1_1:
+                    |   eigenes Modell mit Klasse Hauptnutzung_CH, damit Katalogfile
+                    |   Hauptnutzung_CH.xml fuer LV03 und LV95 nur einmal definiert werden muss
+                    | - MODEL Nutzungsplanung_LV03_V1_1: Bezugsrahmen LV03
+                    | - MODEL Nutzungsplanung_LV95_V1_1: Bezugsrahmen LV95
+                    | - STRUCTURE LocalisedUri: neue Struktur fuer mehrsprachige URI
+                    | - STRUCTURE MultilingualUri: neue Struktur fuer mehrsprachige URI
+                    | - CLASS Hauptnutzung_CH: neu mit OID
+                    | - CLASS Dokument: Attribut TextImWeb neu vom Typ MultilingualUri
+                    | - CLASS Typ: neues Attribut Symbol
+                    | - CLASS Amt: neues Attribut UID
+                    | - CLASS Amt: Attribut TextImWeb neu vom Typ MultilingualUri
+                    | - CLASS Datenbestand: neues Attribut BasketID
+------------------------------------------------------------------------------
+ 2016-04-15 | KOGIS | Geometriedefinitionen angepasst
+                    | - DOMAIN Einzelflaeche
+                    | - DOMAIN Gebietseinteilung
+------------------------------------------------------------------------------
+ 2011-12-12 | ARE   | Version 1.0
+------------------------------------------------------------------------------
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ IDGeoIV=73..145..157..159
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Nutzungsplanung,Laermempfindlichkeitsstufe, Waldgrenzen, Waldabstandslinien"
+
+MODEL Nutzungsplanung_Hauptnutzung_V1_1_SH (de)
+AT "http://models.geo.sh.ch/PNA"
+VERSION "2024-10-22"  =
+
+  DOMAIN
+
+    TypID = OID TEXT*60;
+
+
+
+  TOPIC Hauptnutzung_CH =
+
+    CLASS Hauptnutzung_CH (FINAL) =
+      OID AS TypID;
+      Code : MANDATORY 11 .. 99;
+      Bezeichnung : MANDATORY TEXT*80;
+    END Hauptnutzung_CH;
+
+  END Hauptnutzung_CH;
+
+END Nutzungsplanung_Hauptnutzung_V1_1_SH.
+
+
+/** Nutzungsplanung des Kantons Schaffhausen (kantonal/komunal).
+Modellierung der Nutzungsplanung im Kanton Schaffhausen
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ IDGeoIV=73..145..157..159
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Nutzungsplanung,Laermempfindlichkeitsstufe, Waldgrenzen, Waldabstandslinien"
+
+
+MODEL Nutzungsplanung_SH_LV95_V4_0 (de)
+AT "http://models.geo.sh.ch/PNA"
+VERSION "2019-04-18"  =
+  IMPORTS CHAdminCodes_V1,GeometryCHLV95_V1,InternationalCodes_V1,Nutzungsplanung_Hauptnutzung_V1_1_SH;
+
+  DOMAIN
+
+    Einzelflaeche = SURFACE WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.050;
+
+    Gebietseinteilung = AREA WITH (ARCS,STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS>0.050;
+
+!! SH wird nicht mehr benoetigt	
+!!    Rechtsstatus = (
+!!      inKraft,
+!!      laufendeAenderung
+!!    );
+
+    Verbindlichkeit = (
+      Nutzungsplanfestlegung,
+      orientierend,
+      hinweisend,
+      wegleitend
+    );
+
+	!!SH: Aufzaehlung Laermempfindlichkeitsstufe
+    Laermempfindlichkeitsstufe = (
+      Keine_ES,
+      ES_I,
+      ES_II,
+      ES_III,
+      ES_IV
+    );
+
+
+
+  STRUCTURE LocalisedUri =
+    Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+    Text : MANDATORY URI;
+  END LocalisedUri;
+
+  STRUCTURE MultilingualUri =
+    LocalisedText : BAG {1..*} OF Nutzungsplanung_SH_LV95_V4_0.LocalisedUri;
+    UNIQUE (LOCAL) LocalisedText: Language;
+  END MultilingualUri;
+
+  !!SH wird nicht benoetigt: TOPIC Rechtsvorschriften =
+  !!SH wird nicht benoetigt: 
+  !!SH wird nicht benoetigt:   CLASS Dokument =
+  !!SH wird nicht benoetigt:     Titel : MANDATORY TEXT*80;
+  !!SH wird nicht benoetigt:     OffiziellerTitel : TEXT;
+  !!SH wird nicht benoetigt:     Abkuerzung : TEXT*12;
+  !!SH wird nicht benoetigt:     OffizielleNr : TEXT*20;
+  !!SH wird nicht benoetigt:     Kanton : CHAdminCodes_V1.CHCantonCode;
+  !!SH wird nicht benoetigt:     Gemeinde : CHAdminCodes_V1.CHMunicipalityCode;
+  !!SH wird nicht benoetigt:     publiziertAb : MANDATORY INTERLIS.XMLDate;
+  !!SH wird nicht benoetigt:     Rechtsstatus : MANDATORY Nutzungsplanung_LV95_V1_1.Rechtsstatus;
+  !!SH wird nicht benoetigt:     TextImWeb : Nutzungsplanung_LV95_V1_1.MultilingualUri;
+  !!SH wird nicht benoetigt:     Bemerkungen : MTEXT;
+  !!SH wird nicht benoetigt:   END Dokument;
+  !!SH wird nicht benoetigt: 
+  !!SH wird nicht benoetigt:   CLASS Rechtsvorschrift
+  !!SH wird nicht benoetigt:   EXTENDS Dokument =
+  !!SH wird nicht benoetigt:   END Rechtsvorschrift;
+  !!SH wird nicht benoetigt: 
+  !!SH wird nicht benoetigt:   ASSOCIATION HinweisWeitereDokumente =
+  !!SH wird nicht benoetigt:     Ursprung -- {0..*} Dokument;
+  !!SH wird nicht benoetigt:     Hinweis -- {0..*} Dokument;
+  !!SH wird nicht benoetigt:   END HinweisWeitereDokumente;
+  !!SH wird nicht benoetigt: 
+  !!SH wird nicht benoetigt: END Rechtsvorschriften;
+
+  TOPIC Geobasisdaten_SH =
+    DEPENDS ON Nutzungsplanung_Hauptnutzung_V1_1_SH.Hauptnutzung_CH;
+
+    CLASS Geometrie (ABSTRACT) =
+      !!SH geloescht: publiziertAb : MANDATORY INTERLIS.XMLDate; -> wird aus erstellt/rechtsgueltig/aufgehoben abgeleitet
+      !!SH geloescht: Rechtsstatus : MANDATORY Nutzungsplanung_LV95_V1_1.Rechtsstatus; -> wird aus erstellt/rechtsgueltig/aufgehoben abgeleitet
+	  !!SH: Zusatzattribute fuer SH
+	  erstellt : MANDATORY INTERLIS.XMLDate;
+	  rechtsgueltig : INTERLIS.XMLDate;
+	  aufgehoben : INTERLIS.XMLDate;
+      OereblexLink : TEXT*100; !!wird in MGDM im Feld Bemerkungen abgefuellt
+	  Entstehung : TEXT*200; !!SH: Text zur betreffenden Mutation
+      Bemerkungen : MTEXT;
+    END Geometrie;
+
+    CLASS Typ =
+      Code : MANDATORY TEXT*12;
+      Bezeichnung : MANDATORY TEXT*80;
+      Abkuerzung : TEXT*12;
+      Verbindlichkeit : MANDATORY Nutzungsplanung_SH_LV95_V4_0.Verbindlichkeit;
+      Nutzungsziffer : 0.00 .. 9.00;
+      Nutzungsziffer_Art : TEXT*40;
+      Bemerkungen : MTEXT;
+      Symbol : MTEXT; !!SH: Symbol als Base64
+    END Typ;
+
+    CLASS Typ_Kt =
+      Code : MANDATORY TEXT*12;
+      Bezeichnung : MANDATORY TEXT*80;
+      Abkuerzung : TEXT*12;
+      Bemerkungen : MTEXT;
+    END Typ_Kt;
+
+    CLASS Grundnutzung_Zonenflaeche
+    EXTENDS Geometrie =
+	  Objektnummer : TEXT*200;     !! SH: Fuer Planbeschriftung
+	  !! SH: Ergaenzung Laermempfindlichkeitsstufe und Aufstufung
+      Laermempfindlichkeitsstufe : MANDATORY Nutzungsplanung_SH_LV95_V4_0.Laermempfindlichkeitsstufe;
+      Laermaufstufung : MANDATORY BOOLEAN; !!False = Nein, True = Ja
+	  !! SH: Einzelflaeche statt Gebietseinteilung
+      Geometrie : MANDATORY Nutzungsplanung_SH_LV95_V4_0.Einzelflaeche;
+    END Grundnutzung_Zonenflaeche;
+
+    CLASS Linienbezogene_Festlegung
+    EXTENDS Geometrie =
+	  Objektnummer : TEXT*200;      !! SH: Fuer Planbeschriftung
+	  bebaubar : (links, rechts);   !! SH: Gerichtete Linie, bei Baulinien zwingende Eingabe
+	  Anfangspunkt : GeometryCHLV95_V1.Coord2; !! SH: Bei Baulinien zwingende Eingabe
+      Geometrie : MANDATORY GeometryCHLV95_V1.Line;
+    END Linienbezogene_Festlegung;
+
+    CLASS Objektbezogene_Festlegung
+    EXTENDS Geometrie =
+	  Objektnummer : TEXT*200;      !! SH: Fuer Planbeschriftung
+      Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+    END Objektbezogene_Festlegung;
+
+    CLASS Ueberlagernde_Festlegung
+    EXTENDS Geometrie =
+	  Objektnummer : TEXT*200;      !! SH: Fuer Planbeschriftung
+      Geometrie : MANDATORY Nutzungsplanung_SH_LV95_V4_0.Einzelflaeche;
+    END Ueberlagernde_Festlegung;
+
+
+
+    !!SH wird nicht benoetigt: ASSOCIATION Typ_Dokument =
+    !!SH wird nicht benoetigt:   Typ -- {0..*} Typ;
+    !!SH wird nicht benoetigt:   Vorschrift (EXTERNAL) -- {0..*} Nutzungsplanung_LV95_V1_1.Rechtsvorschriften.Dokument;
+    !!SH wird nicht benoetigt: END Typ_Dokument;
+
+    ASSOCIATION Typ_Geometrie =
+      Geometrie -- {0..*} Geometrie;
+      Typ -<> {1} Typ;
+    END Typ_Geometrie;
+
+    ASSOCIATION Typ_Typ_Kt =
+      Typ -- {0..*} Typ;
+      !! Anpassung SH: (EXTERNAL) löst Problem in GeosPro aus Typ_Kt (EXTERNAL) -<> {1} Typ_Kt;
+      Typ_Kt -<> {1} Typ_Kt;
+    END Typ_Typ_Kt;
+
+    ASSOCIATION TypKt_HauptnCH =
+      Typ_Kt -- {0..*} Typ_Kt;
+      Hauptnutzung_CH (EXTERNAL) -- {1} Nutzungsplanung_Hauptnutzung_V1_1_SH.Hauptnutzung_CH.Hauptnutzung_CH;
+    END TypKt_HauptnCH;
+
+  END Geobasisdaten_SH;
+
+  TOPIC TransferMetadaten =
+    DEPENDS ON Nutzungsplanung_SH_LV95_V4_0.Geobasisdaten_SH;
+
+    CLASS Amt =
+      Name : MANDATORY TEXT*80;
+      AmtImWeb : Nutzungsplanung_SH_LV95_V4_0.MultilingualUri;
+      UID : TEXT*12;
+    END Amt;
+
+    CLASS Datenbestand =
+      BasketID : MANDATORY TEXT*20;
+      Stand : MANDATORY INTERLIS.XMLDate;
+      Lieferdatum : INTERLIS.XMLDate;
+      Bemerkungen : MTEXT;
+    END Datenbestand;
+
+    ASSOCIATION zustStelle_Daten =
+      zustaendigeStelle -<> {1} Amt;
+      Datenbestand -- {0..*} Datenbestand;
+    END zustStelle_Daten;
+
+  END TransferMetadaten;
+
+END Nutzungsplanung_SH_LV95_V4_0.

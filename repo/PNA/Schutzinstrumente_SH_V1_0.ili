@@ -1,0 +1,76 @@
+INTERLIS 2.3;
+
+/** Schutzinstrumente (Planungs- und Naturschutzamt) Kanton Schaffhausen.
+Modellierung der Schutzinstrumente im Kanton Schaffhausen.
+*/
+
+ /*
+ Version    | Who   | Modification	| description
+------------------------------------------------------------------------------
+ ---------- | ---   | Version 1.1		| 
+                    | - 				|
+                    | - 				|
+                    | - 				|
+------------------------------------------------------------------------------
+ 2020-01-13 | AGI   | Version 1.0		| New
+------------------------------------------------------------------------------
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Schutzinstrumente, Schutz"
+
+MODEL Schutzinstrumente_SH_V1_0 (de)
+AT "http://models.geo.sh.ch" VERSION "2024-07-02"  =
+  IMPORTS GeometryCHLV95_V1;
+  IMPORTS Units;
+  
+  DOMAIN
+	
+	Vertragstypen = (
+		Dienstbarkeitsvertrag,
+		Grundbucheintrag,
+		Jagdverbot,
+		Pachtvertrag,
+		Schutzverfuegung,
+		Vereinbarung,
+		Reglement,
+		Verordnung,
+		RRB
+	);
+  
+  TOPIC Schutzvertraege = 
+	
+    CLASS Anhang =
+		Vertragsart: MANDATORY Vertragstypen;
+		Vertragsdetail: TEXT*500;
+		RRB_Datum: INTERLIS.XMLDate;
+		RRB_Bezeichnung: TEXT*100;
+		Datum: INTERLIS.XMLDate;
+		Dokument: TEXT*500;
+	END Anhang;
+
+  	CLASS Partner =
+		Vertragspartner: MANDATORY TEXT*100;
+	UNIQUE Vertragspartner;
+	END Partner;
+		
+	CLASS Objekte =
+		Bezeichnung: TEXT*200;
+		Bemerkung: MTEXT;
+		Geometrie: MANDATORY GeometryCHLV95_V1.MultiSurface;
+	END Objekte;
+	
+	ASSOCIATION Anhang_Partner =
+		Anhang -- {0..*} Anhang;
+		Partner -- {0..*} Partner;
+	END Anhang_Partner;
+	
+	ASSOCIATION Objekte_Anhang =
+		Anhang -- {0..*} Anhang;
+		Objekte -- {1} Objekte;
+	END Objekte_Anhang;
+	
+  END Schutzvertraege;
+	
+END Schutzinstrumente_SH_V1_0.

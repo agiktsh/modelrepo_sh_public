@@ -1,0 +1,1319 @@
+TRANSFER Interlis1;
+ !! INTERLIS 1 Beschreibung Nutzungsplanung Kanton Schaffhausen
+ !! blaue, kursive Schrift:    Rahmennutzungsplaene SIA 424, Version 1.3 vom 
+ !!                            11.10.2007 bzw. Erlaeuterungen im Dokument
+ !!                            Norm424_26Feb2008.doc vom 26.2.2008
+ !! schwarze, gerade Schrift:  Mehranforderungen Kt. SH
+ !! grau hinterlegte Schrift:  optionale Attribute
+ !!
+ !! + ======================================================================== +
+ !! ?                                                                          ?
+ !! ? Das Datenmodell Nutzungsplanung Kanton Schaffhausen ist ein              ?
+ !! ? eigenstaendiges Modell, das auf dem Modell SIA-424 aufbaut.              ?
+ !! ?                                                                          ?
+ !! ? Als Basis dienten die Modelle von:                                       ?
+ !! ? - Datenmodell Rahmennutzungsplaene vom 11.10.2007, V1.3 (SIA-424)        ?
+ !! ? - Vernehmlassungsunterlagen SIA-424/425 vom 19.03.2009                   ?
+ !! ? - ueberarbeitete Fassung SIA-424, Stand 12.05.2010                       ?
+ !! ? - ARE: Definitives Fassung "Minimale Geodatenmodelle Bereich             ?
+ !! ?   Nutzungsplanung, Modelldokumentation" vom 12.12.2011 (Version 1.0)     ?
+ !! ?                                                                          ?
+ !! ? Details zum Modell:                                                      ?
+ !! ? - Name:             Nutzungsplanung_SH                                   ?
+ !! ? - Version:          2.1                                                  ?
+ !! ? - Datei:            SH_ZO_01_Datenmodell_v2.1_LV95.ili / *.doc / *.pdf   ?
+ !! ? - Sprache:          deutsch (de)                                         ?
+ !! ? - Verwalter:        Vermessungsamt Kt. SH, GIS-Fachstelle                ?
+ !! ? - Kontakt:          www.gis.sh.ch                                        ?
+ !! ? - Download:         www.gis.sh.ch                                        ?
+ !! ? - abgebildete Datensaetze, Identifikatoren gemaess GeoIV:                ?
+ !! ?                     -  73: Nutzungsplanung (kantonal/kommunal)           ?
+ !! ?                     - 145: Laermempfindlichkeitsstufe (in                ?
+ !! ?                            Nutzungszonen)                                ?
+ !! ?                     - 157: Waldgrenzen (in Bauzonen)                     ?
+ !! ?                     - 159: Waldabstandslinien                            ?
+ !! ?                                                                          ?
+ !! ? Letzter Update: 5. Dezember 2012 / fb                                    ?
+ !! ?                                                                          ?
+ !! ? Erarbeitet durch:                                                        ?
+ !! ? - Susanne Gatti, Kantonsplanerin Kanton SH                               ?
+ !! ? - Peter Schiegg, Planungs- und Naturschutzamt Kanton SH                  ?
+ !! ? - Andreas Berger, Planungs- und Naturschutzamt Kanton Schaffhausen       ?
+ !! ? - Erich Fischer, Planungsbuero Stadt Schaffhausen                        ?
+ !! ? - Roman Flueckiger, Bauverwalter Gemeinde Beringen                       ?
+ !! ? - Rolf Wildberger, Wildberger Schuler Partner AG, Schaffhausen           ?
+ !! ?                                                                          ?
+ !! ? INTERLIS-Modell erstellt durch:                                          ?
+ !! ? - Felix Berger, Vermessungsamt des Kantons Schaffhausen                  ?
+ !! ?                                                                          ?
+ !! ? INTERLIS-Modell getestet mit: GEOS Pro                                   ?
+ !! ?                                                                          ?
+ !! + ------------------------------------------------------------------------ +
+ !! ?                                                                          ?
+ !! ? Hinweise zu Attributwerten und Datenerfassung:                           ?
+ !! ?                                                                          ?
+ !! ? - In den meisten Datentabellen ist das Attribut "Bemerkungen" vorgesehen ?
+ !! ?   fuer allgemeine, individuelle Hinweise zum Objekt.                     ?
+ !! ?                                                                          ?
+ !! ? - Im Weiteren ist in den meisten Datentabellen das Attribut "SH_USER"    ?
+ !! ?   definiert; es handelt sich um Informationen mit temporaerem Charakter  ?
+ !! ?   fuer den Erfasser (individuelle Nutzung des Datenfeldes wie z.B.       ?
+ !! ?   Fragen, Flags usw.); die Daten koennen vor einem Export geloescht      ?
+ !! ?   werden.                                                                ?
+ !! ?                                                                          ?
+ !! ? - Fuer die Planbeschriftungen ist das Attribut "SH_Beschriftung" in den  ?
+ !! ?   wichtigsten Tabellen vorhanden.                                        ?
+ !! ?                                                                          ?
+ !! ? - Das Attribut "SH_Art" ist fuer Abfragen und thematische Darstellungen  ?
+ !! ?   (Punkt, Linie, Flaeche, Text) vorgesehen.                              ?
+ !! ?                                                                          ?
+ !! ? - Basis fuer die Erstdatenerfassung sind:                                ?
+ !! ?   - bestehende Zonenplaene                                               ?
+ !! ?   - Quartierplaene                                                       ?
+ !! ?   - Unterlagen Zonenplanrevisionen                                       ?
+ !! ?   - Baulinienplaene                                                      ?
+ !! ?   - etc.                                                                 ?
+
+
+ !! ?                                                                          ?
+ !! ? - Die Verkehrsflaechen innerhalb und ausserhalb der Bauzone sind in      ?
+ !! ?   der Regel entlang der Parzellengrenzen zu definieren. Fehlen solche    ?
+ !! ?   (z.B. bei grossen Waldgrundstuecken) ist auf die Erfassung der         ?
+ !! ?   Verkehrsflaechen zu verzichten (=> Waldzone durchgehend).              ?
+ !! ?                                                                          ?
+ !! + ------------------------------------------------------------------------ +
+ !! ?                                                                          ?
+ !! ? Darstellungsmodell:                                                      ?
+ !! ?                                                                          ?
+ !! ? - Es wird lediglich ein Plantyp verwaltet (fuer Plaene Baugebiet und     ?
+ !! ?   Gemeindegebiet); die Textpositionen sollen fuer verschiedene           ?
+ !! ?   Massstaebe Gueltigkeit haben.                                          ?
+ !! ?                                                                          ?
+ !! ? - BLN-Gebiete: => als ueberlagernde Flaeche darstellen.                  ?
+ !! ? - ERS-Gebiete: => als ueberlagernde Flaeche darstellen.                  ?
+ !! ? - Gemeindegrenzen der Nachbargemeinden und deren Bezeichnung             ?
+ !! ?   sind darzustellen und im TOPIC "Information" abzulegen.                ?
+ !! + ------------------------------------------------------------------------ +
+ !! ?                                                                          ?
+ !! ? Organisatorische Aspekte:                                                ?
+ !! ?                                                                          ?
+ !! ? - Datenmodellaenderungen und -erweiterungen erfolgen nur durch           ?
+ !! ?   das Vermessungsamt.                                                    ?
+ !! ?                                                                          ?
+ !! ? - Vor jeder Datenerfassung oder Datennachfuehrung ist das neueste        ?
+ !! ?   Datenmodell beim Vermessungsamt (online) zu beziehen und anzuwenden.   ?
+ !! ?                                                                          ?
+ !! ? - Verifikation nach Datenerfassungsarbeiten : Inhaltliche Belange sind   ?
+ !! ?   durch das PNA zu ueberpruefen; die INTERLIS-Daten wer-                 ?
+ !! ?   den durch das Vermessungsamt lediglich bezueglich Syntax untersucht.   ?
+ !! ?                                                                          ?
+ !! + ======================================================================== +
+
+ !!    Definition der globalen Variabeln resp. Wertebereiche SIA424
+ !! ----------------------------------------------------------------------------
+
+MODEL Nutzungsplanung_SHLV95                !! Version 2.1 (LV95) vom 5.12.2012
+                                            !! Modell der Nutzungsplanung Kt. SH
+
+  DOMAIN
+
+ !! Referenzsystem LV95
+
+ !! Ziel der Modellierung: Bestehende, rechtsgueltige Zonenplanung abbilden,
+ !! wobei die Nachfuehrungstabellen (TOPIC "Nutzungszonen_Gepl")
+ !! ebenfalls auszufuellen sind.
+ !! Die Historie wird ueber gesicherte INTERLIS-Datensaetze gewaehrleistet,
+ !! die bei jeder Aenderung des Datensatzes anzufertigen sind.
+
+    LKoord =           COORD2    2480000.000    1060000.000    !! in m
+                                 2850000.000    1320000.000;   !! in m
+
+    Linienzug =        POLYLINE WITH (ARCS, STRAIGHTS) VERTEX LKoord;
+
+    Einzelflaeche =    SURFACE WITH (ARCS, STRAIGHTS) VERTEX LKoord
+                                 WITHOUT OVERLAPS > 0.050;
+
+    Gebietseinteilung = AREA WITH (ARCS, STRAIGHTS) VERTEX LKoord
+                                 WITHOUT OVERLAPS > 0.050;
+
+    Geometrie_Grundlage = (
+                       AV93,        !! Definitiv anerkannt, Vektordaten
+                       PV74,        !! Teilnumerik, Vektordaten
+                       PN,          !! provisorische Nummerisierung, Vektordaten
+                       weitere);    !! auf nicht anerkannter oder unbekannter
+                                    !! Grundlage
+
+    Geometrie_Herkunft = (Aufnahme,
+                          Uebernahme_Koordinaten,
+                          Planabgriff,
+                          konstruktiv,
+                          andere);
+                                    !! Geometrie_Herkunft bezieht sich auf die 
+                                    !! Erfassungsart der Nutzungszonendaten
+
+
+    Verbindlichkeit = (eigentuemerverbindlich,       !! = Nutzungsplanfestlegung
+                       orientierend,        !! eigentuemerverbindlich, von einem
+                                     !! anderen Festlegungsverfahren uebernommen
+                       hinweisend,               !! nicht eigentuemerverbindlich
+                       wegleitend);
+
+     !!* undefiniert = 100.0
+    Orientierung =     GRADS 0.0 399.9;
+
+     !!* undefiniert = mittel
+    Groesse =         (klein, mittel, gross);
+
+    Name_Text =        TEXT*60;
+
+     !!* z.B. fuer OIDType
+    Abk_Text =         TEXT*16;
+
+    Langtext =         TEXT*250;
+ !!    Langtext =         TEXT*99;                     !! fuer INTERLIS1-Compiler
+
+    Dossier_Text =     TEXT*30;
+
+    Rechtsstatus =    (in_Kraft,
+                       laufende_Aenderungen);
+
+
+ !!    Definition der globalen Variabeln resp. Wertebereiche fuer Kt. SH
+ !! ----------------------------------------------------------------------------
+
+    REAL42 =          [0.00 .. 9999.99];
+
+    BFS_Nr =          [2901 .. 2974];
+
+    Code_CH =         [1 .. 9999];
+
+    Code_SIA =        [101.0 .. 999.9];
+
+    Gemeinden_Ortsteile =           !! Nr. Kt. SH  / ID        / BFS-Nr.
+                  (Altdorf,         !! Gde. Nr. 01 / AVS_Id 0  / wie Thayngen
+                   Bargen,          !! Gde. Nr. 02 / AVS_Id 1  / BFS-Nr. 2931
+                   Barzheim,        !! Gde. Nr. 03 / AVS_Id 2  / wie Thayngen
+                   Beggingen,       !! Gde. Nr. 04 / AVS_Id 3  / BFS-Nr. 2951
+                   Beringen,        !! Gde. Nr. 05 / AVS_Id 4  / BFS-Nr. 2932
+                   Bibern,          !! Gde. Nr. 06 / AVS_Id 5  / wie Thayngen
+                   Buch,            !! Gde. Nr. 07 / AVS_Id 6  / BFS-Nr. 2961
+                   Buchberg,        !! Gde. Nr. 08 / AVS_Id 7  / BFS-Nr. 2933
+                   Buettenhardt,    !! Gde. Nr. 09 / AVS_Id 8  / BFS-Nr. 2914
+                   Doerflingen,     !! Gde. Nr. 10 / AVS_Id 9  / BFS-Nr. 2915
+                   Gaechlingen,     !! Gde. Nr. 11 / AVS_Id 10 / BFS-Nr. 2901
+                   Guntmadingen,    !! Gde. Nr. 12 / AVS_Id 11 / BFS-Nr. 2902
+                   Hallau,          !! Gde. Nr. 13 / AVS_Id 12 / BFS-Nr. 2971
+                   Hemishofen,      !! Gde. Nr. 14 / AVS_Id 13 / BFS-Nr. 2962
+                   Hemmental,       !! Gde. Nr. 15 / AVS_Id 14 / wie Schaffhausen
+                   Hofen,           !! Gde. Nr. 16 / AVS_Id 15 / wie Thayngen
+                   Loehningen,      !! Gde. Nr. 17 / AVS_Id 16 / BFS-Nr. 2903
+                   Lohn,            !! Gde. Nr. 18 / AVS_Id 17 / BFS-Nr. 2917
+                   Merishausen,     !! Gde. Nr. 19 / AVS_Id 18 / BFS-Nr. 2936
+                   Neuhausen,       !! Gde. Nr. 20 / AVS_Id 19 / BFS-Nr. 2937
+                   Neunkirch,       !! Gde. Nr. 21 / AVS_Id 20 / BFS-Nr. 2904
+                   Oberhallau,      !! Gde. Nr. 22 / AVS_Id 21 / BFS-Nr. 2972
+                   Opfertshofen,    !! Gde. Nr. 23 / AVS_Id 22 / wie Thayngen
+                   Osterfingen,     !! Gde. Nr. 24 / AVS_Id 23 / wie Wilchingen
+                   Ramsen,          !! Gde. Nr. 25 / AVS_Id 24 / BFS-Nr. 2963
+                   Ruedlingen,      !! Gde. Nr. 26 / AVS_Id 25 / BFS-Nr. 2938
+                   Schaffhausen,    !! Gde. Nr. 27 / AVS_Id 26 / BFS-Nr. 2939
+                   Schleitheim,     !! Gde. Nr. 28 / AVS_Id 27 / BFS-Nr. 2952
+                   Siblingen,       !! Gde. Nr. 29 / AVS_Id 28 / BFS-Nr. 2953
+                   Stein_am_Rhein,  !! Gde. Nr. 30 / AVS_Id 29 / BFS-Nr. 2964
+                   Stetten,         !! Gde. Nr. 31 / AVS_Id 30 / BFS-Nr. 2919
+                   Thayngen,        !! Gde. Nr. 32 / AVS_Id 31 / BFS-Nr. 2920
+                   Trasadingen,     !! Gde. Nr. 33 / AVS_Id 32 / BFS-Nr. 2973
+                   Wilchingen,      !! Gde. Nr. 34 / AVS_Id 33 / BFS-Nr. 2974
+                   alle_Ortsteile);  !!              AVS_Id 34 / wie Hauptgde.
+
+
+ !! + ======================================================================== +
+
+
+
+
+ !! Topic Nutzungsplanung rechtsgueltig
+ !! ----------------------------------------------------------------------------
+
+TOPIC Nutzungszonen_rechtsgueltig =
+
+
+ !! Mutationshinweise (Beschluesse)
+ !! ----------------------------------------------------------------------------
+
+    TABLE Mutationshinweis =
+      Identifikator:        TEXT*14;   !! SIA = TEXT*16 zulaessig;
+                                       !! <Gde>-<Ortsteil>-<Jahr>-<laufende Nr.>
+                                       !! Beispiele: 32-01-2010-001 => Altdorf
+                                       !!            32-32-2010-001 => Thayngen
+                                       !!            18-18-2010-001 => Lohn
+      SH_Mutationsart:      Dossier_Text;         !! Zur genaueren Umschreibung
+                                                  !! des Mutationstyps
+      SH_Verfahren:        (Genehmigungsverfahren,
+                                     !! verbindlich, orientierend und hinweisend
+                            Anpassungsverfahren);
+                                     !! nur orientierend und hinweisend
+      Gde_Dossier:          OPTIONAL Dossier_Text;
+      Gde_Beschlussdatum:   OPTIONAL DATE;
+      Gde_Rechtskraftdatum: OPTIONAL DATE;
+      Kt_Dossier:           OPTIONAL Dossier_Text;
+      Kt_Beschlussdatum:    OPTIONAL DATE;
+      Kt_Rechtskraftdatum:  OPTIONAL DATE;         !! = Datum "publiziertAb"
+      Erfassungsdatum:      DATE;                  !! Kt. SH nicht mehr optional
+      Erfasser:             Name_Text;             !! Kt. SH nicht mehr optional
+      Bemerkungen:          OPTIONAL Langtext;     !! Titel der Mutation
+      SH_Gemeinde:          Gemeinden_Ortsteile;
+      SH_Ortsteil:          Gemeinden_Ortsteile;      !! wenn kein Ortsteil vor-
+                                     !! handen ist, nochmals Gemeinde auswaehlen
+      BFS_Nr:               BFS_Nr;  !! fuer kuenftigen, schweizweit eindeutigen
+                                     !! Identifikator der einzelnen Zonen-
+                                     !! bezeichnungen; i.d.R. derjenige des
+                                     !! "SH_Ortsteil" verwenden
+    IDENT
+      Identifikator;
+    END Mutationshinweis;
+
+
+
+ !! Rechtsbezug und weitere Dokumente
+ !! ----------------------------------------------------------------------------
+ !!                              (abgeleitet aus Datenmodell ARE vom 12.12.2011)
+
+
+    TABLE Dokument =
+      Titel:                Langtext;
+                                       !! Name des Rechtstitels, u.a. Bauordnung
+      Offizieller_Titel:    OPTIONAL Langtext;
+      Offizielle_Nr:        Dossier_Text;
+                             !! <Gde>-<Ortsteil>-<Abkuerzung>-<Jahr>
+                             !! Beispiel:  32-01-BauO-2011 => Bauordnung Altdorf
+                             !!                   in Kraft getreten im Jahr 2011
+                             !! Abkuerzungen:
+                             !!   BauO   = Bauordnung
+                             !!   QP     = Quartierplan
+                             !!   EP     = Erschliessungsplan
+                             !!   EPR    = Reglement zum Erschliessungsplan
+                             !!   Liste bei Bedarf ergaenzen
+      Abkuerzung:           OPTIONAL Abk_Text;
+      Kanton:               OPTIONAL TEXT*2; !! leer = Dokument Bund; sonst "SH"
+      Gemeinde:             OPTIONAL BFS_Nr; !! leer = Dokument Bund oder Kanton
+                                            !! i.d.R. BFS-Nr. des "SH_Ortsteils"
+      publiziert_ab:        DATE;
+      Rechtsstatus:         Rechtsstatus;
+      Text_im_Web:          OPTIONAL Langtext;
+      Bemerkungen:          OPTIONAL Langtext;
+    IDENT
+      Offizielle_Nr;
+    END Dokument;
+
+
+    TABLE weiteres_Dokument =     !! weitere Dokumente wie z.B. Quartierplaene,
+                                  !! Vorschriften usw., die ebenfalls zu einem
+                                  !! Inhalt aus der Tabelle "Dokument" gehoeren!
+      Titel:                Langtext;
+      Text_im_Web:          OPTIONAL Langtext;
+      Bemerkungen:          OPTIONAL Langtext;
+      Dokument:          -> Dokument;
+    NO IDENT
+    END weiteres_Dokument;
+
+
+ !! Hauptnutzungen CH (Vorgegebener Katalog ARE)
+ !! ----------------------------------------------------------------------------
+ !!                              (abgeleitet aus Datenmodell ARE vom 12.12.2011)
+
+    TABLE Hauptnutzungen_CH =        !! Inhalt der Tabelle wird durch Kanton zur
+      Code_CH:              Code_CH;                      !! Verfuegung gestellt
+      Grundnutzung_CH:      Name_Text;
+      Hauptnutzung_CH:      Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+    IDENT
+      Code_CH;
+    END Hauptnutzungen_CH;
+
+
+    TABLE Hauptnutzungen_SIA =       !! Inhalt der Tabelle wird durch Kanton zur
+      Nutzung_CH:       ->  Hauptnutzungen_CH;            !! Verfuegung gestellt
+      Code_SIA:             Code_SIA;
+      Grundnutzung_SIA:     Name_Text;
+      Hauptnutzung_SIA:     Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+    IDENT
+      Code_SIA;
+    END Hauptnutzungen_SIA;
+
+
+
+
+ !! Grundnutzung
+ !! ----------------------------------------------------------------------------
+
+    TABLE Grundn_Zonentyp_Kt =       !! Inhalt der Tabelle wird durch Kanton zur
+      Zonentyp_SIA:      -> Hauptnutzungen_SIA;           !! Verfuegung gestellt
+      SH_Code:              Code_SIA;           !! 3-stelliger Code gemaess Norm
+      Zonentyp_Kt:          Name_Text;                       !! Zonenname Kanton
+      Zonentyp_Abk_Kt:      Abk_Text;                  !! Zonenabkuerzung Kanton
+      Bemerkungen:          OPTIONAL Langtext;          !! Beschreibung der Zone
+    IDENT
+      Zonentyp_Kt;
+    END Grundn_Zonentyp_Kt;
+
+
+    TABLE Grundn_Zonentyp_Gde =
+      Zonentyp_Gde:         Name_Text;                     !! Zonenname Gemeinde
+      Zonentyp_Abk_Gde:     Abk_Text;                !! Zonenabkuerzung Gemeinde
+      Nutzungsziffer:       OPTIONAL [0.00 .. 9.00];
+      Nutzungsziffer_Art:   OPTIONAL Name_Text;         !! Kanton macht Vorgaben
+      Bemerkungen:          OPTIONAL Langtext;          !! Beschreibung der Zone
+      Laermempfindlichkeitsstufe: (  !! "aufgestufte" resp "abgestufte" Flaechen
+                            keine_ES,          !! sind unter Ueberlagerung (648)
+                            ES_I,              !! separat zu erfassen!
+                            ES_II,
+                            ES_III,
+                            ES_IV);
+      Zonentyp_Kt:           -> Grundn_Zonentyp_Kt;            !! Beziehung 1-mc
+    IDENT
+      Zonentyp_Gde;
+    END Grundn_Zonentyp_Gde;
+
+
+    TABLE Grundn_Zone_Gde =
+      Geometrie:            Gebietseinteilung;
+      Herkunft:             Geometrie_Herkunft;
+      Qualitaet:            Geometrie_Grundlage;
+      Verbindlichkeit:      Verbindlichkeit;
+      Bemerkungen:          OPTIONAL Langtext;
+      Zonentyp_Gde:      -> Grundn_Zonentyp_Gde;               !! Beziehung 1-mc
+      Mutation:          -> Mutationshinweis;                  !! Beziehung 1-mc
+                                                   !! Kt. SH nicht mehr optional
+      SH_Flaechenmass:      DIM2 0 999999999;  !! aus Koordinaten gerechnete Fl.
+      SH_Beschriftung:      OPTIONAL Dossier_Text;
+                                        !! z.B. Inventar-Nr. Naturschutz: Nsk 15
+      SH_Art:               OPTIONAL Dossier_Text;             !! zur grafischen
+                                                              !! Differenzierung
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END Grundn_Zone_Gde;
+
+
+    TABLE Grundn_Zone_Gde_Pos = 
+                              !! beschriftet Attribut Abkuerzung der Gemeinde
+                              !! Grundn_Zone_Gde -> Grundn_Zonentyp_Gde.Abk_Gde
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Zone_Gde:          -> Grundn_Zone_Gde;                   !! Beziehung 1-mc
+    NO IDENT
+    END Grundn_Zone_Gde_Pos;
+
+
+    TABLE Grundn_Dokument_Bez =                !! Bezug zwischen einzelnen Zonen
+      Grundn_Zone:       -> Grundn_Zonentyp_Gde;     !! und einzelnen Dokumenten
+      Vorschrift:        -> Dokument;
+    NO IDENT
+    END Grundn_Dokument_Bez;
+
+
+ !! ueberlagernde Zonen (nur Flaechen moeglich)
+ !! ----------------------------------------------------------------------------
+
+    TABLE Ueberl_Zonentyp_Kt =       !! Inhalt der Tabelle wird durch Kanton zur
+      Zonentyp_SIA:      -> Hauptnutzungen_SIA;           !! Verfuegung gestellt
+      SH_Code:              Code_SIA;           !! 3-stelliger Code gemaess Norm
+      Zonentyp_Kt:          Name_Text;                       !! Zonenname Kanton
+      Zonentyp_Abk_Kt:      Abk_Text;                  !! Zonenabkuerzung Kanton
+      Bemerkungen:          OPTIONAL Langtext;          !! Beschreibung der Zone
+    IDENT
+      Zonentyp_Kt;
+    END Ueberl_Zonentyp_Kt;
+
+
+    TABLE Ueberl_Zonentyp_Gde =
+      Zonentyp_Gde:         Name_Text;                     !! Zonenname Gemeinde
+      Zonentyp_Abk_Gde:     Abk_Text;                !! Zonenabkuerzung Gemeinde
+      Bemerkungen:          OPTIONAL Langtext;          !! Beschreibung der Zone
+      Zonentyp_Kt:       -> Ueberl_Zonentyp_Kt;                !! Beziehung 1-mc
+    IDENT
+      Zonentyp_Gde;
+    END Ueberl_Zonentyp_Gde;
+
+
+    TABLE Ueberl_Zone_Gde =
+      Geometrie:            Einzelflaeche;
+      Herkunft:             Geometrie_Herkunft;
+      Qualitaet:            Geometrie_Grundlage;
+      Verbindlichkeit:      Verbindlichkeit;
+      Bemerkungen:          OPTIONAL Langtext;
+      Zonentyp_Gde:      -> Ueberl_Zonentyp_Gde;               !! Beziehung 1-mc
+      Mutation:          -> Mutationshinweis;                  !! Beziehung 1-mc
+                                                   !! Kt. SH nicht mehr optional
+      SH_Flaechenmass:      DIM2 0 999999999;  !! aus Koordinaten gerechnete Fl.
+      SH_Beschriftung:      OPTIONAL Dossier_Text;
+                                               !! z.B. Inventar-Nr. von Hecken,
+                                               !! archaeolog. Fundstellen, Denk-
+                                               !! maelern usw.
+      SH_Art:               OPTIONAL Dossier_Text;             !! zur grafischen
+                                                              !! Differenzierung
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END Ueberl_Zone_Gde;
+
+
+    TABLE Ueberl_Zone_Gde_Pos =
+                               !! beschriftet Attribut Abkuerzung der Gemeinde
+                               !! Ueberl_Zone_Gde -> Ueberl_Zonentyp_Gde.Abk_Gde
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Zone_Gde:          -> Ueberl_Zone_Gde;                   !! Beziehung 1-mc
+    NO IDENT
+    END Ueberl_Zone_Gde_Pos;
+
+
+    TABLE Ueberl_Dokument_Bez =                !! Bezug zwischen einzelnen Zonen
+      Ueberl_Zone:       -> Ueberl_Zonentyp_Gde;     !! und einzelnen Dokumenten
+      Vorschrift:        -> Dokument;
+    NO IDENT
+    END Ueberl_Dokument_Bez;
+
+
+
+ !! Linienbezogene Festlegungen (Abstandslinien, Waldlinien, etc.)
+ !! ----------------------------------------------------------------------------
+
+    TABLE Linienbez_Festl_Typ_Kt =   !! Inhalt der Tabelle wird durch Kanton zur
+      Linientyp_SIA:     -> Hauptnutzungen_SIA;           !! Verfuegung gestellt
+      SH_Code:              Code_SIA;           !! 3-stelliger Code gemaess Norm
+      Linientyp_Kt:         Name_Text;               !! Linienbezeichnung Kanton
+      Linien_Abk_Kt:        OPTIONAL Abk_Text;              !! Abkuerzung Kanton
+      Bemerkungen :         OPTIONAL Langtext;         !! Beschreibung der Linie
+    IDENT
+      Linientyp_Kt;
+    END Linienbez_Festl_Typ_Kt;
+
+
+    TABLE Linienbez_Festl_Typ_Gde =
+      Linientyp_Gde:        Name_Text;             !! Linienbezeichnung Gemeinde
+      Linien_Abk_Gde:       OPTIONAL Abk_Text;            !! Abkuerzung Gemeinde
+      Bemerkungen :         OPTIONAL Langtext;         !! Beschreibung der Linie
+      Linientyp_Kt:          -> Linienbez_Festl_Typ_Kt;        !! Beziehung 1-mc
+    IDENT
+      Linientyp_Gde;
+    END Linienbez_Festl_Typ_Gde;
+
+
+    TABLE Linienbez_Festl_Gde =
+      Geometrie:            Linienzug;
+      Herkunft:             Geometrie_Herkunft;
+      Qualitaet:            Geometrie_Grundlage;
+      Verbindlichkeit:      Verbindlichkeit;
+      Bemerkungen:          OPTIONAL Langtext;
+      Linientyp_Gde:     -> Linienbez_Festl_Typ_Gde;           !! Beziehung 1-mc
+      Mutation:          -> Mutationshinweis;                  !! Beziehung 1-mc
+                                                   !! Kt. SH nicht mehr optional
+      bebaubar:             OPTIONAL (links, rechts);       !! gerichtete Linie;
+                                              !! bei Baulinien zwingende Eingabe
+      Anfangspunkt:         OPTIONAL LKoord;  !! bei Baulinien zwingende Eingabe
+      SH_Beschriftung:      OPTIONAL Dossier_Text;  !! fuer Beschr. auf dem Plan
+      SH_Art:               OPTIONAL Dossier_Text;             !! zur grafischen
+                                                              !! Differenzierung
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END Linienbez_Festl_Gde;
+
+
+    TABLE Linienbez_Festl_Gde_Pos =
+                                 !! beschriftet Attribut Abkuerzung der Gemeinde
+                      !! Linienbez_Festl_Gde -> Linienbez_Festlt_Typ_Gde.Abk_Gde
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Linie_Gde:         -> Linienbez_Festl_Gde;               !! Beziehung 1-mc
+    NO IDENT
+    END Linienbez_Festl_Gde_Pos;
+
+
+    TABLE Linienbez_Dokument_Bez =            !! Bezug zwischen einzelnen Linien
+      Linienbez_Festl:   -> Linienbez_Festl_Typ_Gde;      !! und einzelnen Doku.
+      Vorschrift:        -> Dokument;
+    NO IDENT
+    END Linienbez_Dokument_Bez;
+
+
+
+
+ !! Objektbezogene Festlegungen (nur Punkte moeglich)
+ !! ----------------------------------------------------------------------------
+
+    TABLE Objektbez_Festl_Typ_Kt =   !! Inhalt der Tabelle wird durch Kanton zur
+      Objekttyp_SIA:     -> Hauptnutzungen_SIA;           !! Verfuegung gestellt
+      SH_Code:              Code_SIA;           !! 3-stelliger Code gemaess Norm
+      Objekttyp_Kt:         Name_Text;               !! Objektbezeichnung Kanton
+      Objekt_Abk_Kt:        OPTIONAL Abk_Text;              !! Abkuerzung Kanton
+      Bemerkungen:          OPTIONAL Langtext;      !! Beschreibung des Objektes
+    IDENT
+      Objekttyp_Kt;
+    END Objektbez_Festl_Typ_Kt;
+
+
+    TABLE Objektbez_Festl_Typ_Gde = 
+      Objekttyp_Gde:        Name_Text;             !! Objektbezeichnung Gemeinde
+      Objekt_Abk_Gde:       OPTIONAL Abk_Text;            !! Abkuerzung Gemeinde
+      Bemerkungen:          OPTIONAL Langtext;      !! Beschreibung des Objektes
+      Objekttyp_Kt:      -> Objektbez_Festl_Typ_Kt;            !! Beziehung 1-mc
+    IDENT
+      Objekttyp_Gde;
+    END Objektbez_Festl_Typ_Gde;
+
+
+    TABLE Objektbez_Festl_Gde =
+      Geometrie:            LKoord;
+      Herkunft:             Geometrie_Herkunft;
+      Qualitaet:            Geometrie_Grundlage;
+      Verbindlichkeit:      Verbindlichkeit;
+      Bemerkungen:          OPTIONAL Langtext;
+      Symbol_Ori:           OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Objekttyp_Gde:     -> Objektbez_Festl_Typ_Gde;           !! Beziehung 1-mc
+      Mutation:          -> Mutationshinweis;                  !! Beziehung 1-mc
+                                                   !! Kt. SH nicht mehr optional
+      SH_Beschriftung:      OPTIONAL Dossier_Text;  !! fuer Beschr. auf dem Plan
+      SH_Art:               OPTIONAL Dossier_Text;             !! zur grafischen
+                                                              !! Differenzierung
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END Objektbez_Festl_Gde;
+
+
+    TABLE Objektbez_Festl_Gde_Pos =
+                                 !! beschriftet Attribut Abkuerzung der Gemeinde
+                      !! Objektbez_Festl_Gde -> Objektbez_Festlt_Typ_Gde.Abk_Gde
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Objekt_Gde:        -> Objektbez_Festl_Gde;               !! Beziehung 1-mc
+    NO IDENT
+    END Objektbez_Festl_Gde_Pos;
+
+
+    TABLE Objektbez_Dokument_Bez =          !! Bezug zwischen einzelnen Objekten
+      Objektbez_Festl:   -> Objektbez_Festl_Typ_Gde; !! und einzelnen Dokumenten
+      Vorschrift:        -> Dokument;
+    NO IDENT
+    END Objektbez_Dokument_Bez;
+
+
+
+
+ !!    Ergaenzungen Pos-Tabellen, Inventarnummern, Kt. SH-spezifisch
+ !! ----------------------------------------------------------------------------
+
+    TABLE SH_Grundn_Zone_Beschr_Pos =
+                                !! beschriftet Attribut SH_Beschriftung
+                                !! Grundn_Zone_Gde.SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+      Zone_Gde:          -> Grundn_Zone_Gde;                           !! {0..*}
+    NO IDENT
+    END SH_Grundn_Zone_Beschr_Pos;
+
+
+    TABLE SH_Ueberl_Zone_Beschr_Pos =
+                                !! beschriftet Attribut SH_Beschriftung
+                                !! Ueberl_Zone_Gde.SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+      Zone_Gde:          -> Ueberl_Zone_Gde;                           !! {0..*}
+    NO IDENT
+    END SH_Ueberl_Zone_Beschr_Pos;
+
+
+    TABLE SH_Linienbez_Festl_Beschr_Pos =
+                                !! beschriftet Attribut SH_Beschriftung
+                                !! Linienbez_Festl_Gde.SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+      Linie_Gde:         -> Linienbez_Festl_Gde;                       !! {0..*}
+    NO IDENT
+    END SH_Linienbez_Festl_Beschr_Pos;
+
+
+    TABLE SH_Objektbez_Festl_Beschr_Pos =
+                                !! beschriftet Attribut SH_Beschriftung
+                                !! Objektbez_Festl_Gde.SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+      Objekt_Gde:        -> Objektbez_Festl_Gde;                       !! {0..*}
+    NO IDENT
+    END SH_Objektbez_Festl_Beschr_Pos;
+
+
+
+ !!    Textmasken, Masse und freie Texte
+ !! ----------------------------------------------------------------------------
+
+
+    TABLE SH_Masse =                    !! nur fuer effektive Einmasse gedacht,
+      Mutation:    -> Mutationshinweis;                      !! * - 1 Beziehung
+      Mass:          REAL42;
+      Erhebungsart:   (Feldaufnahme,
+                       Planabgriff,
+                       Definitionsmass)        // Default = Definitionsmass //;
+      SH_Art:        OPTIONAL Dossier_Text;   !! fuer zusaetliche Unterscheidung
+                                                                  !! der "Masse"
+      Position:      LKoord;                  !! Anschrift Attributinhalt "Mass"
+      Orientierung:  Orientierung                        // Default = 100.0 //;
+      Groesse:       OPTIONAL Groesse               // undefiniert = mittel //;
+      HAlignment:    OPTIONAL HALIGNMENT            // undefiniert = Center //;
+      VAlignment:    OPTIONAL VALIGNMENT            // undefiniert = Bottom //;
+      Geometrie:     OPTIONAL POLYLINE WITH                     !! Geometrie der
+                      (STRAIGHTS, ARCS) VERTEX LKoord;          !! Masslinie
+    NO IDENT
+    END SH_Masse;
+
+
+    TABLE SH_Textmasken = 
+                            !! Abbildung von allfaelligen Beschriftungskaestchen
+                            !! als Flaeche zur grafischen Abdeckung der
+                            !! Situation.
+      Mutation:     -> Mutationshinweis;                      !! * - 1 Beziehung
+      Geometrie:       SURFACE WITH (STRAIGHTS, ARCS)
+                       VERTEX LKoord;           !! Ueberschneidungen zulaessig
+      SH_Art:          OPTIONAL Dossier_Text; !! fuer zusaetliche Unterscheidung
+                                                      !! der "Darstellungsmaske"
+    NO IDENT
+    END SH_Textmasken;
+
+
+    TABLE SH_Darstellungslinie = 
+                      !! Abbildung von Hinweisstrichen und Massbegrenzungslinien
+      Mutation:     -> Mutationshinweis;                      !! * - 1 Beziehung
+      Geometrie:       POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+      SH_Art:          OPTIONAL Dossier_Text; !! fuer zusaetliche Unterscheidung
+                                                      !! der "Darstellungslinie"
+    NO IDENT
+    END SH_Darstellungslinie;
+
+
+    TABLE SH_Text =              !! Abbildung von "losgeloesten" Textanschriften
+      Mutation:      -> Mutationshinweis;                     !! * - 1 Beziehung
+      Text:             Name_Text;
+      Position:         LKoord;
+      Orientierung:     Orientierung                     // Default = 100.0 //;
+      Groesse:          OPTIONAL Groesse                // Default = mittel //;
+      HAlignment:       HALIGNMENT                        // Default = Left //;
+      VAlignment:       VALIGNMENT                        // Default = Half //;
+      Text_Art:         OPTIONAL (normal, kursiv, fett) // Default = normal //;
+      SH_Art:           OPTIONAL Dossier_Text;
+                                              !! fuer zusaetliche Unterscheidung
+                                                                   !! des Textes
+    NO IDENT
+    END SH_Text;
+
+
+
+    TABLE SH_Koordinatenpunkt =
+      Mutation:          -> Mutationshinweis;                 !! * - 1 Beziehung
+      Geometrie:            LKoord;
+      SH_Beschriftung:      OPTIONAL Dossier_Text;       !! i.d.R. sind hier die
+                                       !! Koordinatenwerte des Punktes anzugeben
+      SH_Art:               OPTIONAL Dossier_Text;
+                                   !! fuer zusaetliche Unterscheidung des Textes
+      Bemerkungen:          OPTIONAL Langtext;      !! Beschreibung des Objektes
+    NO IDENT
+    END SH_Koordinatenpunkt;
+
+
+    TABLE SH_Koordinatenpunkt_Pos =                      !! beschriftet Attribut
+                                          !! SH_Koordinatenpunkt.SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+      Koord_Pkt:         -> SH_Koordinatenpunkt;               !! Beziehung 1-mc
+    NO IDENT
+    END SH_Koordinatenpunkt_Pos;
+
+
+  END Nutzungszonen_rechtsgueltig.
+
+
+
+ !! TOPIC Informationen
+ !! ----------------------------------------------------------------------------
+ !! Diese Tabelle dient zur Erhaltung weiterer Informationen (wie z.B. ehemalige
+ !! Materialabbauzonen, ehemalige Deponiezonen, allfaellige Altlasten, 
+ !! landw. Betriebe usw.).
+ !! Falls Fruchtfolgeflaechen erfasst werden, sind sie in diesem TOPIC
+ !! abzulegen (SH_Info.SH_Typ = Fruchtfolgeflaeche).
+
+
+  TOPIC SH_Informationen =
+
+    TABLE SH_Info =
+      SH_Typ:               Dossier_Text;
+                                         !! fuer zusaetzliche Unterscheidung der
+                                         !! Informationen und Darstellungen
+                                         !! im Plan
+      Herkunft:             Geometrie_Herkunft;     !! 1 - 1 Beziehung zu Domain
+      Qualitaet:            Geometrie_Grundlage;
+      SH_Gemeinde:          Gemeinden_Ortsteile;
+      SH_Ortsteil:          Gemeinden_Ortsteile;      !! wenn kein Ortsteil vor-
+                                     !! handen ist, nochmals Gemeinde auswaehlen
+      Erfassungsdatum:      DATE;                     !! auch letzte Aenderungen
+      Erfasser:             Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END SH_Info;
+
+    TABLE SH_Info_Text =
+      Objekt:            -> SH_Info;                           !! Beziehung 1-mc
+      Text:                 Name_Text;
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+      Bemerkungen:          OPTIONAL Langtext;
+    NO IDENT
+    END SH_Info_Text;
+
+    TABLE SH_Info_Flaeche =
+      Objekt:            -> SH_Info;                           !! Beziehung 1-mc
+      Geometrie:            SURFACE WITH (ARCS, STRAIGHTS) VERTEX LKoord
+                            WITHOUT OVERLAPS > 0.050;
+      SH_Flaechenmass:      DIM2 0 999999999;  !! aus Koordinaten gerechnete Fl.
+      Bemerkungen:          OPTIONAL Langtext;
+    NO IDENT
+    END SH_Info_Flaeche;
+
+    TABLE SH_Info_Linie = 
+      Objekt:            -> SH_Info;                           !! Beziehung 1-mc
+      Geometrie:            POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+      Laenge:               REAL42;         !! aus Koordinaten gerechnete Laenge
+      Bemerkungen:          OPTIONAL Langtext;
+    NO IDENT
+    END SH_Info_Linie;
+
+    TABLE SH_Info_Punkt =
+      Objekt:            -> SH_Info;                           !! Beziehung 1-mc
+      Geometrie:            LKoord;
+      Symbol_Ori:           OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Bemerkungen:          OPTIONAL Langtext;
+    NO IDENT
+    END SH_Info_Punkt;
+
+
+
+
+    TABLE SH_Planrahmen =              !! i.d.R. Umfassendes Rechteck des Planes
+      SH_Gemeinde:          Gemeinden_Ortsteile;
+      SH_Ortsteil:          Gemeinden_Ortsteile;      !! wenn kein Ortsteil vor-
+                                     !! handen ist, nochmals Gemeinde auswaehlen
+      Planbezeichnung:      Name_Text;
+      Plannummer:           Dossier_Text;          !! Plannummer des Ing.-Bueros
+      Massstab:             TEXT*10;
+      Geometrie:            SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+      Erfassungsdatum:      DATE;                     !! auch letzte Aenderungen
+      Erfasser:             Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+    NO IDENT
+    END SH_Planrahmen;
+
+
+ !! Stand der Erschliessung und Erschliessungsplanung
+ !! ----------------------------------------------------------------------------
+
+
+    TABLE SH_Erschliessungsstand =
+       !! Definitionen:
+       !! Ausserhalb des Baugebietes (Wald, Landwirtsch.) werden keine Flaechen
+       !! in der Tabelle "SH_Erschliessungsstand" erfasst.
+       !! Die Summe aller erfassten Flaechen ergibt die rechtlich verbindliche
+       !! Baugebietsflaeche resp. Bauzonengrenze einer Gemeinde.
+       !! Flaeche Baugebiet = Bauzonenflaeche plus "Verkehrsflaechen" und
+       !! "nicht_ueberbaubar".
+      Geometrie:            Gebietseinteilung;           !! keine Ueberlappungen
+      Herkunft:             Geometrie_Herkunft;          !! keine Loecher
+      Qualitaet:            Geometrie_Grundlage;
+      Erfassungsdatum:      DATE;                     !! auch letzte Aenderungen
+      Erfasser:             Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+      SH_Flaechenmass:      DIM2 0 999999999;  !! aus Koordinaten gerechnete Fl.
+      SH_Beschriftung:      OPTIONAL Dossier_Text;
+
+      SH_Erschliessungsstand: (ueberbaut,
+                            nicht_ueberbaut
+                              (baureif,
+                               baureif_in_05_Jahren,
+                               baureif_in_10_Jahren,
+                               baureif_in_15_Jahren),
+                            Verkehrsflaeche
+                              (ausgebaut,
+                               nicht_ausgebaut),
+                            nicht_ueberbaubar);
+
+      SH_Gemeinde:          Gemeinden_Ortsteile;
+      SH_Ortsteil:          Gemeinden_Ortsteile;      !! wenn kein Ortsteil vor-
+                                     !! handen ist, nochmals Gemeinde auswaehlen
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END SH_Erschliessungsstand;
+
+
+    TABLE SH_Erschliessungsstand_Pos =
+                                !! beschriftet Attribut
+                                !! SH_Erschliessungsstand.SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+      Baureife:          -> SH_Erschliessungsstand;                    !! {0..*}
+    NO IDENT
+    END SH_Erschliessungsstand_Pos;
+
+
+    TABLE SH_Erschliessungsplan =       !! laengerfristige Erschliessungsplanung
+      Geometrie:            Einzelflaeche;
+      Herkunft:             Geometrie_Herkunft;
+      Qualitaet:            Geometrie_Grundlage;
+      Erfassungsdatum:      DATE;                     !! auch letzte Aenderungen
+      Erfasser:             Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+      SH_Flaechenmass:      DIM2 0 999999999;  !! aus Koordinaten gerechnete Fl.
+      SH_Beschriftung:      OPTIONAL Dossier_Text;
+      SH_Erschliessung:    (bis_in_05_Jahren,
+                            bis_in_10_Jahren,
+                            bis_in_15_Jahren,
+                            Ergaenzung,
+                            Grundplanung);
+      SH_Gemeinde:          Gemeinden_Ortsteile;
+      SH_Ortsteil:          Gemeinden_Ortsteile;      !! wenn kein Ortsteil vor-
+                                     !! handen ist, nochmals Gemeinde auswaehlen
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END SH_Erschliessungsplan;
+
+
+
+    TABLE SH_Erschliessungsplan_Pos =
+                                !! beschriftet Attribut
+                                !! SH_Erschliessungsplan.SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+      Erschliessungsplanung: -> SH_Erschliessungsplan;                 !! {0..*}
+    NO IDENT
+    END SH_Erschliessungsplan_Pos;
+
+
+    TABLE SH_innere_Reserve =
+                                !! in dieser Tabelle sind Flaechen zu erfassen,
+                                !! die ein moegliches Potenzial (innerhalb der
+                                !! Bauzone) aufweisen, noch ueberbaut zu werden.
+      Geometrie:            Gebietseinteilung;
+      Herkunft:             Geometrie_Herkunft;
+      Qualitaet:            Geometrie_Grundlage;
+      Erfassungsdatum:      DATE;                     !! auch letzte Aenderungen
+      Erfasser:             Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+      SH_Flaechenmass:      DIM2 0 999999999;  !! aus Koordinaten gerechnete Fl.
+      SH_Beschriftung:      OPTIONAL Dossier_Text;
+      SH_Nutzungspotenzial: (Innenverdichtungspotenzial,
+                             Bauluecke,
+                             Nachverdichtung);      !! Baureserven sind in der
+                                                    !! "Reservezone" zu erfassen
+      SH_Gemeinde:          Gemeinden_Ortsteile;
+      SH_Ortsteil:          Gemeinden_Ortsteile;      !! wenn kein Ortsteil vor-
+                                     !! handen ist, nochmals Gemeinde auswaehlen
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END SH_innere_Reserve;
+
+
+    TABLE SH_innere_Reserve_Pos =
+                                !! beschriftet Attribut SH_Beschriftung
+                                !! SH_innere_Reserve.SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           HALIGNMENT                    // Default = Left //;
+      VAlignment:           VALIGNMENT                    // Default = Half //;
+      innere_Reserve:    -> SH_innere_Reserve;                         !! {0..*}
+    NO IDENT
+    END SH_innere_Reserve_Pos;
+
+
+  END SH_Informationen.
+
+
+
+ !! TOPIC Transfer-Metadaten    (abgeleitet aus Datenmodell ARE vom 12.12.2011)
+ !! ----------------------------------------------------------------------------
+
+    TOPIC Transfer_Metadaten =
+
+      TABLE Organisation =          !! entspricht der Klasse "Amt" bei CH-Modell
+        Name:                    Name_Text;          !! z.B. Planungsamt Kt. SH,
+                                                 !! oder Buero resp. Lieferanten
+        Organisation_im_Web:     OPTIONAL Langtext;           !! Angabe Homepage
+      NO IDENT
+      END Organisation;
+
+
+      TABLE Datenbestand =
+        Datensatzidentifikator:  TEXT*14;   !! pro Datenlieferung Gde an den Kt.
+                                       !! <Gde>-<Ortsteil>-<Jahr>-<laufende Nr.>
+                                       !! Identischer Mechanismus wie bei
+                                       !! Mutationshinweis.Identifikator
+        Datenstand:              DATE;    !! entweder Datum der Lieferung,
+                                          !! Eingabedatum zur Genehmigung oder
+                                          !! Genehmigungsdatum
+        Lieferdatum:             DATE;    !! Datum der Lieferung
+        Buero:                -> Organisation;
+        zustaendige_Stelle:   -> Organisation;
+      IDENT
+        Datensatzidentifikator;
+      END Datenbestand;
+
+    END Transfer_Metadaten.
+
+
+
+ !! TOPIC Nutzungszonen geplant
+ !! ----------------------------------------------------------------------------
+ !! Diese Topic dient dazu allfaellige Plaene zur Darstellung von Veraenderungen
+ !! (Einzonung, Auszonung oder Umzonung) zu erstellen.
+ !! Diese Informationen koennen auch fuer eine einfache Historisierung bzw.
+ !! Archivierung genutzt werden.
+
+
+  TOPIC Nutzungszonen_Gepl =
+
+    DOMAIN
+
+      Status =         (vor_Gde_Beschluss,                           !! Gemeinde
+                        vor_Kts_Beschluss);                            !! Kanton
+
+
+ !! Mutationshinweise (Beschluesse); geplant
+ !! ----------------------------------------------------------------------------
+
+    TABLE Mutationshinweis_Gepl =
+      Identifikator: TEXT*14;                        !! SIA = TEXT*16 zulaessig;
+                                       !! <Gde>-<Ortsteil>-<Jahr>-<laufende Nr.>
+                                       !! Beispiele: 32-01-2010-001 => Altdorf
+                                       !!            32-32-2010-001 => Thayngen
+                                       !!            18-18-2010-001 => Lohn
+      SH_Mutationsart:      Dossier_Text;         !! Zur genaueren Umschreibung
+                                                  !! des Mutationstyps
+      SH_Verfahren:        (Genehmigungsverfahren,
+                                     !! verbindlich, orientierend und hinweisend
+                            Anpassungsverfahren);
+                                     !! nur orientierend und hinweisend
+      Status:               OPTIONAL Status;
+      Gde_Dossier:          OPTIONAL Dossier_Text;
+      Gde_Beschlussdatum:   OPTIONAL DATE;
+      Gde_Rechtskraftdatum: OPTIONAL DATE;
+      Kt_Dossier_Neu:       OPTIONAL Dossier_Text;
+      Kt_Beschlussdatum:    OPTIONAL DATE;
+      Kt_Rechtskraftdatum:  OPTIONAL DATE;
+      Erfassungsdatum:      DATE;                  !! Kt. SH nicht mehr optional
+      Erfasser:             Name_Text;             !! Kt. SH nicht mehr optional
+      Bemerkungen:          OPTIONAL Langtext;     !! Titel der Mutation
+      SH_Gemeinde:          Gemeinden_Ortsteile;
+      SH_Ortsteil:          Gemeinden_Ortsteile;      !! wenn kein Ortsteil vor-
+                                     !! handen ist, nochmals Gemeinde auswaehlen
+      BFS_Nr:               BFS_Nr;  !! fuer kuenftigen, schweizweit eindeutigen
+                                     !! Identifikator der einzelnen Zonen-
+                                     !! bezeichnungen; i.d.R. derjenige des
+                                     !! "SH_Ortsteil" verwenden
+    IDENT
+      Identifikator;
+    END Mutationshinweis_Gepl;
+
+
+
+ !! Hauptnutzungen CH; geplant (Vorgegebener Katalog ARE)
+ !! ----------------------------------------------------------------------------
+ !!                              (abgeleitet aus Datenmodell ARE vom 12.12.2011)
+
+    TABLE Hauptnutzungen_CH_Gepl =   !! Inhalt der Tabelle wird durch Kanton zur
+      Code_CH:              Code_CH;                      !! Verfuegung gestellt
+      Grundnutzung_CH:      Name_Text;
+      Hauptnutzung_CH:      Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+    IDENT
+      Code_CH;
+    END Hauptnutzungen_CH_Gepl;
+
+
+    TABLE Hauptnutzungen_SIA_Gepl =      !! Inhalt der Tabelle wird durch Kanton
+      Nutzung_CH:        -> Hauptnutzungen_CH_Gepl;   !! zur Verfuegung gestellt
+      Code_SIA:             Code_SIA;
+      Grundnutzung_SIA:     Name_Text;
+      Hauptnutzung_SIA:     Name_Text;
+      Bemerkungen:          OPTIONAL Langtext;
+    IDENT
+      Code_SIA;
+    END Hauptnutzungen_SIA_Gepl;
+
+
+
+
+ !! Grundnutzung geplant
+ !! ----------------------------------------------------------------------------
+
+    TABLE Grundn_Zonentyp_Kt_Gepl =  !! Inhalt der Tabelle wird durch Kanton zur
+      Zonentyp_SIA:      -> Hauptnutzungen_SIA_Gepl;      !! Verfuegung gestellt
+      SH_Code:              Code_SIA;           !! 3-stelliger Code gemaess Norm
+      Zonentyp_Kt:          Name_Text;                       !! Zonenname Kanton
+      Zonentyp_Abk_Kt:      Abk_Text;                  !! Zonenabkuerzung Kanton
+      Bemerkungen:          OPTIONAL Langtext;          !! Beschreibung der Zone
+    IDENT
+      Zonentyp_Kt;
+    END Grundn_Zonentyp_Kt_Gepl;
+
+
+    TABLE Grundn_Zonentyp_Gde_Gepl =
+      Zonentyp_Gde:         Name_Text;                     !! Zonenname Gemeinde
+      Zonentyp_Abk_Gde:     Abk_Text;                !! Zonenabkuerzung Gemeinde
+      Nutzungsziffer:       OPTIONAL [0.00 .. 9.00];
+      Nutzungsziffer_Art:   OPTIONAL Name_Text;         !! Kanton macht Vorgaben
+      Bemerkungen:          OPTIONAL Langtext;          !! Beschreibung der Zone
+      Zonentyp_Kt:       -> Grundn_Zonentyp_Kt_Gepl;           !! Beziehung 1-mc
+    IDENT
+      Zonentyp_Gde;
+    END Grundn_Zonentyp_Gde_Gepl;
+
+
+    TABLE Grundn_Zone_Gde_Gepl =
+      Geometrie:            Einzelflaeche;
+      Bemerkungen:          OPTIONAL Langtext;
+      Mutation:          -> Mutationshinweis_Gepl;            !! * - 1 Beziehung
+      Zonentyp_Gde_alt:  -> Grundn_Zonentyp_Gde_Gepl;          !! Beziehung 1-mc
+      Zonentyp_Gde_neu:  -> Grundn_Zonentyp_Gde_Gepl;          !! Beziehung 1-mc
+      SH_Flaechenmass:      DIM2 0 999999999;  !! aus Koordinaten gerechnete Fl.
+      SH_Beschriftung:      OPTIONAL Dossier_Text;
+      SH_Mutationsart:     (Einzonung,                         !! zur grafischen
+                            Umzonung,                         !! Differenzierung
+                            Auszonung)                // Default = Umzonung //;
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END Grundn_Zone_Gde_Gepl;
+
+
+    TABLE Grundn_Zone_Beschr_Pos_Gepl =  !! beschriftet Attribut SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Zone_Gde:          -> Grundn_Zone_Gde_Gepl;              !! Beziehung 1-mc
+    NO IDENT
+    END Grundn_Zone_Beschr_Pos_Gepl;
+
+
+
+ !! ueberlagernde Zonen geplant (nur Flaechen moeglich)
+ !! ----------------------------------------------------------------------------
+
+    TABLE Ueberl_Zonentyp_Kt_Gepl =  !! Inhalt der Tabelle wird durch Kanton zur
+      Zonentyp_SIA:      -> Hauptnutzungen_SIA_Gepl;      !! Verfuegung gestellt
+      SH_Code:              Code_SIA;           !! 3-stelliger Code gemaess Norm
+      Zonentyp_Kt:          Name_Text;                       !! Zonenname Kanton
+      Zonentyp_Abk_Kt:      Abk_Text;                  !! Zonenabkuerzung Kanton
+      Bemerkungen:          OPTIONAL Langtext;          !! Beschreibung der Zone
+    IDENT
+      Zonentyp_Kt;
+    END Ueberl_Zonentyp_Kt_Gepl;
+
+
+    TABLE Ueberl_Zonentyp_Gde_Gepl =
+      Zonentyp_Gde:         Name_Text;                     !! Zonenname Gemeinde
+      Zonentyp_Abk_Gde:     Abk_Text;                !! Zonenabkuerzung Gemeinde
+      Bemerkungen:          OPTIONAL Langtext;          !! Beschreibung der Zone
+      Zonentyp_Kt:       -> Ueberl_Zonentyp_Kt_Gepl;           !! Beziehung 1-mc
+    IDENT
+      Zonentyp_Gde;
+    END Ueberl_Zonentyp_Gde_Gepl;
+
+
+    TABLE Ueberl_Zone_Gde_Gepl =
+      Geometrie:            Einzelflaeche;
+      Bemerkungen:          OPTIONAL Langtext;
+      Mutation:          -> Mutationshinweis_Gepl;            !! * - 1 Beziehung
+      Zonentyp_Gde_alt:     OPTIONAL -> Ueberl_Zonentyp_Gde_Gepl;
+      Zonentyp_Gde_neu:     OPTIONAL -> Ueberl_Zonentyp_Gde_Gepl;
+      SH_Flaechenmass:      DIM2 0 999999999;  !! aus Koordinaten gerechnete Fl.
+      SH_Beschriftung:      OPTIONAL Dossier_Text;
+      SH_Mutationsart:     (neu,                               !! zur grafischen
+                            geaendert,                        !! Differenzierung
+                            aufgehoben)              // Default = geaendert //;
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END Ueberl_Zone_Gde_Gepl;
+
+
+    TABLE Ueberl_Zone_Beschr_Pos_Gepl =  !! beschriftet Attribut SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Zone_Gde:          -> Ueberl_Zone_Gde_Gepl;              !! Beziehung 1-mc
+    NO IDENT
+    END Ueberl_Zone_Beschr_Pos_Gepl;
+
+
+
+ !! Linienbezogene Festlegungen geplant (Abstandslinien, Waldlinien, etc.)
+ !! ----------------------------------------------------------------------------
+
+    TABLE Linienbez_Festl_Typ_Kt_Gepl =  !! Inhalt der Tabelle wird durch Kanton
+      Linientyp_SIA:     -> Hauptnutzungen_SIA_Gepl;      !! Verfuegung gestellt
+      SH_Code:              Code_SIA;           !! 3-stelliger Code gemaess Norm
+      Linientyp_Kt:         Name_Text;               !! Linienbezeichnung Kanton
+      Linien_Abk_Kt:        OPTIONAL Abk_Text;              !! Abkuerzung Kanton
+      Bemerkungen :         OPTIONAL Langtext;         !! Beschreibung der Linie
+    IDENT
+      Linientyp_Kt;
+    END Linienbez_Festl_Typ_Kt_Gepl;
+
+
+    TABLE Linienbez_Festl_Typ_Gde_Gepl =
+      Linientyp_Gde:        Name_Text;             !! Linienbezeichnung Gemeinde
+      Linien_Abk_Gde:       OPTIONAL Abk_Text;            !! Abkuerzung Gemeinde
+      Bemerkungen:          OPTIONAL Langtext;         !! Beschreibung der Linie
+      Linientyp_Kt:      -> Linienbez_Festl_Typ_Kt_Gepl;       !! Beziehung 1-mc
+    IDENT
+      Linientyp_Gde;
+    END Linienbez_Festl_Typ_Gde_Gepl;
+
+
+    TABLE Linienbez_Festl_Gde_Gepl =
+      Geometrie:            Linienzug;
+      Bemerkungen:          OPTIONAL Langtext;
+      Mutation:          -> Mutationshinweis_Gepl;            !! * - 1 Beziehung
+      Linientyp_Gde_alt:    OPTIONAL -> Linienbez_Festl_Typ_Gde_Gepl;
+      Linientyp_Gde_neu:    OPTIONAL -> Linienbez_Festl_Typ_Gde_Gepl;
+      bebaubar:             OPTIONAL (links, rechts);       !! gerichtete Linie;
+                                              !! bei Baulinien zwingende Eingabe
+      Anfangspunkt:         OPTIONAL LKoord;  !! bei Baulinien zwingende Eingabe
+      SH_Beschriftung:      OPTIONAL Dossier_Text;
+      SH_Mutationsart:     (neu,                               !! zur grafischen
+                            geaendert,                        !! Differenzierung
+                            aufgehoben)              // Default = geaendert //;
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END Linienbez_Festl_Gde_Gepl;
+
+
+    TABLE Linienbez_Festl_Beschr_Pos_Gepl =              !! beschriftet Attribut
+      Position:             LKoord;                           !! SH_Beschriftung
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Linie_Gde:         -> Linienbez_Festl_Gde_Gepl;          !! Beziehung 1-mc
+    NO IDENT
+    END Linienbez_Festl_Beschr_Pos_Gepl;
+
+
+
+
+ !! Objektbezogene Festlegungen geplant (nur Punkte moeglich)
+ !! ----------------------------------------------------------------------------
+
+    TABLE Objektbez_Festl_Typ_Kt_Gepl =  !! Inhalt der Tabelle wird durch Kanton
+      Objekttyp_SIA:     -> Hauptnutzungen_SIA_Gepl;      !! Verfuegung gestellt
+      SH_Code:              Code_SIA;           !! 3-stelliger Code gemaess Norm
+      Objekttyp_Kt:         Name_Text;               !! Objektbezeichnung Kanton
+      Objekt_Abk_Kt:        OPTIONAL Abk_Text;              !! Abkuerzung Kanton
+      Bemerkungen:          OPTIONAL Langtext;      !! Beschreibung des Objektes
+    IDENT
+      Objekttyp_Kt;
+    END Objektbez_Festl_Typ_Kt_Gepl;
+
+
+    TABLE Objektbez_Festl_Typ_Gde_Gepl = 
+      Objekttyp_Gde:        Name_Text;             !! Objektbezeichnung Gemeinde
+      Objekt_Abk_Gde:       OPTIONAL Abk_Text;            !! Abkuerzung Gemeinde
+      Bemerkungen:          OPTIONAL Langtext;      !! Beschreibung des Objektes
+      Objekttyp_Kt:      -> Objektbez_Festl_Typ_Kt_Gepl;       !! Beziehung 1-mc
+    IDENT
+      Objekttyp_Gde;
+    END Objektbez_Festl_Typ_Gde_Gepl;
+
+
+    TABLE Objektbez_Festl_Gde_Gepl =
+      Geometrie:            LKoord;
+      Bemerkungen:          OPTIONAL Langtext;
+      Symbol_Ori:           OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Mutation:          -> Mutationshinweis_Gepl;            !! * - 1 Beziehung
+      Objekttyp_Gde_alt:    OPTIONAL -> Objektbez_Festl_Typ_Gde_Gepl;
+      Objekttyp_Gde_neu:    OPTIONAL -> Objektbez_Festl_Typ_Gde_Gepl;
+      SH_Beschriftung:      OPTIONAL Dossier_Text;
+      SH_Mutationsart:     (neu,                               !! zur grafischen
+                            geaendert,                        !! Differenzierung
+                            aufgehoben)              // Default = geaendert //;
+      SH_USER:              OPTIONAL Dossier_Text;
+    NO IDENT
+    END Objektbez_Festl_Gde_Gepl;
+
+
+    TABLE Objektbez_Festl_Beschr_Pos_Gepl =              !! beschriftet Attribut
+                                                         !! SH_Beschriftung
+      Position:             LKoord;
+      Orientierung:         OPTIONAL Orientierung    // undefiniert = 100.0 //;
+      Groesse:              OPTIONAL Groesse        // undefiniert = mittel //;
+      HAlignment:           OPTIONAL HALIGNMENT     // undefiniert = Center //;
+      VAlignment:           OPTIONAL VALIGNMENT       // undefiniert = Half //;
+      Objekt_Gde:        -> Objektbez_Festl_Gde_Gepl;          !! Beziehung 1-mc
+    NO IDENT
+    END Objektbez_Festl_Beschr_Pos_Gepl;
+
+
+    TABLE SH_Darstellungslinie_Gepl = 
+                                                !! Abbildung von Hinweisstrichen
+      Mutation:     -> Mutationshinweis_Gepl;                 !! * - 1 Beziehung
+      Geometrie:       POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoord;
+    NO IDENT
+    END SH_Darstellungslinie_Gepl;
+
+  END Nutzungszonen_Gepl.
+
+
+END Nutzungsplanung_SHLV95.
+
+FORMAT FREE;                                           !! Fuer Datentransfer
+ !! FORMAT FIX WITH LINESIZE = 120, TIDSIZE = 20;       !! Fuer INTERLIS-Compiler
+
+CODE
+  BLANK = DEFAULT, UNDEFINED = DEFAULT, CONTINUE = DEFAULT;
+  TID = ANY;
+END.

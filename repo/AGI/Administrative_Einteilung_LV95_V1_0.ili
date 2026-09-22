@@ -1,0 +1,94 @@
+INTERLIS 2.3;
+
+ /** Administrative Einteilung Kanton Schaffhausen.
+Modellierung der administrativen Einteilung im Kanton Schaffhausen.
+*/
+
+/*
+ Version    | Who   | Modification
+------------------------------------------------------------------------------
+ 0000-00-00 | ---   | Version 1.1
+                    | - 
+                    | - 
+                    | - 
+------------------------------------------------------------------------------
+ 2020-06-02 | AGI   | Version 1.0
+------------------------------------------------------------------------------
+
+ Fachtechnische Auskunft
+ -------------------------------------------------------------------------------------------------------------------------------------------
+ Geobasisdatensätze Administrativer Einteilungen über die Zuständigkeit von Kanton und Gemeinden gemäss 
+ kantonaler Geoinformatationsverordnung KGeoIV 211.501. 
+ Die zustaendige Fachstelle für fachtechnische Fragen erfahren Sie aus den Attributangaben ZUSTAENDIGE FACHSTELLE.
+ -------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+!!@ technicalContact=mailto:gis@ktsh.ch
+!!@ furtherInformation=http:https://agi.sh.ch
+!!@ IDGeoIV=001-SH..044-SH
+!!@ tags="Kanton Schaffhausen,Eichkreis, Fischerei, Forst, Friedensrichter, Gemeindegrenzen, Kirchgemeinde,Medizin, Militär, Pilzschutz, Betreibungskreis, Konkurskreis, Schiesskreis, Stützpunktfeuerwehr, Versorgungsregion, Wahlkreis, Zivilstandskreis"
+
+
+MODEL Administrative_Einteilung_LV95_V1_0 (de)
+AT "http://models.geo.sh.ch/AGI"
+VERSION "2020-06-02"  =
+  IMPORTS GeometryCHLV95_V1;
+  IMPORTS Units;
+  
+  DOMAIN
+	
+	STRUCTURE Eigenschaften =
+		/** Bezeichnung des weiteren Attributs zum KreisObjekt (Attributname) */
+		Bezeichnung: MANDATORY TEXT*100;
+		/** Wert des weiteren Attributs zum KreisObjekt als Text */
+		Wert: MANDATORY TEXT*200;
+	END Eigenschaften;
+
+  TOPIC Administration =
+  
+  	CLASS Gesetz =
+		/** System-Nr. zum Schaffhauser-Rechtsbuch zwingend angeben */
+		Rechtsgrundlage : MANDATORY TEXT*30;
+		/** URL zum Schaffhauser-Rechtsbuch auf LexFind zwingend angeben */
+		URL_Gesetz : MANDATORY TEXT*200;
+    END Gesetz;
+	 
+	CLASS KGeoIV =
+		/** Identifikator des Geobasisdatensatzes gemäss KGeoIV 211.501 Kantonale Geoinformationsverordnung zwingend angeben */
+		Identifikator : MANDATORY TEXT*20;
+		/** Bezeichnung des Geobasisdatensatzes zwingend angeben */
+		Bezeichnung : MANDATORY TEXT*200;
+		/** Zuständige Fachstelle bzw. Datenherr zwingend angeben */
+		Zustaendige_Stelle : MANDATORY TEXT*100;
+		/** URL der zuständigen Fachstelle zwingend angeben */
+		URL_Stelle : MANDATORY TEXT*200;
+ 	END KGeoIV;
+	
+    CLASS Einteilung =
+		/** Name (Einteilung, Kreis, Bereich, politische Grenzen, etc.) zwingend angeben */
+		Name : MANDATORY TEXT*100;
+		/** Optionale Zusatzinformationen für feingegliederte Bezeichnungen */
+		Eigenschaft : BAG OF Eigenschaften;
+		/** Fläche(n) zwingend erfassen */
+		Geometrie : MANDATORY GeometryCHLV95_V1.MultiSurface;
+		/** Optionale Bemerkungen zur Einteilung */
+		Bemerkung : MTEXT;
+    END Einteilung;
+	
+	ASSOCIATION KGeoIV_Gesetz =
+		/** KGeoIV mit einer Assoziation als lose Verbindung {0..*} */
+		KGeoIV -- {*} KGeoIV;
+		/** Gesetz mit einer Assoziation als lose Verbindung {0..*} */
+		Gesetz -- {*} Gesetz;
+	END KGeoIV_Gesetz;
+	
+	ASSOCIATION KGeoIV_Einteilung =
+		/** Eine Komposition mit einer starker Beziehung zu den Teilen. Bei Löschung des Ganzen werden auch seine Teile (Einteilung) gelöscht */
+		KGeoIV -<#> {1} KGeoIV;
+		/** KGeoIV benötigt mindestens ein Teil von Administrative Einteilung */
+		Administrative_Einteilung -- {1..*} Einteilung;
+	END KGeoIV_Einteilung;
+
+  END Administration;
+
+END Administrative_Einteilung_LV95_V1_0.

@@ -1,0 +1,1184 @@
+TRANSFER Interlis1;
+!!    INTERLIS 1 Beschreibung Melioration (Entwaesserung) Kanton Schaffhausen
+!! + ======================================================================== +
+!! ? Das Datenmodell "Meliorations-Entwaesserung Kanton Schaffhausen" ist ein ?
+!! ? eigenstaendiges Modell, das angelehnt an die Normen SIA-405              ?
+!! ? Ausgabe Nov. 98 (Modell Abwasser) sowie der VSA-DSS.                     ?
+!! ?                                                                          ?
+!! ? Version: 9.11                                                            ?
+!! ?                                                                          ?
+!! ? Filename: *.DOC, *ILI* bzw. *FMT* (siehe Kopfzeile)                      ?
+!! ?                                                                          ?
+!! ? Letzter Update: 20.03.2014/fb (V9.11)                                    ?
+!! ?                 - div. bestehende Attribute auf OPTIONAL gesetzt         ?
+!! ?                 06.03.2012/fb (V9.10)                                    ?
+!! ?                 - Auswahlliste "Stati" ergaenzt um Wert "Projekt"        ?
+!! ?                 - Diverse Anpassungen im Bereich                         ?
+!! ?                   Kontrolle/Unterhalt; zusaetzliche Tabellen             ?
+!! ?                   "Leitungs_Nummer_UeP_Pos, "Schacht_Massnahme" und      ?
+!! ?                   "Leitung_Massnahme"                                    ?
+!! ?                 - zusaetzliches Attribut "Sanierungsetappe" bei den      ?
+!! ?                   Tabellen "Schacht" und "Leitung"                       ?
+!! ?                 - zusaetzlicher TOPIC "SH_Informationen"                 ?
+!! ?                 - Modellname geaendert (neu "Melioration_Kt_SH")         ?
+!! ?                 14.04.2011/fb (V9.9)                                     ?
+!! ?                 - zusaetzliche Punkte bei den Auswahllisten:             ?
+!! ?                   Schacht.Schachtart und Schacht.Einlauf_Auslaufart      ?
+!! ?                 - Unterhalt (Schacht, Ltg.) Prioritaet als Auswahlliste  ?
+!! ?                 15.12.2010/fb (V9.8)                                     ?
+!! ?                 - neu bei der Auswahlliste Leitung.Funktion_hierarchisch ?
+!! ?                   Belagsrinne; neu bei Leitung.Material Asphalt.         ?
+!! ?                 09.12.2010/fb (V9.7)                                     ?
+!! ?                 - neu bei der Auswahlliste Leitung.Funktion_hierarchisch ?
+!! ?                   Strassengraben_befestigt und Strassengraben_natuerlich ?
+!! ?                 24.11.2010/fb (V9.6)                                     ?
+!! ?                 - neu bei der Auswahlliste Schacht.Schachtart die        ?
+!! ?                   Attribute "Einlauf" und "Auslauf"; Loeschung unter     ?
+!! ?                   Leitungspunkt.Art inkl. "Vorflutereinlauf"             ?
+!! ?                 - neu bei der Auswahlliste Schacht.Einlauf_Auslaufart    ?
+!! ?                   das Attribut "Ortbeton"                                ?
+!! ?                 - Schacht.IDENT = Geometrie wurde geloescht              ?
+!! ?                 08.07.2010/fb (V9.5)                                     ?
+!! ?                 - neu in der Tabelle Schacht_Kontrolle die Attribute     ?
+!! ?                   Zustand, Prioritaet und Massnahmen                     ?
+!! ?                 - neu in der Tabelle Leitung_Kontrolle die Attribute     ?
+!! ?                   Zustand_Ltg_Anfang, Zustand_Ltg_Ende, Prioritaet und   ?
+!! ?                   Massnahmen                                             ?
+!! ?                 26.06.2008/fb (V9.4)                                     ?
+!! ?                 - neu "offener_Graben_befestigt" unter                   ?
+!! ?                   Leitung.Funktion_hierarchisch                          ?
+!! ?                 - umbenannt "offener_Graben " unter Leitung.             ?
+!! ?                   Funktion_hierarchisch in "offener_Graben_natuerlich"   ?
+!! ?                 28.03.2008/fb (V9.3)                                     ?
+!! ?                 - neu "Einlauf" und "Auslauf" unter Leitungspunkt.Art    ?
+!! ?                                                                          ?
+!! ? Erarbeitet durch:                                                        ?
+!! ? - Rolf Wildberger, Wildberger Schuler Partner AG, Schaffhausen           ?
+!! ? - Peter Hauser, Landwirtschaftsamt Kanton Schaffhausen                   ?
+!! ? - Hansjoerg Walter, Tiefbauamt Stadt Schaffhausen                        ?
+!! ?                                                                          ?
+!! ? INTERLIS-Modell erstellt durch:                                          ?
+!! ? - Felix Berger, Vermessungsamt des Kantons Schaffhausen                  ?
+!! ?                                                                          ?
+!! + ------------------------------------------------------------------------ +
+!! ?                                                                          ?
+!! ? Allgemeine Bemerkungen zum Datenmodell:                                  ?
+!! ?                                                                          ?
+!! ? - Die Erfassung der Meliorationsleitungen verfolgen das Ziel,            ?
+!! ?   die heute bestehenden Werkplaene beim Landwirtschaftsamt fuer          ?
+!! ?   alle Gemeinden des Kt. SH einheitlich zu erfassen; Aspekte der         ?
+!! ?   Kontrollen und des Unterhaltes sind als Optionen abgehandelt.          ?
+!! ?                                                                          ?
+!! ? - Ziel ist es, diese bestehenden Werkplaene ohne Informationsverlust     ?
+!! ?   mittels eines moeglichst schlanken und einfach handhabbaren            ?
+!! ?   Datenmodells in die digitale Form zu bringen.                          ?
+!! ?                                                                          ?
+!! ?   Dies hat zur Konsequenz, dass teilweise                                ?
+!! ?   Vereinfachungen in der Datenmodellierung vorgenommen wurden            ?
+!! ?   (redundnate Informationen: z.B. Schachtart_Kuerzel, Material_Kuerzel). ?
+!! ?                                                                          ?
+!! ? - Nur ausserhalb der Bauzonen sind die Drainagen mit den Spezifikationen ?
+!! ?   der Melioration (spezielle Tabellen) zu erfassen. Innerhalb der        ?
+!! ?   Bauzonen sollen diese als Schmutz- und Regenabwasser erfasst werden.   ?
+!! ?   Erster Kontrollschacht ausserhalb Bauzone gehoert noch zum             ?
+!! ?   Abwassermodell. Ausnahme: Fuehrt eine Drainageleitung (nur Regenab-    ?
+!! ?   wasser) durch das Baugebiet und endet in einem Vorfluter so ist sie    ?
+!! ?   im Modell Melioration (nicht Abwasser) zu erfassen.                    ?
+!! ?                                                                          ?
+!! ? - Bei den Meliorationsleitungen wird die Netzlogik nicht erfasst.        ?
+!! ?                                                                          ?
+!! ? - Zur einfacheren Erweiterung der Aufzaehltypen wurde jeweils das        ?
+!! ?   Wort "weitere" eingefuehrt.                                            ?
+!! ?                                                                          ?
+!! ? - Definition einer Leitung: Ein moeglichst grosser Leitungsabschnitt,    ?
+!! ?   bei dem alle zugewiesenen Attributwerte gleich sind.                   ?
+!! ?                                                                          ?
+!! + ------------------------------------------------------------------------ +
+!! ?                                                                          ?
+!! ? Hinweise zu Attributwerten und Datenerfassung:                           ?
+!! ?                                                                          ?
+!! ? - In jeder Datentabelle ist das Attribut "Bemerkung" vorgesehen fuer     ?
+!! ?   allgemeine, individuelle Hinweise zum Objekt.                          ?
+!! ?                                                                          ?
+!! ? - Im Weiteren ist in jeder Datentabelle das Attribut "User" definiert;   ?
+!! ?   es handelt sich um Informationen mit temporaerem Charakter fuer den    ?
+!! ?   Erfasser (individuelle Nutzung des Datenfeldes wie z.B. Fragen,        ?
+!! ?   Flags usw.); die Daten sind vor einem Export zwingend zu loeschen.     ?
+!! ?                                                                          ?
+!! ? - Fuer die Planbeschriftungen ist das Attribut "Beschriftung" in den     ?
+!! ?   wichtigsten Tabellen vorhanden.                                        ?
+!! ?                                                                          ?
+!! ? - Abkuerzungen werden in spitzen Klammern dargestellt und muessen ver-   ?
+!! ?   wendet werden. Beispiel: !! <Kontrollschacht, KS>                      ?
+!! ?                                                                          ?
+!! ? - Fuer die digitale Erstdatenerfassung ist das Jahr der Gueter-          ?
+!! ?   zusammenlegung einzugeben. Bei Sanierungen ist das entsprechende       ?
+!! ?   Baujahr zu verwenden.                                                  ?
+!! ?   Jahr der Gueterzusammenlegungen:                                       ?
+!! ?   ALT: Altdorf        ????     ?   BAG: Bargen            ????           ?
+!! ?   (BAZ: Barzheim)     ????     ?   BEG: Beggingen         ????           ?
+!! ?   BER: Beringen       ????     ?   BIB: Bibern            ????           ?
+!! ?   BUC: Buch           ????     ?   BUB: Buchberg          ????           ?
+!! ?   BUE: Buettenhardt   ????     ?   DOE: Doerflingen       ????           ?
+!! ?   GAE: Gaechlingen    ????     ?   GUN: Guntmadingen      ????           ?
+!! ?   HAL: Hallau         ????     ?   HEH: Hemishofen        ????           ?
+!! ?   HET: Hemmental      ????     ?   HOF: Hofen             ????           ?
+!! ?   LOE: Loehningen     ????     ?   LOH: Lohn              ????           ?
+!! ?   MER: Merishausen    ????     ?   NAR: Neuhausen         ????           ?
+!! ?   NEK: Neunkirch      ????     ?   OBE: Oberhallau        ????           ?
+!! ?   OPF: Opfertshofen   ????     ?   OST: Osterfingen       ????           ?
+!! ?   RAM: Ramsen         ????     ?   RUE: Ruedlingen        ????           ?
+!! ?   SHA: Schaffhausen   ????     ?   SHL: Schleitheim       ????           ?
+!! ?   SIB: Siblingen      ????     ?   SAR: Stein am Rhein    ????           ?
+!! ?   STE: Stetten        ????     ?   THA: Thayngen          ????           ?
+!! ?   TRA: Trasadingen    ????     ?   WIL: Wilchingen        ????           ?
+
+!! ?                                                                          ?
+!! ? - Basis fuer die Erstdatenerfassung sind:                                ?
+!! ?   - Nachgefuehrte Originalplaene der Meliorationsleitungen               ?
+!! ?   - Ausfuehrungsplaene und Einmassskizzen der entsprechenden             ?
+!! ?     Sanierungsetappen.                                                   ?
+!! ?                                                                          ?
+!! ? - Was ist im Sanierungsfall im Felde aufzunehmen:                        ?
+!! ?   - Schaechte: Lage und Hoehe (X, Y, Z)                                  ?
+!! ?   - Anfangs- und Endpunkte von Leitungen (inkl. Sauger)                  ?
+!! ?     Lage und Hoehe (X, Y, Z)                                             ?
+!! ?   - Leitungsverlauf: Richtungsaenderungen nur Lage (X, Y)                ?
+!! ?   mittels Tachymeter, GPS oder Einmass                                   ?
+!! ?                                                                          ?
+!! ? - Als Basis fuer die Einmessung sind zulaessig: Fixpunkte, Grenzpunkte   ?
+!! ?   oder klar definierte Situationspunkte (Hausecke, Mauerecke usw.).      ?
+!! ?   Die Einmasse sind geeignet zu kontrollieren.                           ?
+!! ?                                                                          ?
+!! + ------------------------------------------------------------------------ +
+!! ?                                                                          ?
+!! ? Darstellungsmodelle:                                                     ?
+!! ?                                                                          ?
+!! ? - Es werden zwei Plantypen unterschieden: Werkplan (WP: 1:1000) und      ?
+!! ?   Uebersichtsplan (UeP: i.d.R. 1:5000). Es werden entsprechend           ?
+!! ?   zwei Textpositionstabellen gefuehrt.                                   ?
+!! ?                                                                          ?
+!! ?   sichere_Lage:   Darstellung ausgezogen Linie                           ?
+!! ?   unsichere_Lage: Darstellung strichlierte Linie                         ?
+!! ?                                                                          ?
+!! ? - Die Planeinteilung inkl. Planrahmen und Plan-Nr. sollen nach den       ?
+!! ?   Richtlinien des Kantons erfolgen (Rahmenplaene).                       ?
+!! ?                                                                          ?
+!! ?                                                                          ?
+!! ?   Planinhalt und Darstellung:   1:1000  mm    1:5000  mm    Farbe RGB    ?
+!! ?   Linien:                        (WP)          (UeP)                     ?
+!! ?   - Hauptleitung:                  X   0.7       X   0.5   000/255/255   ?
+!! ?   - Sammelleitung:                 X   0.5       X   0.35  000/255/255   ?
+!! ?   - Sauger / Anschlussleitung:     X   0.35      X   0.18  000/255/255   ?
+!! ?   - Brunnenleitung:                X   0.5       X   0.35  000/255/000   ?
+!! ?   - Kanalisation:                  X   0.7       X   0.5   255/000/255   ?
+!! ?   - Masslinien:                                                          ?
+!! ?       - Feldaufnahme, strichliert: X   0.18                000/000/000   ?
+!! ?       - CAD-Abgriff, punktiert:    X   0.18                000/000/000   ?
+!! ?                                                                          ?
+!! ?   Textanschriften (Arial):                                               ?
+!! ?   - Leitungs-Material (Abk.)       X   2.0                 000/255/255   ?
+!! ?   - Leitungs-Durchmesser:          X   2.0       X   1.7   000/255/255   ?
+!! ?   - Funktion_hydraulisch (Si/VSi): X   2.0                 000/255/255   ?
+!! ?   - Masse                          X   1.5                 000/000/000   ?
+!! ?   - Schachtart:      (Arial fett)  X   2.2                 000/255/255   ?
+!! ?   - Schacht-Nummer:  (Arial fett)  X   2.2                 000/255/255   ?
+!! ?   - Grabentiefe:                   X   1.5                 000/255/255   ?
+!! ?   - Sohlenkote:                    X   1.5                 000/000/000   ?
+!! ?   - Terrainkote:                   X   1.5                 000/000/000   ?
+!! ?   - Beschriftung (Freier Text):    X   1.5                 000/000/000   ?
+!! ?                                                                          ?
+!! ?   Weitere, speziell darzustellende Elemente                              ?
+!! ?   - Waldflaechen aus der amtlichen Vermessung (AV)         220/255/200   ?
+!! ?   - Rebflaechen aus der amtlichen Vermessung (AV)          220/220/150   ?
+!! ?   - Bauzonengrenze (Axe)                                   000/000/000   ?
+!! ?                                                                          ?
+!! ?   Definition Schriftgroessen in mm:    klein      mittel      gross      ?
+!! ?   Werkplan (WP):                                                         ?
+!! ?   - Leitungs-Material (Abk.)           < 1.5     1.5 - 2.5    > 2.5      ?
+!! ?   - Leitungs-Durchmesser:              < 1.5     1.5 - 2.5    > 2.5      ?
+!! ?   - Funktion_hydraulisch (Si/VSi):     < 1.5     1.5 - 2.5    > 2.5      ?
+!! ?   - Masse                              < 1.2     1.2 - 1.8    > 1.8      ?
+!! ?   - Schachtart:      (Arial fett)      < 1.7     1.7 - 2.7    > 2.7      ?
+!! ?   - Schacht-Nummer:  (Arial fett)      < 1.7     1.7 - 2.7    > 2.7      ?
+!! ?   - Grabentiefe:                       < 1.2     1.2 - 1.8    > 1.8      ?
+!! ?   - Sohlenkote:                        < 1.2     1.2 - 1.8    > 1.8      ?
+!! ?   - Terrainkote:                       < 1.2     1.2 - 1.8    > 1.8      ?
+!! ?   - Beschriftung (Freier Text):        < 1.2     1.2 - 1.8    > 1.8      ?
+!! ?                                                                          ?
+!! ?   Uebersichtsplan (WP):                                                  ?
+!! ?   - Leitungs-Durchmesser:              < 1.4     1.4 - 2.0    > 2.0      ?
+!! + ------------------------------------------------------------------------ +
+
+!! ?                                                                          ?
+!! ? Organisatorische Aspekte:                                                ?
+!! ?                                                                          ?
+!! ? - Projektleitung fuer die digitale Erstdatenerfassung resp. der          ?
+!! ?   digitalen Nachfuehrung der Meliorationsobjekte: Gestellt durch         ?
+!! ?   Landwirtschaftsamt.                                                    ?
+!! ?                                                                          ?
+!! ? - noch offene Punkte sind:                                               ?
+!! ?   - Pflichtenheft / Zustaedigkeiten Landwirtschaftsamt                   ?
+!! ?   - Pflichtenheft / Zustaendigkeiten ausfuehrendes Ing.-Buero            ?
+!! ?   - Pflichtenheft / Zustaendigkeiten Vermessungsamt                      ?
+!! ?   - Pflichtenheft Erstdatenerfassung bzw. Nachfuehrung                   ?
+!! ?   - Finanzierung                                                         ?
+!! ?   - Ablage Messprotokolle / Datenhaltung                                 ?
+!! ?   - Verifikation (inhaltlich und syntaktisch)                            ?
+!! ?                                                                          ?
+!! ? - Datenmodellaenderungen und -erweiterungen duerfen nur durch            ?
+!! ?   das Vermessungsamt erfolgen.                                           ?
+!! ?                                                                          ?
+!! ? - Vor jeder Datenerfassung oder Datennachfuehrung ist das neueste        ?
+!! ?   Datenmodell beim Vermessungsamt zu beziehen resp. anzuwenden.          ?
+!! ?                                                                          ?
+!! ? - Verifikation nach Datenerfassungsarbeiten : Inhaltliche Belange sind   ?
+!! ?   durch das Landwirtschaftsamt zu ueberpruefen; die INTERLIS-Daten wer-  ?
+!! ?   den durch das Vermessungsamt lediglich bezueglich Syntax untersucht.   ?
+!! ?                                                                          ?
+!! + ======================================================================== +
+
+!!    Definition der globalen Variabeln resp. Wertebereiche
+!! ----------------------------------------------------------------------------
+
+MODEL Melioration_Kt_SH                          !! Version 9.11 vom 20.03.2014
+                                                 !! Modell Melioration Kt. SH
+
+  DOMAIN
+    INTEGER2 =     [0 .. 99];
+    INTEGER4 =     [0 .. 9999];
+    INTEGER6 =     [0 .. 999999];
+    REAL12 =       [0.00 .. 9.99];
+    REAL12minus =  [-9.99 .. 0.00];
+    REAL21 =       [0.0 .. 99.9];
+    REAL42 =       [0.00 .. 9999.99];
+    Orientierung =  GRADS 0.0 399.9;
+    Hoehecm =       DIM1        -200.00       5000.00;   !! in m. ue. M.
+    LKoordmm =      COORD2    480000.000     70000.000   !! in m
+                              840000.000    300000.000;  !! in m
+
+    Herkunftsart = (digitalisiert,               !! ab bestehenden Plaenen
+                    GPS_Tachymeter,              !! GPS in cm-Genauigkeit
+                    konstruiert,                 !! konstruiert = eingemessen
+                    Einmass_durch_Dritte,
+                    weitere);
+                      !! Ersterfassung: Bei best. Plaenen = digitalisiert.
+                      !! Nachfuehrung:  konstruiert oder GPS_Tachymeter durch 
+                      !!                Ingenieurbuero.
+                      !!                Einmasse von Privaten oder Gemeinde =
+                      !!                Einmass_durch_Dritte.
+
+    Genauigkeit =  (sichere_Lage,                         !! <sichere_Lage, sL>
+                    unsichere_Lage);                    !! <unsichere_Lage, uL>
+                      !! Ersterfassung: Genauigkeit wird ab den best. Plaenen
+                      !!                uebernommen.
+                      !! Nachfuehrung:  Einmasse von Dritten fuehrt eher zu
+                      !!                "unsichere_Lage".
+                      !! "unsichere_Lage" ist zu verwenden, wenn die 
+                      !! Leitungslage (X, Y) nicht klar definiert ist.
+                      !! "unsichere_Lage" (Z) wird im Daten- und Darstellungs-
+                      !! modell nicht beruecksichtigt.
+                      !! Eine "genau gezeichnete" Leitung (ausgezogene Linie,
+                      !! die digitalisiert wurde, wird als "sichere_Lage"
+                      !! bezeichnet.
+
+    Eigentum =        (unbekannt, Kanton, Gemeinde,
+                       Gueterkorporation, privat, weitere, Nachbargemeinde);
+
+
+    Ausfuehrungen =   (Kanton, Gemeinde, Gueterkorporation,
+                       Nachbargemeinde, Planer, Unternehmer, privat, weitere);
+
+    Zustaende =       (in_Ordnung, Massnahmen, unbekannt,
+                       nicht_kontrollierbar);
+
+    Massnahmen =      (Unterhalt, Sanierung, Grundlage,
+                       Netzerweiterung, Nachkontrolle, keine, weitere);
+
+    Prioritaeten =    (dringend,                    !! groesste Prioritaet
+                       mittel,
+                       niedrig,                     !! kleinste Prioritaet
+                       keine,
+                       ausgefuehrt);
+
+    Schriftgroesse = (klein, mittel, gross);
+                      !! Die jeweiligen Schriftgroessen sind je 
+                      !! Tabelle definiert.
+
+    Stati =        (in_Betrieb, ausser_Betrieb, Projekt);
+
+    Gemeinden =    (Altdorf, Bargen, Beggingen,                  !! AVS_Id  0- 2
+                    Beringen, Bibern, Buch, Buchberg,            !! AVS_Id  3- 6
+                    Buettenhardt, Doerflingen, Gaechlingen,      !! AVS_Id  7- 9
+                    Guntmadingen, Hallau, Hemishofen, Hemmental, !! AVS_Id 10-13
+                    Hofen, Loehningen, Lohn, Merishausen,        !! AVS_Id 14-17
+                    Neuhausen, Neunkirch, Oberhallau,            !! AVS_Id 18-20
+                    Opfertshofen, Osterfingen, Ramsen,           !! AVS_Id 21-23
+                    Ruedlingen, Schaffhausen,                    !! AVS_Id 24-25
+                    Schleitheim, Siblingen, Stein_am_Rhein,      !! AVS_Id 26-28
+                    Stetten, Thayngen, Trasadingen, Wilchingen,  !! AVS_Id 29-32
+                    andere);                                     !! AVS_Id 33
+                      !! "andere" nur ausserhalb des Kantons verwenden
+
+    Erfassungsbueros =
+                   (Buero_01, !! Wildberger Schuler Partner AG, SH
+                    Buero_02, !! Buergin Winzeler Partner AG, SH
+                    Buero_03, !! Wuest Bauingenieure AG, SH
+                    Buero_04, !! Vermessung & GIS GmbH, SH
+                    Buero_05, !! magma AG (vormals) Oekogeo AG, SH
+                    Buero_06, !! Planimpuls Kiefer AG, Stein am Rhein
+                    Buero_07, !! E. Fuchs GmbH, Hofen
+                    Buero_08, !! K. Lienhard AG, Buchs AG
+                    Buero_09, !! B‚chaz + Fluekiger, Steckborn
+                    Buero_10, !! Niederer + Pozzi AG, Uznach
+                    Buero_11, !! IPG Keller AG, Kreuzlingen
+                    Buero_12, !! Matousek, Baumann, Niggli AG, Gaechlingen
+                    Buero_13, !! ....
+                    Buero_14, !! ....
+                    Buero_15, !! ....
+                    Buero_16, !! ....
+                    Buero_17, !! ....
+                    Buero_18, !! ....
+                    Buero_19, !! ....
+                    Buero_20, !! ....
+                    Buero_21, !! ....
+                    Buero_22, !! ....
+                    Buero_23, !! ....
+                    Buero_24, !! ....
+                    Buero_25, !! ....
+                    Buero_26, !! ....
+                    Buero_27, !! ....
+                    Buero_28, !! ....
+                    Buero_29, !! ....
+                    Buero_30);!! ....
+                            !! Einfuegen zusaetzlicher Bueros bzw. Vergabe der
+                            !! Identifikatoren werden durch das
+                            !! Vermessungsamt des Kantons Schaffhausen
+                            !! (kva@ktsh.ch / Tel. 052 632 73 91)
+                            !! vorgenommen.
+
+!! + ======================================================================== +
+
+
+!! Datenmodell Meliorations-Entwaesserung
+!! ----------------------------------------------------------------------------
+
+  TOPIC Meliorations_Entwaesserung =
+
+!! Teilbereich Schacht
+!! ----------------------------------------------------------------------------
+
+    TABLE Schacht =             !! Zu erfassen sind: Schaechte, Spezialbauwerke
+                                !! Strassenentwaesserungen, usw. (siehe
+                                !! "Schachtart") je als Punktobjekte
+      Schacht_Nummer: TEXT*10;          !! Schacht-Nummer
+                                        !! i.d.R mit 4 Stellen, fortlaufend
+                                        !! Numerierung gegen Fliessrichtung
+                                        !! aufsteigend; ab 1000.
+      Beschriftung:  OPTIONAL TEXT*20;  !! Schachtkuerzel und Schacht-Nr.
+                                        !! Achtung: Redundante Daten zu Kuerzel
+                                        !! Schachtart und Schacht_Nummer
+      zustaendige_Gemeinde:     Gemeinden;   !! Defaultwert durch Benutzer 
+                                             !! zu setzen
+      Geometrie:     LKoordmm;
+      SymbolOri:     OPTIONAL Orientierung               // Default = 100.0 //;
+      Schachtart:                           !! Details siehe Einlauf_Auslaufart
+                    (Einlaufschacht,              !! <Einlaufschacht, ES>
+                     Einlauftasse,                !! <Einlauftasse, ET>
+                     Kontrollschacht,             !! <Kontrollschacht, KS>
+                     Schlammsammler,              !! <Schlammsammler, SS>
+                                                  !!  oder Schlammfang
+                     Spezialbauwerk,              !! <Spezialbauwerk, SBW>
+                                      !! Flaeche siehe Tabelle "Spezialbauwerk"
+                     Versickerungsschacht,        !! <Versickerungsschacht, VS>
+                     Brunnenstube,                !! <Brunnenstube, BSt>
+                     Quellfassung,                !! <Quellfassung, QFa>
+                     Feldbrunnen,                 !! <Feldbrunnen, FBr>
+                     weitere,
+                     Einlauf,                     !! <Einlauf, EL>   !! ab V9.6
+                     Auslauf,                     !! <Auslauf, AL>   !! ab V9.6
+                     Vorflutereinlauf)     !! <Vorflutereinlauf, VE> !! ab V9.9
+                                               // Default = Kontrollschacht //;
+                       !! Kaliberwechsel, Gefaellsbruch, Materialwechsel usw.
+                       !! sind in Tabelle "Leitungspunkt" zu erfassen.
+      Abmessungen:   OPTIONAL TEXT*20;  !! Alle Angaben in mm
+                                        !! bei Rechteckprofil: a / b
+                                        !! bei ovalem Profil: d1/d2
+                                        !! bei Eiprofil: d1/d2
+                                        !! bei Kreisprofil: NW oder d innen
+                                        !! leer = unbekannt
+                                        !! zwingend zu erfassen bei Sanierungen
+      Kote_Deckel:          OPTIONAL Hoehecm;                 !! Angabe m.ue.M.
+                                        !! zwingend zu erfassen bei Sanierungen
+      Kote_Sohlen:          OPTIONAL Hoehecm;                 !! Angabe m.ue.M.
+                                        !! zwingend zu erfassen bei Sanierungen
+      Schachttiefe:         OPTIONAL REAL42;         !! Angabe in m (z.B. 1.32)
+      Ueberdeckung:         OPTIONAL (verdeckt, nicht_verdeckt)
+                                                // Default = nicht_verdeckt //;
+      Einlauf_Auslaufart:   OPTIONAL (Einlaufrost,             !! Default: leer
+                                      Schnauze_an_Schacht,           !! ab V9.9
+                                      Einlaufrost_und_Einlaufschnauze,
+                                      Aussparung,
+                                      Rohr,
+                                      weitere,
+                                      Schnauze);                     !! ab V9.9
+      Herkunft:             Herkunftsart         // Default = digitalisiert //;
+      Baujahr:              INTEGER4;
+      Eigentuemer:          Eigentum                 // Default = unbekannt //;
+      Erfassungsdatum:      DATE;                    !! auch letzte Aenderungen
+      Erfassungsbuero:      Erfassungsbueros; !! Defaultwert durch Benutzer
+                                              !! gemaess Auswahlliste zu setzen
+      Sanierungsetappe:     OPTIONAL TEXT*50;                       !! ab V9.10
+      Bemerkung:            OPTIONAL TEXT*50;
+      USER:                 OPTIONAL TEXT*25;
+    IDENT
+      Schacht_Nummer, zustaendige_Gemeinde;   !! Schacht-Nr. eindeutig pro Gde.
+    END Schacht;
+
+
+
+    TABLE Schacht_Beschriftung_WP_Pos = !! Textposition Attribut "Beschriftung"
+                                        !! fuer Werkplan
+                                        !! (Schachtkuerzel und Schacht-Nr.)
+      SchachtRef: -> Schacht // 1:mc //;
+      TextPos: LKoordmm;
+      TextOri: Orientierung                              // Default = 100.0 //;
+      TextHAli: OPTIONAL HALIGNMENT                   // undefiniert = Left //;
+      TextVAli: OPTIONAL VALIGNMENT                   // undefiniert = Half //;
+      TextGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+    IDENT
+      SchachtRef;
+    END Schacht_Beschriftung_WP_Pos;
+
+    TABLE Schacht_Beschriftung_UeP_Pos = !! Textposition Attribut 
+                                         !! "Beschriftung" fuer Uebersichtsplan
+      SchachtRef: -> Schacht // 1:mc //;
+      TextPos: LKoordmm;
+      TextOri: Orientierung                              // Default = 100.0 //;
+      TextHAli: OPTIONAL HALIGNMENT                   // undefiniert = Left //;
+      TextVAli: OPTIONAL VALIGNMENT                   // undefiniert = Half //;
+      TextGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+    IDENT
+      SchachtRef;
+    END Schacht_Beschriftung_UeP_Pos;
+
+
+!! Teilbereich Spezialbauwerk
+!! ----------------------------------------------------------------------------
+
+    TABLE Spezialbauwerk =      !! wie z.B. Absetzbecken, Versickerungsweiher
+                                !! zur Darstellung der Flaeche, zusaetzlich als
+                                !! Punktobjekt (Tabelle Schacht) erfasst.
+      SchachtRef:      -> Schacht // 1:1 //;
+      Geometrie:       SURFACE WITH (STRAIGHTS, ARCS)
+                       VERTEX LKoordmm;          !! Ueberschneidungen zulaessig
+      Bemerkung:       TEXT*50;
+    IDENT
+      SchachtRef;
+    END Spezialbauwerk;
+
+
+
+!! Teilbereich Leitung
+!! ----------------------------------------------------------------------------
+
+    TABLE Leitung =
+      Ltg_Nummer:            INTEGER6;   !! Strangweise Numerierung
+                                         !! i.d.R mit 4 Stellen; fortlaufende
+                                         !! Numerierung, mit Schacht-Nr.
+                                         !! korrespondierend; ab 1000
+      Beschriftung_WP:       OPTIONAL TEXT*30;         !! angeschrieben werden:
+                                            !! Materialkuerzel, Abmessungen und
+                                            !! Kuerzel Funktion_hydraulisch.
+                               !! Achtung: redundante Daten zu Materialkuerzel,
+                               !! Abmessungen und Kuerzel Funktion_hydraulisch
+      Beschriftung_UeP:      OPTIONAL TEXT*30;       !! angeschrieben wird nur:
+                                 !! Durchmesser von Haupt- und Sammelleitungen.
+      zustaendige_Gemeinde:  Gemeinden;      !! Defaultwert durch Benutzer 
+                                             !! zu setzen
+      Geometrie:             POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoordmm;
+      Funktion_hierarchisch: (unbekannt,           !! <unbekannt, u>
+                             Anschlussleitung,     !! <Anschlussleitung, AL>
+                             Brunnenleitung,       !! <Brunnenleitung, BL>
+                             Entwaesserungsrinne,  !! <Entwaesserungsrinne, RI>
+                             Hauptleitung,         !! <Hauptleitung, HL>
+                                                   !!  Hauptleitung = Ltg. auf
+                                                   !!  oeffentlichem Boden
+                             Kanalisation,         !! <Kanalisation, KA>
+                                                 !! Abgrenzung zur Kanalisation
+                                               !! (Schmutzwasser/Regenabwasser)
+                             offener_Graben_natuerlich,
+                                           !! <offener_Graben_natuerlich, OGn>
+                             Sammelleitung,        !! <Sammelleitung, SL>
+                                                   !!  Sammelleitung = Ltg. auf
+                                                   !!  privatem Boden
+                             Sauger,               !! <Sauger, SA>
+                             Sickerpackung,        !! <Sickerpackung, SPa>
+                             Versickerungsleitung, !! <Versickerungsltg, VL>
+                             virtuell,             !! fuer Verbindungen inner-
+                                                   !! halb von Spezialbauwerken
+                                                   !! zur Wahrung der Netz-
+                                                   !! topologie
+                             weitere,
+                             offener_Graben_befestigt,
+                                           !! <offener_Graben_befestigt, OGb>
+                                                   !! ab Version 9.4
+                             Strassengraben_natuerlich,
+                                            !! <Strassengraben_natuerlich, Stn>
+                                            !! ab Version 9.7
+                             Strassengraben_befestigt,
+                                            !! <Strassengraben_befestigt, Stb>
+                                            !! ab Version 9.7
+                             Belagsrinne)   !! <Belagsrinne, BR>
+                                            !! ab Version 9.8
+                                                     // Default = unbekannt //;
+
+
+
+      Funktion_hydraulisch: (unbekannt,            !! <unbekannt, u>
+                             Transport,            !! <Transport,  >
+                             Entwaesserung,        !! <Entwaesserung, Si>
+                             Versickerung)           // Default = unbekannt //;
+                                                   !! <Versickerung, VSi>
+      Profilart:            (unbekannt,            !! <unbekannt, u>
+                             Eiprofil,             !! <Eiprofil, E>
+                             Maulprofil,           !! <Maulprofil, M>
+                             Kreisprofil,          !! <Kreisprofil, K>
+                             Rechteckprofil,       !! <Rechteckprofil, R>
+                             offenes_Profil,       !! <offenes_Profil, O>
+                                                   !!  offener Graben, Bach od.
+                                                   !!  offener Kanal
+                             Spezialprofil,        !! <Spezialprofil, S>
+                                                   !!  Spezifikation unter
+                                                   !!  "Bemerkung" ablegen
+                             weitere)                // Default = unbekannt //;
+      Abmessungen:           OPTIONAL TEXT*20;     !! Alle Angaben in mm
+                                          !! bei Rechteckprofil: a / b
+                                          !! bei ovalem Profil: d1/d2
+                                          !! bei Eiprofil: d1/d2
+                                          !! bei Kreisprofil: NW oder d innen
+                                          !! leer = unbekannt
+      Gefaelle:              OPTIONAL REAL21;    !! Angabe in Prozent; z.B. 2.3
+                                                 !! nur erfassen wenn "genau"
+      Laenge_gerechnet:      OPTIONAL REAL42;     !!  Angaben in m (z.B. 50.25)
+                                                !! horiz. Distanz ab EDV-System
+      Herkunft:              Herkunftsart        // Default = digitalisiert //;
+      Lagebestimmung:        Genauigkeit          // Default = sichere_Lage //;
+      Material:             (unbekannt,         !! <unbekannt, u>
+                             Beton
+                              (unbekannt,       !! <Beton, B>
+                               armiert,         !! <Beton_armiert, BA>
+                               unarmiert,       !! <Beton_unarmiert, BU>
+                               vorgespannt,     !! <Beton_vorgespannt, BV>
+                               Fertigteil,      !! <Beton_Fertigteil, BF>
+                               Ortsbeton,       !! <Ortsbeton, OB>
+                               Spezialbeton_unbekannt,
+                                         !! <Spezialbeton, SBR>
+                               Spezialbeton_armiert,
+                                         !! <Spezialbeton_armiert, SBRA>
+                               Spezialbeton_unarmiert),
+                                         !! <Spezialbeton_unarmiert, SBRU>
+                             Faserzement,       !! <Faserzement, FZ>
+                             Asbestzement,      !! <Asbestzement, AZ>
+                             gebrannte_Steine,  !! <gebrannte_Steine, SG>
+                             Guss
+                              (unbekannt,       !! <Guss, G>
+                               Grauguss,        !! <Grauguss, GG>
+                               Guss_duktil,     !! <Guss_duktil, GD>
+                               Gussbeton,       !! <Gussbeton, GB>
+                               andere),         !! <Guss_andere, Ga>
+                             GUP_Fertigteil,    !! <GUP_Fertigteil, GUP>
+                             Kunststoff
+                              (unbekannt,       !! <Kunststoff, KU>
+                               Glasfaserverstaerkter_Kunststoff,
+                                     !! <Glasfaserverstaerkter_Kunststoff, GFK>
+                               Glasfaserverstaerkter_Epoxidharz,
+                                     !! <Glasfaserverstaerkter_Epoxidharz, GEP>
+                               Polyester,       !! <Polyester, UP>
+                               Epoxidharz,      !! <Epoxidharz, EP>
+                               Polyethylen_unbekannt,
+                                                !! <Polyethylen, PE>
+                               Polyethylen_HDPE,
+                                                !! <Polyethylen_HDPE, PEH>
+                               Polyethylen_MDPE,
+                                                !! <Polyethylen_MDPE, PEV>
+                               Polyethylen_LDPE,
+                                                !! <Polyethylen_LDPE, PEW>
+                               Polyethylen_andere,
+                                                !! <Polyethylen_andere, PEa>
+                               Polypropylen,    !! <Polypropylen, PP>
+                               Polyvinilchlorid_unbekannt,
+                                           !! <Polyvinilchlorid, PVC>
+                               Polyvinilchlorid_hart,
+                                           !! <Polyvinilchlorid_hart, PVCH>
+                               Polyvinilchlorid_U,
+                                           !! <Polyvinilchlorid_U, PVCU>
+                               Polyvinilchlorid_andere),
+                                           !! <Polyvinilchlorid_andere, PVCa>
+                             Stahl
+                              (unbekannt,       !! <Stahl, ST>
+                               nicht_rostbestaendig,
+                                           !! <Stahl_nicht_rostbestaendig, STN>
+                               rostbestaendig,  !! <Stahl_rostbestaendig, STI>
+                               verzinkt,        !! <Stahl_verzinkt, STV>
+                               andere),         !! <Stahl_andere, STa
+                             Steinzeug,         !! <Steinzeug, STZ>
+                             Teuchel_Holz,      !! <Teuchel, TU>
+                             Ton,               !! <Ton, TO>
+                             Sohle
+                              (unbekannt,       !! <Sohle, S>
+                               Natursohle,      !! <Sohle_Natursohle, NS>
+                               Holzschwellen,   !! <Sohle_Holzschwelle, HS>
+                               Bretter,         !! <Sohle_Bretter, BR>
+                               Natursteinschuettung,
+                                                !! <Natursteinschuettung, NSS>
+                               Steinpflaesterung,
+                                               !! <Sohle_Steinpflaesterung, SP>
+                               Halbschale_rund, !! <Sohle_Halbschale_rund, HR>
+                               Halbschale_eckig),
+                                                !! <Sohle_Halbschale_eckig, HE>
+                             weitere,
+                             Asphalt)                // Default = unbekannt //;
+                              !! keine Erweiterungen zulaessig; naehere
+                              !! Bezeichnungen sind unter "Bemerkung" anzugeben
+      Bettung:              (unbekannt,         !! <unbekannt, u>
+                             Beton,             !! <Beton, B>
+                             Brett,             !! <Brett, BR>
+                             Grabensohle,       !! <Grabensohle, G>
+                             Rundkies,          !! <Rundkies, RK>
+                             Wandkies,          !! <Wandkies, WK>
+                             Betonkies,         !! <Betonkies, BK>
+                             Pfaehle,           !! <Pfaehle, P>
+                             Sand,              !! <Sand, SA>
+                             SIA_Typ1,          !! <SIA_Typ1, B1>
+                             SIA_Typ2,          !! <SIA_Typ2, B2>
+                             SIA_Typ3,          !! <SIA_Typ3, B3>
+                             SIA_Typ4,          !! <SIA_Typ4, B4>
+                             weitere)              // Default = Grabensohle //;
+      Umhuellung:           (unbekannt,         !! <unbekannt, u>
+                             Rundkies,          !! <Rundkies, RK>
+                             Wandkies,          !! <Wandkies, WK>
+                             Betonkies,         !! <Betonkies, BK>
+                             Aushubmaterial,    !! <Aushubmaterial, AM>
+                             Beton,             !! <Beton, B>
+                             weitere)                 // Default = Rundkies //;
+      Status:                Stati                  // Default = in_Betrieb //;
+      Baujahr:               INTEGER4;
+      Eigentuemer:           Eigentum                // Default = unbekannt //;
+      Erfassungsdatum:       DATE;
+      Erfassungsbuero:       Erfassungsbueros; !! Defaultwert durch Benutzer
+                                              !! gemaess Auswahlliste zu setzen
+      Sanierungsetappe:      OPTIONAL TEXT*50;                      !! ab V9.10
+      Bemerkung:             OPTIONAL TEXT*50;
+      USER:                  OPTIONAL TEXT*25;
+    IDENT
+      Ltg_Nummer, zustaendige_Gemeinde;           !! Ltg-Nr. eindeutig pro Gde.
+    END Leitung;
+
+
+    TABLE Leitungs_Beschriftung_WP_Pos =               !! Textposition Attribut
+                                           !! "Beschriftung_WP" (fuer Werkplan)
+      LeitungRef: -> Leitung // 1:mc //;
+      TextPos: LKoordmm;
+      TextOri: Orientierung                              // Default = 100.0 //;
+      TextHAli: OPTIONAL HALIGNMENT                 // undefiniert = Center //;
+      TextVAli: OPTIONAL VALIGNMENT                 // undefiniert = Bottom //;
+      TextGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+    NO IDENT
+    END Leitungs_Beschriftung_WP_Pos;
+
+
+    TABLE Leitungs_Beschriftung_UeP_Pos =              !! Textposition Attribut
+                                   !! "Beschriftung_UeP" (fuer Uebersichtsplan)
+      LeitungRef: -> Leitung // 1:mc //;
+      TextPos: LKoordmm;
+      TextOri: Orientierung                              // Default = 100.0 //;
+      TextHAli: OPTIONAL HALIGNMENT                 // undefiniert = Center //;
+      TextVAli: OPTIONAL VALIGNMENT                 // undefiniert = Bottom //;
+      TextGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+    NO IDENT
+    END Leitungs_Beschriftung_UeP_Pos;
+
+
+    TABLE Leitungs_Nummer_WP_Pos =      !! Textposition Leitungsnummer Werkplan
+      LeitungRef: -> Leitung // 1:mc //;
+      TextPos: LKoordmm;
+      TextOri: Orientierung                              // Default = 100.0 //;
+      TextHAli: OPTIONAL HALIGNMENT                 // undefiniert = Center //;
+      TextVAli: OPTIONAL VALIGNMENT                    // undefiniert = Top //;
+      TextGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+    NO IDENT
+    END Leitungs_Nummer_WP_Pos;
+
+
+    TABLE Leitungs_Nummer_UeP_Pos =              !! Textposition Leitungsnummer
+                                                 !! Uebersichtsplan
+      LeitungRef: -> Leitung // 1:mc //;
+      TextPos: LKoordmm;
+      TextOri: Orientierung                              // Default = 100.0 //;
+      TextHAli: OPTIONAL HALIGNMENT                 // undefiniert = Center //;
+      TextVAli: OPTIONAL VALIGNMENT                    // undefiniert = Top //;
+      TextGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+    NO IDENT
+    END Leitungs_Nummer_UeP_Pos;
+
+
+
+
+!!    Teilbereich Leitungspunkt
+!! ----------------------------------------------------------------------------
+
+    TABLE Leitungspunkt =      !! Unter diesen Leitungspunkten werden alle
+                               !! zusaetzlich eingemessenen Punkte erfasst
+                               !! (siehe Attribut "Art").
+      Gemarkung:             Gemeinden; !! Defaultwert durch Benutzer zu setzen
+      Geometrie:             LKoordmm;
+      SymbolOri:             OPTIONAL Orientierung       // Default = 100.0 //;
+      Art:                  (Baujahrwechsel,
+                             Gefaellsbruch,
+                             Kaliberwechsel,
+                             Materialwechsel,
+                             Endkappe,
+                             Detailpunkt,     !! im Feld vermessener Punkt, wie
+                                              !! z.B. Richtungsaenderungen,
+                                              !! Abzweiger, Zwischenpunkte,
+                                              !! Sohlenkote, Terrainkote oder
+                                              !! Grabentiefe usw.
+                             Kanalanfang,     !! <Kanalanfang, KA>
+                             Schieber,        !! bei Brunnenleitungen
+                             weitere)              // Default = Detailpunkt //;
+      Grabentiefe:           OPTIONAL REAL12minus;  !! Angabe in m (z.B. -1.30)
+                                !! 0 (Null) = Terrain buendig, leer = unbekannt
+      Sohlenkote:            OPTIONAL Hoehecm;                !! Angabe m.ue.M.
+      Terrainkote:           OPTIONAL Hoehecm;                !! Angabe m.ue.M.
+      Bemerkung:             OPTIONAL TEXT*50;
+      USER:                  OPTIONAL TEXT*25;
+    NO IDENT
+    END Leitungspunkt;
+
+
+    TABLE Grabentiefe_WP_Pos =                      !! Textposition Grabentiefe
+      LeitungspunktRef: -> Leitungspunkt // 1:mc //;
+      TextPos: LKoordmm;
+      TextOri: Orientierung                              // Default = 100.0 //;
+      TextHAli: OPTIONAL HALIGNMENT                   // undefiniert = Left //;
+      TextVAli: OPTIONAL VALIGNMENT                   // undefiniert = Half //;
+      TextGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+    IDENT
+      LeitungspunktRef;
+    END Grabentiefe_WP_Pos;
+
+
+    TABLE Sohlenkote_WP_Pos =                        !! Textposition Sohlenkote
+      LeitungspunktRef: -> Leitungspunkt // 1:mc //;
+      TextPos: LKoordmm;
+      TextOri: Orientierung                              // Default = 100.0 //;
+      TextHAli: OPTIONAL HALIGNMENT                   // undefiniert = Left //;
+      TextVAli: OPTIONAL VALIGNMENT                   // undefiniert = Half //;
+      TextGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+    IDENT
+      LeitungspunktRef;
+    END Sohlenkote_WP_Pos;
+
+
+    TABLE Terrainkote_WP_Pos =                      !! Textposition Terrainkote
+      LeitungspunktRef: -> Leitungspunkt // 1:mc //;
+      TextPos: LKoordmm;
+      TextOri: Orientierung                              // Default = 100.0 //;
+      TextHAli: OPTIONAL HALIGNMENT                   // undefiniert = Left //;
+      TextVAli: OPTIONAL VALIGNMENT                   // undefiniert = Half //;
+      TextGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+    IDENT
+      LeitungspunktRef;
+    END Terrainkote_WP_Pos;
+
+
+
+!!    Darstellungsmasken, Masse und freie Texte
+!! ----------------------------------------------------------------------------
+
+    TABLE Masse =                   !! nur fuer effektive Einmasse gedacht,
+                                    !! keine Leitungsabschnittslaengen erfassen
+      Mass:        REAL42;
+      Gemarkung:   Gemeinden;           !! Defaultwert durch Benutzer zu setzen
+      Erhebungsart: (Feldaufnahme, Planabgriff)   // Default = Feldaufnahme //;
+      MassPos:     LKoordmm;                 !! Anschrift Attributinhalt "Mass"
+      MassOri:     Orientierung                          // Default = 100.0 //;
+      MassHAli:    OPTIONAL HALIGNMENT              // undefiniert = Center //;
+      MassVAli:    OPTIONAL VALIGNMENT              // undefiniert = Bottom //;
+      MassGroesse: OPTIONAL Schriftgroesse          // undefiniert = mittel //;
+      Geometrie:   OPTIONAL POLYLINE WITH                      !! Geometrie der
+                   (STRAIGHTS, ARCS) VERTEX LKoordmm;          !! Masslinie
+    NO IDENT
+    END Masse;
+
+
+    TABLE Darstellungsmasken = 
+                           !! Abbildung von allfaelligen Beschriftungskaestchen
+                           !! als Flaeche zur grafischen Abdeckung der
+                           !! Situation.
+      Geometrie:       SURFACE WITH (STRAIGHTS, ARCS)
+                       VERTEX LKoordmm;          !! Ueberschneidungen zulaessig
+    NO IDENT
+    END Darstellungsmasken;
+
+
+    TABLE Darstellungslinie = 
+                     !! Abbildung von Hinweisstrichen und Massbegrenzungslinien
+      Geometrie:       POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoordmm;
+    NO IDENT
+    END Darstellungslinie;
+
+
+    TABLE Beschriftung =        !! Abbildung von "losgeloesten" Textanschriften
+                                !! fuer Werk- und Uebersichtsplan
+      Text:             TEXT*50;
+      TextPos:          LKoordmm;
+      TextOri:          Orientierung                     // Default = 100.0 //;
+      TextHAli:         HALIGNMENT                        // Default = Left //;
+      TextVAli:         VALIGNMENT                        // Default = Half //;
+      TextGroesse:      OPTIONAL Schriftgroesse         // Default = mittel //;
+      TextArt   :       OPTIONAL (normal, kursiv, fett) // Default = normal //;
+    NO IDENT
+    END Beschriftung;
+
+
+
+!!    Teilbereich Kontrolle / Unterhalt
+!! ----------------------------------------------------------------------------
+
+    TABLE Schacht_periodische_Kontrolle = 
+      SchachtRef:        -> Schacht // 1:c //;
+      Ausfuehrung:          Ausfuehrungen;
+      Kontrolle:           (kontrolliert, teilweise_kontrolliert,
+                            nicht_kontrolliert, nicht_gefunden);
+      Zustand_Kontrolle:    Zustaende;
+      Intervall:            OPTIONAL INTEGER2;                  !! Anzahl Jahre
+      Letzte_Kontrolle:     OPTIONAL INTEGER4;                    !! Jahreszahl
+      Naechste_Kontrolle:   OPTIONAL INTEGER4;
+      Bemerkung:            OPTIONAL TEXT*50;
+      USER:                 OPTIONAL TEXT*25;
+    IDENT
+      SchachtRef;
+    END Schacht_periodische_Kontrolle;
+
+
+    TABLE Schacht_periodischer_Unterhalt =
+      SchachtRef:        -> Schacht // 1:c //;
+      Ausfuehrung:          Ausfuehrungen;
+      Unterhalt:           (ausgefuehrt, teilweise_ausgefuehrt,
+                            nicht_ausgefuehrt, nicht_gefunden);
+      Unterhalt_Art:       (leeren, reinigen, weitere);
+      Intervall:            OPTIONAL INTEGER2;                  !! Anzahl Jahre
+      Letzter_Unterhalt:    OPTIONAL INTEGER4;                    !! Jahreszahl
+      Naechster_Unterhalt:  OPTIONAL INTEGER4;
+      Bemerkung:            OPTIONAL TEXT*50;
+      USER:                 OPTIONAL TEXT*25;
+    IDENT
+      SchachtRef;
+    END Schacht_periodischer_Unterhalt;
+
+
+    TABLE Schacht_Massnahme =                                       !! ab V9.10
+      KontrolleRef:      -> Schacht_periodische_Kontrolle           // 1:mc //;
+      Ausfuehrung:          Ausfuehrungen;
+      Bauteil:             (Schacht, Bauwerk, Einstieghilfe,
+                            Oberflaecheneinlauf, Oberflaechenauslauf,
+                            Halbschalen, Deckel, Stahl_Gussring,
+                            Kragen, Konus, Schachtring,
+                            Tauchbogen, Bankett, Sohle,
+                            Leitungen, Leitungsanschluss, weitere);
+      Beurteilung:         (Ablagerung, Rueckstau, Zustand,
+                            Datenblatt, weitere);
+      Zustand_Art:         (Kalk, Kies, Schlamm, Wurzeleinwuchs, verstopft,
+                            Abplatzung, ausgewaschen, fehlt, gerissen,
+                            verschoben, baufaellig, Deckelhoehe_anpassen,
+                            in_Ordnung, unbekannt, weitere);
+      Massnahme:           (Unterhalt, Sanierung, Grundlage,
+                            Netzerweiterung, Nachkontrolle, keine, weitere);
+      Massnahme_Art:       (leeren, reinigen, ersetzen, reparieren,
+                            Hydraulik, Projekt, Schachtdatenblatt_fehlt,
+                            Schacht_Daten, Schacht_Ablagerung, Schacht_Zustand,
+                            Schacht_Situation, Schacht_vermessen,
+                            Leitung_Daten, Leitung_Ablagerung,
+                            Leitung_Zustand, Leitung_Situation,
+                            Kontrollintervall_anpassen,
+                            Unterhaltsintervall_anpassen,
+                            keine, weitere);
+      Prioritaet:           Prioritaeten;
+      Beschriftung:         OPTIONAL TEXT*50;
+      Foto:                 OPTIONAL TEXT*25;   !! Angabe Dateiname oder Nummer
+      Unterhaltsetappe:     OPTIONAL TEXT*50;
+      Ausfuehrungsetappe:   OPTIONAL TEXT*50;
+      Ausfuehrungsjahr:     OPTIONAL INTEGER4;
+      Bemerkung:            OPTIONAL TEXT*50;
+      USER:                 OPTIONAL TEXT*25;
+    NO IDENT
+    END Schacht_Massnahme;
+
+
+
+    TABLE Schacht_Massnahme_Pos =    !! Pos. von Schacht_Massnahme.Beschriftung
+      Objekt:             -> Schacht_Massnahme;               !! Beziehung 1-mc
+      TextPos:               LKoordmm;
+      TextOri:               Orientierung                // Default = 100.0 //;
+      TextHAli:              HALIGNMENT                   // Default = Left //;
+      TextVAli:              VALIGNMENT                   // Default = Half //;
+      TextGroesse:           OPTIONAL Schriftgroesse    // Default = mittel //;
+      TextArt   :            OPTIONAL (normal, kursiv,
+                                       fett)            // Default = normal //;
+    NO IDENT
+    END Schacht_Massnahme_Pos;
+
+
+
+    TABLE Leitung_periodische_Kontrolle =
+      LeitungRef:        -> Leitung // 1:c //;
+      Ausfuehrung:          Ausfuehrungen;
+      Kontrolle:           (beidseitig_kontrolliert, einseitig_kontrolliert,
+                            nicht_kontrolliert, nicht_gefunden);
+      Kontrolle_Ltg_Anfang: Zustaende;
+      Kontrolle_Ltg_Ende:   Zustaende;
+      Intervall:            OPTIONAL INTEGER2;                  !! Anzahl Jahre
+      Letzte_Kontrolle:     OPTIONAL INTEGER4;                    !! Jahreszahl
+      Naechste_Kontrolle:   OPTIONAL INTEGER4;
+      Bemerkung:            OPTIONAL TEXT*50;
+      USER:                 OPTIONAL TEXT*25;
+    IDENT
+      LeitungRef;
+    END Leitung_periodische_Kontrolle;
+
+
+    TABLE Leitung_periodischer_Unterhalt =
+      LeitungRef:        -> Leitung // 1:c //;
+      Ausfuehrung:          Ausfuehrungen;
+      Unterhalt:           (ausgefuehrt, teilweise_ausgefuehrt,
+                            nicht_ausgefuehrt, nicht_gefunden);
+      Unterhalt_Art:       (reinigen, spuelen_fraesen, weitere);
+      Intervall:            OPTIONAL INTEGER2;                  !! Anzahl Jahre
+      Letzter_Unterhalt:    OPTIONAL INTEGER4;                    !! Jahreszahl
+      Naechster_Unterhalt:  OPTIONAL INTEGER4;
+      Bemerkung:            OPTIONAL TEXT*50;
+      USER:                 OPTIONAL TEXT*25;
+    IDENT
+      LeitungRef;
+    END Leitung_periodischer_Unterhalt;
+
+
+    TABLE Leitung_Massnahme =                                       !! ab V9.10
+      KontrolleRef:      -> Leitung_periodische_Kontrolle           // 1:mc //;
+      Ausfuehrung:          Ausfuehrungen;
+      Beurteilung:         (Ablagerung, Zustand, Oberflaechennaesse,
+                            Rueckstau, weitere);
+      Zustand_Ltg_Anfang:   TEXT*40;
+      Zustand_Ltg_Ende:     TEXT*40;
+      Massnahme:           (Unterhalt, Sanierung, Grundlage,
+                            Netzerweiterung, keine, weitere);
+      Massnahme_Art:       (reinigen, spuelen_fraesen, Kanal_TV, Kanalroboter,
+                            ersetzen, Hydraulik, Projekt,
+                            keine, weitere);
+      Prioritaet:           Prioritaeten;
+      Beschriftung:         OPTIONAL TEXT*50;
+      Unterhaltsetappe:     OPTIONAL TEXT*50;
+      Ausfuehrungsetappe:   OPTIONAL TEXT*50;
+      Ausfuehrungsjahr:     OPTIONAL INTEGER4;
+      Bemerkung:            OPTIONAL TEXT*50;
+      USER:                 OPTIONAL TEXT*25;
+    NO IDENT
+    END Leitung_Massnahme;
+
+
+
+    TABLE Leitung_Massnahme_Pos =    !! Pos. von Leitung_Massnahme.Beschriftung
+      Objekt:             -> Leitung_Massnahme;               !! Beziehung 1-mc
+      TextPos:               LKoordmm;
+      TextOri:               Orientierung                // Default = 100.0 //;
+      TextHAli:              HALIGNMENT                 // Default = Center //;
+      TextVAli:              VALIGNMENT                 // Default = Bottom //;
+      TextGroesse:           OPTIONAL Schriftgroesse    // Default = mittel //;
+      TextArt   :            OPTIONAL (normal, kursiv,
+                                       fett)            // Default = normal //;
+    NO IDENT
+    END Leitung_Massnahme_Pos;
+
+
+
+
+!!    Teilbereich Einzugsgebiet / Einzugsflaechen
+!! ----------------------------------------------------------------------------
+                                   !! in der Regel nicht erfassen
+    TABLE Einzugsflaeche =         !! Einzugsflaechen pro Schacht / keine 
+                                   !! Ueberlappungen
+      Gemarkung:             Gemeinden; !! Defaultwert durch Benutzer zu setzen
+      Geometrie:             AREA WITH (STRAIGHTS, ARCS) !!keine Ueberlappungen
+                             VERTEX LKoordmm !! und Ueberschneidungen zulaessig
+                             WITHOUT OVERLAPS > 0.050;
+      Art:                  (unbekannt, Versickerung, Entwaesserung,
+                             Oberflaechenwasser, weitere);
+      Einzugsflaeche:        DIM2 1 999999999;                 !! Flaeche in m2
+      Herkunft:              Herkunftsart        // Default = digitalisiert //;
+      Erfassungsbuero:       Erfassungsbueros; !! Defaultwert durch Benutzer
+                                              !! gemaess Auswahlliste zu setzen
+      Erfassungsdatum:       DATE;
+      Bemerkung:             OPTIONAL TEXT*50;
+      USER:                  OPTIONAL TEXT*25;
+      SchachtRef:            OPTIONAL -> Schacht;
+    NO IDENT
+    END Einzugsflaeche;
+
+
+                                              !! in der Regel nicht erfassen
+    TABLE Einzugsgebiet =                     !! Definition abklaeren beim Bund
+      Beschriftung:          OPTIONAL TEXT*20;
+      Gemarkung:             Gemeinden; !! Defaultwert durch Benutzer zu setzen
+      Geometrie:             AREA WITH (STRAIGHTS, ARCS) !!keine Ueberlappungen
+                             VERTEX LKoordmm  !!und Ueberschneidungen zulaessig
+                             WITHOUT OVERLAPS > 0.050;
+      Gebietsflaeche:        DIM2 1 999999999;                 !! Flaeche in m2
+      Herkunft:              Herkunftsart        // Default = digitalisiert //;
+      Erfassungsbuero:       Erfassungsbueros; !! Defaultwert durch Benutzer
+                                              !! gemaess Auswahlliste zu setzen
+      Erfassungsdatum:       DATE;
+    NO IDENT
+    END Einzugsgebiet;
+
+!! + ======================================================================== +
+
+
+  END Meliorations_Entwaesserung.
+
+
+
+!! TOPIC Informationen
+!! ----------------------------------------------------------------------------
+!! Diese Tabelle dient zur Erhaltung weiterer Informationen.
+!! Die Nutzung der TOPIC ist optional.
+
+
+  TOPIC SH_Informationen =
+
+    TABLE SH_Info =
+      Info_Typ:              TEXT*50;
+                                        !! fuer zusaetzliche Unterscheidung der
+                                        !! Informationen und allfaelligen
+                                        !! Darstellungen
+      Erfassungsbuero:       Erfassungsbueros;
+      Erfassungsdatum:       DATE;
+      Bemerkung:             OPTIONAL TEXT*50;
+      USER:                  OPTIONAL TEXT*25;
+    NO IDENT
+    END SH_Info;
+
+
+    TABLE SH_Info_Text =
+      Objekt:             -> SH_Info;                         !! Beziehung 1-mc
+      Text:                  TEXT*50;
+      TextPos:               LKoordmm;
+      TextOri:               Orientierung                // Default = 100.0 //;
+      TextHAli:              HALIGNMENT                   // Default = Left //;
+      TextVAli:              VALIGNMENT                   // Default = Half //;
+      TextGroesse:           OPTIONAL Schriftgroesse    // Default = mittel //;
+      TextArt   :            OPTIONAL (normal, kursiv,
+                                       fett)            // Default = normal //;
+    NO IDENT
+    END SH_Info_Text;
+
+
+    TABLE SH_Info_Flaeche =
+      Objekt:             -> SH_Info;                         !! Beziehung 1-mc
+      Geometrie:             SURFACE WITH (ARCS, STRAIGHTS) VERTEX LKoordmm
+                             WITHOUT OVERLAPS > 0.050;
+      SH_Flaechenmass:       OPTIONAL DIM2 0 999999999;
+                                              !! aus Koordinaten gerechnete Fl.
+    NO IDENT
+    END SH_Info_Flaeche;
+
+
+    TABLE SH_Info_Linie = 
+      Objekt:             -> SH_Info;                         !! Beziehung 1-mc
+      Geometrie:             POLYLINE WITH (STRAIGHTS, ARCS) VERTEX LKoordmm;
+      Laenge:                OPTIONAL REAL42;
+                                           !! aus Koordinaten gerechnete Laenge
+    NO IDENT
+    END SH_Info_Linie;
+
+
+    TABLE SH_Info_Punkt =
+      Objekt:             -> SH_Info;                         !! Beziehung 1-mc
+      Geometrie:             LKoordmm;
+      Symbol_Ori:            OPTIONAL Orientierung   // undefiniert = 100.0 //;
+    NO IDENT
+    END SH_Info_Punkt;
+
+
+
+
+    TABLE SH_Planrahmen =              !! i.d.R. Umfassendes Rechteck des Planes
+      Planbezeichnung:       TEXT*50;
+      Plannummer:            TEXT*25;              !! Plannummer des Ing.-Bueros
+      Massstab:              TEXT*10;
+      Geometrie:             SURFACE WITH (STRAIGHTS, ARCS) VERTEX LKoordmm;
+      Erfassungsbuero:       Erfassungsbueros;
+      Erfassungsdatum:       DATE;
+      Bemerkung:             OPTIONAL TEXT*50;
+      USER:                  OPTIONAL TEXT*25;
+    NO IDENT
+    END SH_Planrahmen;
+
+
+    TABLE SH_Plannummer_Pos =              !! Pos. von SH_Planrahmen.Plannummer
+      Objekt:             -> SH_Planrahmen;                   !! Beziehung 1-mc
+      TextPos:               LKoordmm;
+      TextOri:               Orientierung                // Default = 100.0 //;
+      TextHAli:              OPTIONAL HALIGNMENT        // Default = Center //;
+      TextVAli:              OPTIONAL VALIGNMENT          // Default = Half //;
+      TextGroesse:           OPTIONAL Schriftgroesse     // Default = gross //;
+      TextArt:               OPTIONAL (normal, kursiv,
+                                       fett)              // Default = fett //;
+    NO IDENT
+    END SH_Plannummer_Pos;
+
+
+!!  Zur Anschrift der Grundeigentuemer bei Sanierungsetappen
+
+    TABLE Grundeigentuemer =
+      Grundbuch_Nr:          INTEGER6;
+      Name_Vorname:          TEXT*50;
+      Adresse:               OPTIONAL TEXT*50;
+      PLZ_Ortschaft:         OPTIONAL TEXT*50;
+      Telefon:               OPTIONAL TEXT*25;
+      Mobile:                OPTIONAL TEXT*25;
+      Sanierungsetappe:      OPTIONAL TEXT*50;
+      Bemerkung:             OPTIONAL TEXT*50;
+      USER:                  OPTIONAL TEXT*25;
+    NO IDENT
+    END Grundeigentuemer;
+
+
+    TABLE Grundeigentuemer_Pos =         !! nur eine Textposition pro Datensatz
+                               !! wird in Tabelle "Grundeigentuemer" uebergeben
+      GrundeigentuemerRef: -> Grundeigentuemer;               !! Beziehung 1-mc
+      TextPos:               LKoordmm;
+      TextOri:               Orientierung                // Default = 100.0 //;
+      TextHAli:              OPTIONAL HALIGNMENT        // Default = Center //;
+      TextVAli:              OPTIONAL VALIGNMENT          // Default = Half //;
+      TextGroesse:           OPTIONAL Schriftgroesse    // Default = mittel //;
+      TextArt:               OPTIONAL (normal, kursiv,
+                                       fett)            // Default = normal //;
+    NO IDENT
+    END Grundeigentuemer_Pos;
+
+
+  END SH_Informationen.
+
+
+END Melioration_Kt_SH.
+
+
+FORMAT FREE;                                          !! Fuer Datentransfer
+!! FORMAT FIX WITH LINESIZE = 80, TIDSIZE = 10;       !! Fuer INTERLIS-Compiler
+
+CODE
+  BLANK = DEFAULT, UNDEFINED = DEFAULT, CONTINUE = DEFAULT;
+  TID = ANY;
+END.

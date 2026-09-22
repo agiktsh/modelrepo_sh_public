@@ -1,0 +1,69 @@
+INTERLIS 2.3;
+
+/** KANTONALE ERWEITERUNG SH.
+Abfallanlagen und Materialentnahmestellen des Kanton Schaffhausen.
+*/
+
+/* 
+Version    | Who | Modification
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+           |     | 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+2023-03-17 | AGI | Version 1.0
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Fachtechnische Auskunft
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Interkantonales Labor
+Telefon: +41 52 632 74 80
+URL: https://interkantlab.ch/CMS/Webseite/Interkantonales-Labor/Kanton-Schaffhausen-40704-DE.html
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+Allgemeines zum Datenmodell                                 
+-------------------------------------------------------------------------------
+- Version 1.0 basiert auf minimalem Geodatenmodell 
+  Abfallanlagen_MatEntnahmestellen_V1_2 (ID 114.1, 114.3) des BAFU.
+-------------------------------------------------------------------------------
+
+Beteiligte
+-------------------------------------------------------------------------------
+Erarbeitet durch:                                                                     
+- Niccolò Gaido, Interkantonales Labor (IKL)                               
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen (AGI)        
+ 
+INTERLIS-Modell erstellt durch:                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen 
+-------------------------------------------------------------------------------
+
+Organisatorische Aspekte                                              
+-------------------------------------------------------------------------------    
+- Datenmodelländerungen und -erweiterungen dürfen nur durch das AGI erfolgen.                                               
+   
+- Die inhaltliche Überprüfung sowie Validierung der Modellkonformität leistet 
+  das AGI im Auftrag des IKL durch die systemischen Mechanismen.          
+-------------------------------------------------------------------------------                       
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Abfallanlagen, Materialentnahmestellen, Deponien, Ablagerungsstandorte, KVA, Kehrichtverwertungsanlagen"
+
+MODEL SH_Abfallanlagen_MatEntnahmestellen_V1_0 (de)
+AT "http://geo.sh.ch"
+VERSION "2023-03-17" =
+
+  IMPORTS Abfallanlagen_MatEntnahmestellen_V1_2;
+
+  TOPIC Anlagen EXTENDS Abfallanlagen_MatEntnahmestellen_V1_2.Anlagen =
+	OID AS INTERLIS.UUIDOID;  !! Erweiterung des MGDM-TOPIC um OID-Deklaration
+
+	CLASS Anlage (EXTENDED) =
+		/** Zwingende Angabe */
+		Auffuellpflicht : MANDATORY BOOLEAN;
+		/** Optional */
+		Bemerkung : MTEXT;
+	END Anlage;
+	
+  END Anlagen;
+
+END SH_Abfallanlagen_MatEntnahmestellen_V1_0.

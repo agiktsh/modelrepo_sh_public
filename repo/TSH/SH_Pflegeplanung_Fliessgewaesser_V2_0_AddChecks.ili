@@ -1,0 +1,200 @@
+INTERLIS 2.4;
+
+/** Datenvalidierung - Pflegeplanung Fliessgewaesser des Kantons Schaffhausen.
+Datenvalidierung - Pflegeplanung der Flora und Fauna sowie Bauwerke und Moebilierung entlang der Fliessgewaesser.
+*/
+
+MODEL SH_Pflegeplanung_Fliessgewaesser_V2_0_AddChecks (de)
+AT "http://geo.sh.ch"
+VERSION "2024-12-06"  =
+  IMPORTS SH_Pflegeplanung_Fliessgewaesser_V2_0;
+
+  VIEW TOPIC SH_Pflegeplanung_Fliessgewaesser_SH_Validierung =
+  DEPENDS ON SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung;
+
+    VIEW v_Gewaesserabschnittspflege
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.Gewaesserabschnittspflege;
+    =
+      ALL OF Gewaesserabschnittspflege;
+	    !!@ name = checkUniqueGdeNamePart
+      !!@ ilivalid.msg_de = "Kombination Gemeinde, Gewässername, Abschnitt verletzt Eindeutigkeit"
+	    UNIQUE Gemeinde, Gewaessername, Abschnitt;
+    END v_Gewaesserabschnittspflege;
+  
+    VIEW v_Gewaesserpflege
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.Gewaesserpflege;
+    =
+      ALL OF Gewaesserpflege;
+	    !!@ name = checkGewaesserpflegeAusfuehrung
+      !!@ ilivalid.msg_de = "Leerwert bei 'Ausgefuehrt am' oder bei 'Ausgefuehrt durch' unzulässig"
+	    MANDATORY CONSTRAINT ( DEFINED (AusgefuehrtAm) AND DEFINED (AusgefuehrtDurch) ) OR ( NOT ( DEFINED (AusgefuehrtAm) ) AND NOT (DEFINED (AusgefuehrtDurch) ) );
+      !!@ name = checkGewaesserpflegeCount
+      !!@ ilivalid.msg = "Gewaesserpflege muss mit einem Gewaesserereignis assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(Gewaesserereignis)==1;
+    END v_Gewaesserpflege;
+
+    VIEW v_BauwerkMoebilierung
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.BauwerkMoebilierung;
+    =
+      ALL OF BauwerkMoebilierung;
+	    !!@ name = checkBauwerkMoebilierungObjektUnterhaltsintervall
+	    !!@ ilivalid.msg_de = "Kombination 'Objekt' mit 'Unterhaltsintervall' bei BauwerkMoebilierung unzulässig"
+	    MANDATORY CONSTRAINT ( (Objekt->Gruppe == "Bauwerk" AND Unterhaltsintervall->Bauwerk == #true) OR (Objekt->Gruppe == "Moebilierung" AND Unterhaltsintervall->Moebilierung == #true) );
+      !!@ name = checkBauwerkMoebilierungCount
+      !!@ ilivalid.msg = "BauwerkMoebilierung muss mit einer Gewässerabschnittspflege assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(Gewaesserabschnittspflege)==1;
+      !!@ name = checkBauwerkMoebilierungBaumaterial
+      !!@ ilivalid.msg = "BauwerkMoebilierung benötigt mindestens eine Auswahl bei Baumaterial (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.elementCount(Baumaterial)>=1;
+    END v_BauwerkMoebilierung;
+
+    VIEW v_BauwerkMoebilierungPunkt
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.BauwerkMoebilierungPunkt;
+    =
+      ALL OF BauwerkMoebilierungPunkt;
+      !!@ name = checkBauwerkMoebilierungUniquePunkt
+      !!@ ilivalid.msg_de = "Duplikate Geometrie verletzt Eindeutigkeit"
+      UNIQUE Punkt;
+	    !!@ name = checkBauwerkMoebilierungPunkt
+	    !!@ ilivalid.msg_de = "Kombination {Objekt} mit Geometrietyp unzulässig"
+	    MANDATORY CONSTRAINT ( DEFINED (Punkt) AND Objekt->Punkt == #true );
+    END v_BauwerkMoebilierungPunkt;
+
+    VIEW v_BauwerkMoebilierungLinie
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.BauwerkMoebilierungLinie;
+    =
+      ALL OF BauwerkMoebilierungLinie;
+      !!@ name = checkBauwerkMoebilierungUniqueLinie
+      !!@ ilivalid.msg_de = "Duplikate Geometrie verletzt Eindeutigkeit"
+      UNIQUE Linie;
+	    !!@ name = checkBauwerkMoebilierungLinie
+	    !!@ ilivalid.msg_de = "Kombination {Objekt} mit Geometrietyp unzulässig"
+	    MANDATORY CONSTRAINT ( DEFINED (Linie) AND Objekt->Linie == #true );
+    END v_BauwerkMoebilierungLinie;
+
+    VIEW v_Instandsetzung
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.Instandsetzung;
+    =
+      ALL OF Instandsetzung;
+	    !!@ name = checkInstandsetzungMassnahmenfristInstandsetzung
+	    !!@ ilivalid.msg_de = "Kombination 'Beobachten', 'Massnahmenfrist' mit 'InstantsetzungDurch' bei Instandsetzung unzulässig"
+	    MANDATORY CONSTRAINT ( DEFINED (Massnahmenfrist) AND DEFINED (InstandsetzungDurch) AND Beobachten != #true ) OR ( NOT (DEFINED (Massnahmenfrist) ) AND NOT (DEFINED (InstandsetzungDurch) ) AND Beobachten == #true );
+	    !!@ name = checkInstandsetzungAusfuehrung
+	    !!@ ilivalid.msg_de = "Leerwert bei 'Ausgefuehrt am' oder bei 'Ausgefuehrt durch' bei Instandsetzung unzulässig"
+	    MANDATORY CONSTRAINT ( DEFINED (AusgefuehrtAm) AND DEFINED (AusgefuehrtDurch) ) OR ( NOT (DEFINED (AusgefuehrtAm) ) AND NOT (DEFINED (AusgefuehrtDurch) ) );
+      !!@ name = checkInstandsetzungCount
+      !!@ ilivalid.msg = "Instandsetzung muss mit einer BauwerkMoebilierung assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(BauwerkMoebilierung)==1;
+    END v_Instandsetzung;
+
+    VIEW v_Flora
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.Flora;
+    =
+      ALL OF Flora;
+	    !!@ name = checkFlora
+      !!@ ilivalid.msg_de = "'Pflegeintervall' der Flora unzulässig"
+	    MANDATORY CONSTRAINT ( Pflegeintervall->Flora == #true);
+	    !!@ name = checkFloraIntervallZeitpunkt
+	    !!@ ilivalid.msg_de = "Kombination 'Pflegeintevall' und 'Zeitpunkt' bei Flora unzulässig"
+	    MANDATORY CONSTRAINT ( Pflegeintervall->Florakalender == #false AND DEFINED (Zeitpunkt)==#false ) OR ( Pflegeintervall->Florakalender == #true AND DEFINED (Zeitpunkt)==#true );
+	    !!@ name = checkFloraObjektBestockung
+	    !!@ ilivalid.msg_de = "Kombination 'Bestockung' und 'Objekt' bei Flora unzulässig"
+	    MANDATORY CONSTRAINT ( DEFINED (Bestockung) AND Objekt->Bezeichnung == "Heckenelement" ) OR ( NOT (DEFINED (Bestockung)) AND Objekt->Bezeichnung != "Heckenelement" );
+	    !!@ name = checkFloraObjektBiberfrass
+	    !!@ ilivalid.msg_de = "Kombination 'Biberfrass' und 'Objekt bei Flora unzulässig'"
+	    MANDATORY CONSTRAINT ( Biberfrass == #true AND Objekt->Biberfrass == #true ) OR NOT ( Biberfrass == #true AND Objekt->Biberfrass != #true );
+	    !!@ name = checkFloraObjektBiberschutz
+	    !!@ ilivalid.msg_de = "Kombination 'Biberschutz' und 'Objekt' bei Flora unzulässig"
+	    MANDATORY CONSTRAINT ( Biberschutz == #true AND Objekt->Biberschutz == #true ) OR NOT ( Biberschutz == #true AND Objekt->Biberschutz != #true );
+	    !!@ name = checkFloraObjektPilzbefall
+	    !!@ ilivalid.msg_de = "Kombination 'Pilzbefall' und 'Objekt' bei Flora unzulässig"
+	    MANDATORY CONSTRAINT ( Pilzbefall == #true AND Objekt->Pilzbefall == #true ) OR NOT ( Pilzbefall == #true AND Objekt->Pilzbefall != #true );
+	    !!@ name = checkFloraObjektSchaedlingsbefall
+	    !!@ ilivalid.msg_de = "Kombination 'Schädlingsbefall' und 'Objekt' bei Flora unzulässig"
+	    MANDATORY CONSTRAINT ( Schaedlingsbefall == #true AND Objekt->Schaedlingsbefall == #true ) OR NOT ( Schaedlingsbefall == #true AND Objekt->Schaedlingsbefall != #true );
+	    !!@ name = checkFloraObjektPflegeziel
+	    !!@ ilivalid.msg_de = "Kombination 'Objekt' und 'Pflegeziel' bei Flora unzulässig"
+	    MANDATORY CONSTRAINT ( Objekt->Erstellung == #true AND Pflegeziel->Pflegeziel == "Erstellung" ) OR ( Objekt->Erhaltung == #true AND Pflegeziel->Pflegeziel == "Erhaltung" ) OR ( Objekt->Neophytenbekaempfung == #true AND Pflegeziel->Pflegeziel == "Neophytenbekämpfung" );
+      !!@ name = checkFloraObjektPflegemassnahme
+	    !!@ ilivalid.msg_de = "Kombination 'Objekt' und 'Pflegemassnahme' bei Flora unzulässig"
+      EXISTENCE CONSTRAINT Objekt->Pflegegruppe REQUIRED IN SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.Flora:Massnahme->Reference->Pflegegruppe;
+	    !!@ name = checkFloraKontrolle
+	    !!@ ilivalid.msg_de = "Kombination 'KontrolliertAm' und 'KontrolliertDurch' bei Flora unzulässig"
+	    MANDATORY CONSTRAINT ( DEFINED (KontrolliertAm) AND DEFINED (KontrolliertDurch) ) OR ( NOT (DEFINED (KontrolliertAm)) AND NOT (DEFINED (KontrolliertDurch) ) );
+	    !!@ name = checkFloraObjektAusfuehrung
+	    !!@ ilivalid.msg_de = "Kombination 'AusgefuehrtAm' und 'AusgefuehrtDurch' bei Flora unzulässig"
+	    MANDATORY CONSTRAINT ( DEFINED (AusgefuehrtAm) AND DEFINED (AusgefuehrtDurch) ) OR ( NOT (DEFINED (AusgefuehrtAm)) AND NOT (DEFINED (AusgefuehrtDurch) ) );
+      !!@ name = checkFloraCount
+      !!@ ilivalid.msg = "Flora muss mit einer Gewässerabschnittspflege assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(Gewaesserabschnittspflege)==1;
+      !!@ name = checkFloraArbeitsart
+      !!@ ilivalid.msg = "Flora benötigt mindestens eine Auswahl bei Arbeitsart (anstatt 0)"
+	    MANDATORY CONSTRAINT DEFINED (Arbeitsart);
+      !!@ name = checkFloraMassnahme
+      !!@ ilivalid.msg = "Flora benötigt mindestens eine Auswahl bei Massnahme (anstatt 0)"
+	    MANDATORY CONSTRAINT DEFINED (Massnahme);
+    END v_Flora;
+
+    VIEW v_FloraPunkt
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.FloraPunkt;
+    =
+      ALL OF FloraPunkt;
+      !!@ name = checkFloraPunktUniquePunkt
+      !!@ ilivalid.msg_de = "Duplikate Geometrie verletzt Eindeutigkeit"
+      UNIQUE Punkt;
+	    !!@ name = checkFloraPunkt
+	    !!@ ilivalid.msg_de = "Kombination 'Objekt' mit Geometrietyp Punkt unzulässig"
+	  MANDATORY CONSTRAINT ( DEFINED (Punkt) AND Objekt->Punkt == #true );
+    END v_FloraPunkt;
+
+    VIEW v_FloraFlaeche
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.FloraFlaeche;
+    =
+      ALL OF FloraFlaeche;
+      !!@ name = checkFloraflaecheUniqueFlaeche
+      !!@ ilivalid.msg_de = "Duplikate Geometrie verletzt Eindeutigkeit"
+      UNIQUE Flaeche;
+	    !!@ name = checkFloraFlaeche
+      !!@ ilivalid.msg_de = "Kombination 'Objekt' und Geometrietyp Polygon bei FloraPolygon unzulässig"
+	    MANDATORY CONSTRAINT ( DEFINED (Flaeche) AND Objekt->Flaeche == #true );
+    END v_FloraFlaeche;
+
+    VIEW v_Fauna
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.Fauna;
+    =
+      ALL OF Fauna;
+      !!@ name = checkFaunaUniquePunkt
+      !!@ ilivalid.msg_de = "Duplikate Geometrie verletzt Eindeutigkeit"
+      UNIQUE Punkt;
+	    !!@ name = checkFaunaKontrollIntervall
+      !!@ ilivalid.msg_de = "Kombination 'Kontrollintervall' und Geometrietyp Punkt bei Fauna unzulässig"
+	    MANDATORY CONSTRAINT ( Kontrollintervall->Fauna == #true );
+      !!@ name = checkFaunaCount
+      !!@ ilivalid.msg = "Fauna muss mit einer Gewässerabschnittspflege assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(Gewaesserabschnittspflege)==1;
+    END v_Fauna;
+
+	  VIEW v_Gewaesserereignis
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.Gewaesserereignis;
+    =
+      ALL OF Gewaesserereignis;
+	    !!@ name = checkGewaesserereignisCount
+      !!@ ilivalid.msg = "Gewaesserereignis muss mit einer Gewässerabschnittspflege assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(Gewaesserabschnittspflege)==1;
+      !!@ name = checkGewaesserereignisGewaesserpflegeCount
+      !!@ ilivalid.msg = "Gewässerereignis muss mindestens mit einer Gewässerpflege assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(Gewaesserpflege)>=1;
+    END v_Gewaesserereignis;
+
+	  VIEW v_Bauwerkgsmoeblierungskontrolle
+      PROJECTION OF SH_Pflegeplanung_Fliessgewaesser_V2_0.Pflegeplanung.Bauwerkgsmoeblierungskontrolle;
+    =
+      ALL OF Bauwerkgsmoeblierungskontrolle;
+	    !!@ name = checkBauwerkgsmoeblierungskontrolleCount
+      !!@ ilivalid.msg = "Bauwerkgsmoeblierungskontrolle muss mit einer BauwerkMoebilierung assoziieren (anstatt 0)"
+	    MANDATORY CONSTRAINT INTERLIS.objectCount(BauwerkMoebilierung)==1;
+    END v_Bauwerkgsmoeblierungskontrolle;
+
+  END SH_Pflegeplanung_Fliessgewaesser_SH_Validierung;
+
+END SH_Pflegeplanung_Fliessgewaesser_V2_0_AddChecks.

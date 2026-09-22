@@ -1,0 +1,103 @@
+SCNT
+Definitionen erstellt durch Amt fuer Geoinformation Kt. SH, Felix Berger, 02.11.2018 / angepasst 16.11.2018
+////
+MTID Interlis1
+MODL Naturschutz_SH_LV95_V1_4
+TOPI Naturschutz
+TABL Naturschutzobj_Typ_Kt
+OBJE 1   110  Magerwiese_(Einzelobjekt)              189.1  Kantonales_Inventar_der_Trockenwiesen_und_Weiden_von_nationaler,_regionaler_und_lokaler_Bedeutung  \
+CONT                                                        @  @  @  PNA  keine_Unterscheidung_im_Modell
+OBJE 2   120  Trockenwiese_und_-weidegebiet          189.1  Kantonales_Inventar_der_Trockenwiesen_und_Weiden_von_nationaler,_regionaler_und_lokaler_Bedeutung  \
+CONT                                                        @  @  @  PNA  keine_Unterscheidung_im_Modell
+OBJE 3   130  Böschung,_Saum                          23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 4   140  Ruderalfläche                           23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 5   150  Fels-_und_Schuttfluren                  23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP5  \
+CONT                                                        Fels-,_Felsgrus-_und_Karstfluren_sowie_Schuttfluren  PNA  @
+OBJE 6   160  Trockenmauer                            23.2  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 7   170  Lesesteinhaufen                         23.3  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 8   180  Grubenbiotop                            23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 9   210  Auengebiet                              26.1  Kantonales_Inventar_der_Auengebiete_von_nationaler,_regionaler_und_lokaler_Bedeutung  \
+CONT                                                        AU_TYP  AU_TYP1  Fliessgewässer  PNA  @
+OBJE 10  220  Flachmoor                               28.1  Kantonales_Inventar_der_Flachmoore_von_nationaler,_regionaler_und_lokaler_Bedeutung  \
+CONT                                                        @  @  @  PNA  keine_Unterscheidung_im_Modell
+OBJE 11  230  Amphibienlaichgebiet                    29.1  Kantonales_Inventar_der_Amphibienlaichgebiete_von_nationaler,_regionaler_und_lokaler_Bedeutung  \
+CONT                                                        AM_L_Bereich  A  Bereich_A_(dient_der_Fortpflanzung)  PNA  @
+OBJE 12  240  Quelle                                  23.3  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP1  Quellfluren,_Gewässer  TBA  @
+OBJE 13  250  Stillgewässer_inkl._Ufer                23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP1  Quellfluren,_Gewässer  PNA  @
+OBJE 14  260  Fliessgewässer_inkl._Ufer               23.2  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP2  \
+CONT                                                        Uferbereiche,_Verlandungsgesellschaften  TBA  @
+OBJE 15  270  Feuchtwiese                             23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 16  310  Spezielle_Waldgesellschaft              23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP3  \
+CONT                                                        Schluchtwälder,_Wälder_an_Steilhängen_und_Trockenwälder  KFA  @
+OBJE 17  320  Hochstamm-Obstgarten                    23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 18  330  Waldrand                                23.2  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP4  \
+CONT                                                        Saumgesellschaften,_Gebüsche_und_Heiden  PNA  @
+OBJE 19  340  Hecke_/_Gebüschgruppe                   23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP4  \
+CONT                                                        Saumgesellschaften,_Gebüsche_und_Heiden  PNA  @
+OBJE 20  350  Einzelbaum,_Baumallee                   23.3  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 21  360  Waldreservat                           160.1  Waldreservate                                         MCPFE_Class MCPFE1.2 Minimale_Eingriffe KFA	@
+OBJE 22  410  Höhle                                   23.3  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 23  420  Geologischer_Aufschluss                 23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 24  430  Findling                                23.3  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 25  440  Bohnerzstelle                           23.3  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 26  450  Wasserfall                              23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP1  Quellfluren,_Gewässer  PNA  @
+OBJE 27  460  Anderes_Geotop                          23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 28  510  Besondere_Landschaft                    23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 29  520  ERS-Gebiet                              23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 30  610  Wanderkorridor                         195.2  Ruhezonen_fuer_Wildtiere_(inkl._Routennetz)  @  @  @  DI  keine_Unterscheidung_im_Modell_(Routennetz)
+OBJE 31  620  Fledermausquartier                      23.3  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 32  630  Wasser-_und_Zugvogelreservat           172.1  Vogelreservate_kantonal   @   @   @   PNA   noch_kein_Modell_vorhanden
+OBJE 33  640  Habitat_von_weiteren_prioritären_Arten  23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 34  710  Übriges_Biotop                          23.1  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+OBJE 35  720  Aussichtspunkt                          23.3  Uebrige_Biotope_von_regionaler_und_lokaler_Bedeutung  BIO_TYP  BIO_TYP7  Anderer_Biotoptyp  PNA  @
+ETAB
+TABL Bedeutung
+OBJE 1   B1   national   entspricht_national
+OBJE 2   B2   kantonal   entspricht_regional
+OBJE 3   B3   kommunal   entspricht_lokal
+ETAB
+TABL Kartierungsgrundlage
+OBJE 1   K1   Landeskarte_1:25000       @
+OBJE 2   K2   Andere_Landeskarte        @
+OBJE 3   K3   Kantonale_Plangrundlage   auch_amtliche_Vermessung
+OBJE 4   K4   Luftbild,_Orthophoto      @
+OBJE 5   K5   andere                    auch_GNNS
+OBJE 6   K6   unbekannt                 @
+ETAB
+TABL Naturschutzobj_Typ_Gde
+ETAB
+TABL Naturschutzobjekt_Kt
+ETAB
+TABL Obj_Flaeche_Kt
+ETAB
+TABL Obj_Linie_Kt
+ETAB
+TABL Obj_Punkt_Kt
+ETAB
+TABL Obj_Text_Kt
+ETAB
+TABL Naturschutzobjekt_Kt_Pos
+ETAB
+TABL Naturschutzobjekt_CH_Pos
+ETAB
+TABL Naturschutzobjekt_Gde
+ETAB
+TABL Obj_Flaeche_Gde
+ETAB
+TABL Obj_Linie_Gde
+ETAB
+TABL Obj_Punkt_Gde
+ETAB
+TABL Obj_Text_Gde
+ETAB
+TABL Naturschutzobjekt_Gde_Pos
+ETAB
+ETOP
+TOPI Transfer_Metadaten
+TABL Organisation
+ETAB
+TABL Datenbestand
+ETAB
+ETOP
+EMOD
+ENDE

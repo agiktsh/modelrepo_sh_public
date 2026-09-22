@@ -1,0 +1,108 @@
+INTERLIS 2.3;
+
+/** Jagdreviere Kanton Schaffhausen.
+Modellierung der Jagdreviere im Kanton Schaffhausen.
+*/
+
+/*
+Version    | Who | Modification
+-----------------------------------------------------------------------------
+2023-10-19 | AGI | Version 1.1
+                 | - CLASS Naturschutzgebiet: 
+                 |   -> neues Attribut Teilgebiet
+                 |   -> neues Attribut Schutzkategorie
+                 | - CLASS Wildschongebiet (neu):
+                 |   -> neues Attribut Geometrie
+                 |   -> neues Attribut Name
+-----------------------------------------------------------------------------
+2019-09-25 | AGI | Version 1.0
+-----------------------------------------------------------------------------
+
+Fachtechnische Auskunft
+-------------------------------------------------------------------------------------------------------------------------------------------
+Amt für Jagd und Fischerei
+Telefon: +41 52 632 74 66
+URL: https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Departement-des-Innern/Jagd-und-Fischerei-3318-DE.html
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Allgemeines zum Datenmodell                                 
+-------------------------------------------------------------------------------
+- Das Ziel ist die administrative Abbildung der Reviere, Gebiete und Zonen.
+- Die abgebildeten Daten beschränken sich auf das Wesentliche         
+  (möglichst eine einfache und übersichtliche Modellierung). 
+-------------------------------------------------------------------------------
+
+Beteiligte
+-------------------------------------------------------------------------------
+Erarbeitet durch:                                                                     
+- Urs Gyseler, Amt für Geoinformation des Kantons Schaffhausen (AGI) 
+- Romedi Filli, Amt für Geoinformation des Kantons Schaffhausen (AGI)
+- Patrick Wasem, Jagd und Fischerei (JF)                                 
+ 
+INTERLIS-Modell 
+Version 1.0 erstellt durch:                                         
+- Romedi Filli, Amt für Geoinformation des Kantons Schaffhausen (AGI)
+Version 1.1 ergänzt durch:                                         
+- Marcel Ackermann, Amt für Geoinformation des Kantons Schaffhausen (AGI)
+-------------------------------------------------------------------------------
+
+Organisatorische Aspekte                                              
+-------------------------------------------------------------------------------    
+- Datenmodelländerungen und -erweiterungen dürfen nur durch das AGI erfolgen.                                               
+- Inhaltliche Belange werden durch das JF überprüft und gewährleistet.
+- Modellkonformität werden durch die systemischen Mechanismen vom 
+  Datenerfasser geprüft.
+-------------------------------------------------------------------------------
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=https://geo.sh.ch
+!!@ furtherMetadata=https://www.geocat.ch/geonetwork/srv/ger/catalog.search#/metadata/d052a0e1-3de6-4080-af95-9da913b3854c
+!!@ author=agi-sh
+!!@ tags="Kanton Schaffhausen, Administrative Einteilungen, Jagdrevier"
+!!@ IDGeoIV=041-SH
+
+MODEL SH_Jagdreviere_V1_1 (de)
+AT "http://geo.sh.ch"
+VERSION "2023-10-18"  =
+  IMPORTS Units, GeometryCHLV95_V1;
+
+  TOPIC Jagdreviere =
+
+    CLASS Jagdrevier =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Name : MANDATORY TEXT*100;
+		Listennummer : MANDATORY TEXT*100;
+    END Jagdrevier;
+
+    CLASS Schonrevier =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Name : MANDATORY TEXT*100;
+		Listennummer : MANDATORY TEXT*100;
+    END Schonrevier;
+
+    CLASS Siedlungsflaeche =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Gemeinde : MANDATORY TEXT*100;
+    END Siedlungsflaeche;
+
+    CLASS Naturschutzgebiet =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Name : MANDATORY TEXT*100;
+    Teilgebiet : TEXT*100;
+    Schutzkategorie : TEXT*200;
+    END Naturschutzgebiet;
+
+    CLASS Nichtjagdbare_Zone =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Name : MANDATORY TEXT*100;
+    END Nichtjagdbare_Zone;
+
+    CLASS Wildschongebiet =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Name : MANDATORY TEXT*100;
+    END Wildschongebiet;
+
+  END Jagdreviere;
+
+END SH_Jagdreviere_V1_1.

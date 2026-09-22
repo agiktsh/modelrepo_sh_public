@@ -1,0 +1,601 @@
+SCNT
+Definitionen erstellt durch Vermessungsamt Kt. SH, Felix Berger, 13.06.2013
+////
+MTID Interlis1
+MODL Nutzungsplanung_SHLV95
+TOPI Nutzungszonen_rechtsgueltig
+TABL Mutationshinweis
+ETAB
+TABL Dokument
+ETAB
+TABL weiteres_Dokument
+ETAB
+TABL Hauptnutzungen_CH
+OBJE 1      11     Bauzonen                                Wohnzonen                                                      Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 2      12     Bauzonen                                Arbeitszonen                                                   Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 3      13     Bauzonen                                Mischzonen                                                     Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 4      14     Bauzonen                                Zentrumszonen                                                  Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 5      15     Bauzonen                                Zonen_für_öffentliche_Nutzungen                                Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 6      16     Bauzonen                                eingeschränkte_Bauzonen                                        Grundnutzungszone_Baugebiete_und_Bauzone
+OBJE 7      17     Bauzonen                                Tourismus-_und_Freizeitzonen                                   Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 8      18     Bauzonen                                Verkehrszonen_innerhalb_der_Bauzonen                           Grundnutzungszone_des_Baugebietes
+OBJE 9      19     Bauzonen                                weitere_Bauzonen                                               Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 10     21     Landwirtschaftszonen                    allgemeine_Landwirtschaftszonen                                Grundnutzungszone_des_Nichtbaugebietes
+OBJE 11     22     Landwirtschaftszonen                    Speziallandwirtschaftszonen                                    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 12     23     Landwirtschaftszonen                    Rebbauzonen                                                    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 13     29     Landwirtschaftszonen                    weitere_Landwirtschaftszonen                                   Grundnutzungszone_des_Nichtbaugebietes
+OBJE 14     31     Schutzzonen_ausserhalb_der_Bauzonen     Schutzzonen_für_Lebensräume_und_Landschaften                   Grundnutzungszone_des_Nichtbaugebietes
+OBJE 15     32     Schutzzonen_ausserhalb_der_Bauzonen     Zonen_für_Gewässer_und_ihre_Ufer                               Grundnutzungszone_des_Bau-_und_Nichtbaugebietes
+OBJE 16     39     Schutzzonen_ausserhalb_der_Bauzonen     weitere_Schutzzonen_ausserhalb_der_Bauzonen                    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 17     41     weitere_Zonen_ausserhalb_der_Bauzonen   Zonen_für_Kleinsiedlung                                        Grundnutzungszone_des_Nichtbaugebietes
+OBJE 18     42     weitere_Zonen_ausserhalb_der_Bauzonen   Verkehrsflächen                                                Grundnutzungszone_des_Nichtbaugebietes
+OBJE 19     43     weitere_Zonen_ausserhalb_der_Bauzonen   Reservezonen_nach_Art._18_Abs._2_RPG                           Grundnutzungszone_des_Nichtbaugebietes
+OBJE 20     44     weitere_Zonen_ausserhalb_der_Bauzonen   Wald                                                           Grundnutzungszone_des_Bau-_und_Nichtbaugebietes
+OBJE 21     49     weitere_Zonen_ausserhalb_der_Bauzonen   weitere_Zonen_nach_Art._18_Abs._1_RPG                          Grundnutzungszone_des_Nichtbaugebietes
+OBJE 22     51     überlagernde_Zonen                      überlagernde_Ortsbildschutzzonen                               Überlagernde_Zone
+OBJE 23     52     überlagernde_Zonen                      überlagernde_Schutzzonen_für_Lebensräume_und_Landschaften      Überlagernde_Zone
+OBJE 24     53     überlagernde_Zonen                      überlagernde_Gefahrenzonen                                     Überlagernde_Zone
+OBJE 25     59     überlagernde_Zonen                      weitere_überlagernde_Nutzungszonen                             Überlagernde_Zone
+OBJE 26     61     andere_flächenbezogene_Festlegungen     Bereiche_rechtsgültiger_Sondernutzungspläne                    Orientierungsinhalt
+OBJE 27     62     andere_flächenbezogene_Festlegungen     Bereiche_mit_Sondernutzungsplanungspflicht                     Überlagernde_Zone
+OBJE 28     63     andere_flächenbezogene_Festlegungen     Bereiche_einer_späteren_Erschliessungsetappe                   Überlagernde_Zone
+OBJE 29     69     andere_flächenbezogene_Festlegungen     weitere_flächenbezogene_Festlegungen                           Überlagernde_Zone
+OBJE 30     71     linienbezogene_Festlegungen             Baulinien                                                      Linienbezogene_Festlegung
+OBJE 31     79     linienbezogene_Festlegungen             weitere_linienbezogene_Festlegungen                            Linienbezogene_Festlegung
+OBJE 32     81     punktbezogene_Festlegungen              Naturobjekte                                                   Objektbezogene_Festlegung
+OBJE 33     82     punktbezogene_Festlegungen              Kulturobjekte                                                  Objektbezogene_Festlegung
+OBJE 34     89     punktbezogene_Festlegungen              weitere_punktbezogene_Festlegungen                             Objektbezogene_Festlegung
+ETAB
+TABL Hauptnutzungen_SIA
+OBJE 1       1     111.0     Wohnzonen                             Wohnzone_a                                    Bauzonen_1.Wohnzonen_11.Wohnzone_a_111
+OBJE 2       1     112.0     Wohnzonen                             Wohnzone_b                                    Bauzonen_1.Wohnzonen_11.Wohnzone_b_112
+OBJE 3       1     113.0     Wohnzonen                             Wohnzone_c                                    Bauzonen_1.Wohnzonen_11.Wohnzone_c_113
+OBJE 4       1     114.0     Wohnzonen                             Wohnzone_d                                    Bauzonen_1.Wohnzonen_11.Wohnzone_d_114
+OBJE 5       1     115.0     Wohnzonen                             weiterer_Zonentyp                             Bauzonen_1.Wohnzonen_11.weiterer_Zonentyp_115
+OBJE 6       2     121.0     Arbeitszonen                          Arbeitszone_a                                 Bauzonen_1.Arbeitszonen_12.Arbeitszone_a_121
+OBJE 7       2     122.0     Arbeitszonen                          Arbeitszone_b                                 Bauzonen_1.Arbeitszonen_12.Arbeitszone_b_122
+OBJE 8       2     123.0     Arbeitszonen                          Arbeitszone_c                                 Bauzonen_1.Arbeitszonen_12.Arbeitszone_c_123
+OBJE 9       2     124.0     Arbeitszonen                          weiterer_Zonentyp                             Bauzonen_1.Arbeitszonen_12.weiterer_Zonentyp_124
+OBJE 10      3     131.0     Mischzonen                            Wohn_und_Arbeitszone_a                        Bauzonen_1.Mischzonen_13.Wohn_und_Arbeitszone_a_131
+OBJE 11      3     132.0     Mischzonen                            Wohn_und_Arbeitszone_b                        Bauzonen_1.Mischzonen_13.Wohn_und_Arbeitszone_b_132
+OBJE 12      3     133.0     Mischzonen                            weiterer_Zonentyp                             Bauzonen_1.Mischzonen_13.weiterer_Zonentyp_133
+OBJE 13      4     141.0     Zentrumszonen                         allgemeine_Zentrumszone                       Bauzonen_1.Zentrumszonen_14.allgemeine_Zentrumszone_141
+OBJE 14      4     142.0     Zentrumszonen                         Kernzone                                      Bauzonen_1.Zentrumszonen_14.Kernzone_142
+OBJE 15      4     143.0     Zentrumszonen                         Geschäftszone                                 Bauzonen_1.Zentrumszonen_14.Geschaeftszone_143
+OBJE 16      4     144.0     Zentrumszonen                         weiterer_Zonentyp                             Bauzonen_1.Zentrumszonen_14.weiterer_Zonentyp_144
+OBJE 17      5     151.0     Zonen_für_öffentliche_Nutzungen       Bauten_und_Anlagen                            Bauzonen_1.Zone_fuer_oeffentliche_Nutzungen_15.Bauten_und_Anlagen_151
+OBJE 18      5     152.0     Zonen_für_öffentliche_Nutzungen       Sport_und_Freizeitanlagen                     Bauzonen_1.Zone_fuer_oeffentliche_Nutzungen_15.Sport_und_Freizeitanlagen_152
+OBJE 19      5     153.0     Zonen_für_öffentliche_Nutzungen       weiterer_Zonentyp                             Bauzonen_1.Zone_fuer_oeffentliche_Nutzungen_15.weiterer_Zonentyp_153
+OBJE 20      6     161.0     eingeschränkte_Bauzonen               Grünzone                                      Bauzonen_1.eingeschraenkte_Bauzonen_16.Gruenzone_161
+OBJE 21      6     162.0     eingeschränkte_Bauzonen               weiterer_Zonentyp                             Bauzonen_1.eingeschraenkte_Bauzonen_16.weiterer_Zonentyp_162
+OBJE 22      7     171.0     Tourismus-_und_Freizeitzonen          Kurzone                                       Bauzonen_1.Tourismus_und_Freizeitzonen_17.Kurzone_171
+OBJE 23      7     172.0     Tourismus-_und_Freizeitzonen          Hotelzone                                     Bauzonen_1.Tourismus_und_Freizeitzonen_17.Hotelzone_172
+OBJE 24      7     173.0     Tourismus-_und_Freizeitzonen          Campingzone                                   Bauzonen_1.Tourismus_und_Freizeitzonen_17.Campingzone_173
+OBJE 25      7     174.0     Tourismus-_und_Freizeitzonen          weiterer_Zonentyp                             Bauzonen_1.Tourismus_und_Freizeitzonen_17.weiterer_Zonentyp_174
+OBJE 26      8     181.0     Verkehrszonen_innerhalb_Bauzone       Strassenzone                                  Bauzonen_1.Verkehrszonen_innerhalb_Bauzone_18.Strassenzone_181
+OBJE 27      8     182.0     Verkehrszonen_innerhalb_Bauzone       Bahnzone                                      Bauzonen_1.Verkehrszonen_innerhalb_Bauzone_18.Bahnzone_182
+OBJE 28      8     183.0     Verkehrszonen_innerhalb_Bauzone       Flugplatzzone                                 Bauzonen_1.Verkehrszonen_innerhalb_Bauzone_18.Flugplatzzone_183
+OBJE 29      8     184.0     Verkehrszonen_innerhalb_Bauzone       weiterer_Zonentyp                             Bauzonen_1.Verkehrszonen_innerhalb_Bauzone_18.weiterer_Zonentyp_184
+OBJE 30      9     191.0     weitere_Zonen_nach_Art_15_und_18_RPG  Sonderbauzone                                 Bauzonen_1.weitere_Zonen_nach_Art_15_und_18_RPG_19.Sonderbauzone_191
+OBJE 31      9     192.0     weitere_Zonen_nach_Art_15_und_18_RPG  weiterer_Zonentyp                             Bauzonen_1.weitere_Zonen_nach_Art_15_und_18_RPG_19.weiterer_Zonentyp_192
+OBJE 32     10     211.0     allgemeine_Landwirtschaftszonen       allgemeine_Landwirtschaftszone                Landwirtschaftszonen_2.Allgemeine_Landwirtschaftszonen_21.allgemeine_Landwirtschaftszone_211
+OBJE 33     10     212.0     allgemeine_Landwirtschaftszonen       weiterer_Zonentyp                             Landwirtschaftszonen_2.Allgemeine_Landwirtschaftszonen_21.weiterer_Zonentyp_212
+OBJE 34     11     221.0     Speziallandwirtschaftszonen           Speziallandwirtschaftszone                    Landwirtschaftszonen_2.Speziallandwirtschaftszonen_22.Speziallandwirtschaftszone_221
+OBJE 35     11     222.0     Speziallandwirtschaftszonen           weiterer_Zonentyp                             Landwirtschaftszonen_2.Speziallandwirtschaftszonen_22.weiterer_Zonentyp_222
+OBJE 36     12     231.0     Rebbauzonen                           Rebbauzone                                    Landwirtschaftszonen_2.Rebbauzonen_23.Rebbauzone_231
+OBJE 37     12     232.0     Rebbauzonen                           weiterer_Zonentyp                             Landwirtschaftszonen_2.Rebbauzone_23.weiterer_Zonentyp_232
+OBJE 38     14     311.0     Schutzzonen_für_Lebensräume_und_Landschaften     allgemeine_Schutzzone              Schutzzonen_3.Lebensraeume_und_Landschaften_31.allgemeine_Schutzzone_311
+OBJE 39     14     312.0     Schutzzonen_für_Lebensräume_und_Landschaften     Naturschutzzone_kommunal           Schutzzonen_3.Lebensraeume_und_Landschaften_31.Naturschutzzone_kommunal_312
+OBJE 40     14     313.0     Schutzzonen_für_Lebensräume_und_Landschaften     Naturschutzzone_kantonal           Schutzzonen_3.Lebensraeume_und_Landschaften_31.Naturschutzzone_kantonal_313
+OBJE 41     14     314.0     Schutzzonen_für_Lebensräume_und_Landschaften     weiterer_Zonentyp                  Schutzzonen_3.Lebensraeume_und_Landschaften_31.weiterer_Zonentyp_314
+OBJE 42     15     321.0     Bäche_Flüsse_Seen_Ufer                Gewässerzone                                  Schutzzonen_3.Baeche_Fluesse_Seen_Ufer_32.Gewaesserzone_321
+OBJE 43     15     322.0     Bäche_Flüsse_Seen_Ufer                weiterer_Zonentyp                             Schutzzonen_3.Baeche_Fluesse_Seen_Ufer_32.weiterer_Zonentyp_322
+OBJE 44     21     411.0     weitere_Zonen_nach_Abs_1_RPG          unkultivierbares_Land                         weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.unkultivierbares_Land_411
+OBJE 45     18     412.0     weitere_Zonen_nach_Abs_1_RPG          Strassenareal                                 weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Strassenareal_412
+OBJE 46     18     413.0     weitere_Zonen_nach_Abs_1_RPG          Bahnareal                                     weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Bahnareal_413
+OBJE 47     18     414.0     weitere_Zonen_nach_Abs_1_RPG          Flugplatzareal                                weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Flugplatzareal_414
+OBJE 48     21     415.0     weitere_Zonen_nach_Abs_1_RPG          Abbauzone                                     weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Abbauzone_415
+OBJE 49     21     416.0     weitere_Zonen_nach_Abs_1_RPG          Deponiezone                                   weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Deponiezone_416
+OBJE 50     21     417.0     weitere_Zonen_nach_Abs_1_RPG          Abbau_und_Deponiezone                         weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Abbau_und_Deponiezone_417
+OBJE 51     21     418.0     weitere_Zonen_nach_Abs_1_RPG          weiterer_Zonentyp                             weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.weiterer_Zonentyp_418
+OBJE 52     19     421.0     weitere_Zonen_nach_Abs_2_RPG          Reservezone                                   weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_2_RPG_42.Reservezone_421
+OBJE 53     21     422.0     weitere_Zonen_nach_Abs_1_RPG          weiterer_Zonentyp                             weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.weiterer_Zonentyp_422
+OBJE 54     20     431.0     Waldzonen                             Wald                                          weitere_Zonen_nach_Art_18_RPG_4.Waldzonen_43.Wald_431
+OBJE 55     20     432.0     Waldzonen                             weiterer_Zonentyp                             weitere_Zonen_nach_Art_18_RPG_4.Waldzonen_43.weiterer_Zonentyp_432
+OBJE 56     17     441.0     Zonen_Kleinsiedlungen                 Weilerzone                                    weitere_Zonen_nach_Art_18_RPG_4.Zonen_Kleinsiedlungen_44.Weilerzone_441
+OBJE 57     17     442.0     Zonen_Kleinsiedlungen                 weiterer_Zonentyp                             weitere_Zonen_nach_Art_18_RPG_4.Zonen_Kleinsiedlungen_44.weiterer_Zonentyp_442
+OBJE 58     22     611.0     überlagernde_Schutzzonen              überlagernde_Ortsbildschutzzone               ueberl_Schutzzonen_61.ueberl_Ortsbildschutzzone_611
+OBJE 59     23     612.0     überlagernde_Schutzzonen              überlagernde_Naturschutzzone                  ueberl_Schutzzonen_61.ueberl_Naturschutzzone_612
+OBJE 60     23     613.0     überlagernde_Schutzzonen              Grundwasserschutzzone                         ueberl_Schutzzonen_61.Grundwasserschutzzone_613
+OBJE 61     23     614.0     überlagernde_Schutzzonen              Landschaftsschutzzone                         ueberl_Schutzzonen_61.Landschaftsschutzzone_614
+OBJE 62     23     615.0     überlagernde_Schutzzonen              Freihaltezone                                 ueberl_Schutzzonen_61.Freihaltezone_615
+OBJE 63     23     616.0     überlagernde_Schutzzonen              weiterer_Zonentyp                             ueberl_Schutzzonen_61.weiterer_Zonentyp_616
+OBJE 64     25     621.0     überlagernde_Nutzungszonen            Nutzungsanteilzone                            ueberl_Nutzungszonen_62.Nutzungsanteilzone_621
+OBJE 65     25     622.0     überlagernde_Nutzungszonen            überlagernde_Abbauzone                        ueberl_Nutzungszonen_62.ueberl_Abbauzone_622
+OBJE 66     25     623.0     überlagernde_Nutzungszonen            überlagernde_Deponiezone                      ueberl_Nutzungszonen_62.ueberl_Deponiezone_623
+OBJE 67     25     624.0     überlagernde_Nutzungszonen            überlagernde_Tourismus-_und_Erholungszone     ueberl_Nutzungszonen_62.ueberl_Tourismus_Erholungszone_624
+OBJE 68     25     625.0     überlagernde_Nutzungszonen            Verkehrszone_über_oder_unter_Bauten           ueberl_Nutzungszonen_62.Verkehrszone_ueber_od_unter_Bauten_625
+OBJE 69     25     626.0     überlagernde_Nutzungszonen            Zone_für_Bauten_über_oder_unter_Verkehrszone  ueberl_Nutzungszonen_62.Zone_fuer_Bauten_ueber_od_unter_Verkehrszone_626
+OBJE 70     25     627.0     überlagernde_Nutzungszonen            Zone_für_Bauten_im_Gewässerbereich            ueberl_Nutzungszonen_62.Zone_fuer_Bauten_im_Gewaesserbereich_627
+OBJE 71     25     628.0     überlagernde_Nutzungszonen            überlagernde_Bauzone                          ueberl_Nutzungszonen_62.ueberl_Bauzone_628
+OBJE 72     25     629.0     überlagernde_Nutzungszonen            weiterer_Zonentyp                             ueberl_Nutzungszonen_62.weiterer_Zonentyp_629
+OBJE 73     24     631.0     überlagernde_Gefahrenzonen            Zone_mit_Restgefährdung                       ueberl_Gefahrenzonen_63.Zone_mit_Restgefaehrdung_631
+OBJE 74     24     632.0     überlagernde_Gefahrenzonen            Zone_mit_geringer_Gefaehrdung                 ueberl_Gefahrenzonen_63.Zone_mit_geringer_Gefaehrdung_632
+OBJE 75     24     633.0     überlagernde_Gefahrenzonen            Zone_mit_mittlerer_Gefährdung                 ueberl_Gefahrenzonen_63.Zone_mit_mittlerer_Gefaehrdung_633
+OBJE 76     24     634.0     überlagernde_Gefahrenzonen            Zone_mit_erheblicher_Gefährdung               ueberl_Gefahrenzonen_63.Zone_mit_erheblicher_Gefaehrdung_634
+OBJE 77     27     641.0     überlagernde_Flaechenfestlegungen     Sondernutzungsplanungspflicht                 ueberl_Flaechenfestlegungen_64.Sondernutzungsplanungspflicht_641
+OBJE 78     26     642.0     überlagernde_Flaechenfestlegungen     rechtsgültige_Sondernutzungspläne             ueberl_Flaechenfestlegungen_64.rechtsguel_Sondernutzungsplaene_642
+OBJE 79     28     643.0     überlagernde_Flaechenfestlegungen     spätere_Erschliessungsetappe                  ueberl_Flaechenfestlegungen_64.spaetere_Erschliessungsetappe_643
+OBJE 80     29     644.0     überlagernde_Flaechenfestlegungen     Archäologische_Fundstelle                     ueberl_Flaechenfestlegungen_64.Archaeologische_Fundstelle_644
+OBJE 81     29     645.0     überlagernde_Flaechenfestlegungen     erdgeschichtliche_Bedeutung                   ueberl_Flaechenfestlegungen_64.erdgeschichtliche_Bedeutung_645
+OBJE 82     29     646.0     überlagernde_Flaechenfestlegungen     Bereich_Altlasten                             ueberl_Flaechenfestlegungen_64.Bereich_Altlasten_646
+OBJE 83     29     647.0     überlagernde_Flaechenfestlegungen     Brücke_über_Gewässer                          ueberl_Flaechenfestlegungen_64.Bruecke_ueber_Gewaesser_647
+OBJE 84     29     648.0     überlagernde_Flaechenfestlegungen     weitere_Flächenfestlegung                     ueberl_Flaechenfestlegungen_64.weitere_Flaechenfestlegung_648
+OBJE 85     30     711.0     linienbezogene_Festlegungen           Baulinie                                      Baulinie_711
+OBJE 86     31     712.0     linienbezogene_Festlegungen           Uferlinie_Bachlauf                            Uferlinie_Bachlauf_712
+OBJE 87     31     713.0     linienbezogene_Festlegungen           Allee                                         Allee_713
+OBJE 88     31     714.0     linienbezogene_Festlegungen           Hecke                                         Hecke_714
+OBJE 89     31     715.0     linienbezogene_Festlegungen           projektierte_bewilligte_Verkehrswege          projektierte_bewilligte_Verkehrswege_715
+OBJE 90     31     716.0     linienbezogene_Festlegungen           weitere_linienbezogene_Festlegung             weitere_linienbezogene_Festlegung_716
+OBJE 91     32     811.0     punktbezogene_Festlegungen            Naturobjekt                                   Naturobjekt_811
+OBJE 92     33     812.0     punktbezogene_Festlegungen            Denkmalschutz_und_Kulturobjekt                Denkmalschutz_und_Kulturobjekt_812.kommunales_Objekt_8121
+OBJE 93     34     813.0     punktbezogene_Festlegungen            weitere_objektbezogene_Festlegungen           weitere_objektbez_Festlegungen_813
+ETAB
+TABL Grundn_Zonentyp_Kt
+OBJE 1       1     111.0     Wohnzone_1                                  W1       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 2       2     112.0     Wohnzone_2                                  W2       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 3       3     113.0     Wohnzone_3                                  W3       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 4       4     114.0     Wohnzone_4                                  W4       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 5       5     115.0     Wohnzone_mit_Gebäudehöhe                    WG       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 6       6     121.0     Arbeitszone_1                               A1       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 7       7     122.0     Arbeitszone_2                               A2       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 8       8     123.0     Arbeitszone_3                               A3       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 9       9     124.0     Arbeitszone_4                               A4       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 10     10     131.0     Wohn-_und_Arbeitszone                       WA       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 11     12     133.0     Wohn-_und_Arbeitszone_mit_Gebäudehöhe       WAG      Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 12     13     141.0     Zentrumszone                                Z        Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 13     14     142.0     Kern-,_Dorfkern-_und_Altstadtzone           K        Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 14     17     151.0     öffentliche_Bauten_und_Anlagen              ZöBA     Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 15     18     152.0     öffentliche_Sport-_und_Freizeitanlagen      ZöSF     Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 16     19     153.0     Familiengartenzone                          FG       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 17     20     161.0     Grünzone                                    Gr       Grundnutzungszone_des_Baugebietes
+OBJE 18     21     162.0     Reitzone                                    RA       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 19     23     172.0     Hotelzone                                   HZ       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 20     24     173.0     Campingzone                                 Ca       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 21     26     181.0     Strassenzone                                Str      Grundnutzungszone_des_Baugebietes
+OBJE 22     27     182.0     Bahnzone                                    Bahn     Grundnutzungszone_des_Baugebietes
+OBJE 23     28     183.0     Flugplatzzone                               Flug     Grundnutzungszone_des_Baugebietes
+OBJE 24     31     192.0     weiterer_Bauzonentyp                        BZw      Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 25     32     211.0     allgemeine_Landwirtschaftszone              LW       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 26     34     221.0     Speziallandwirtschaftszone                  LWS      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 27     36     231.0     Rebbauzone                                  R        Grundnutzungszone_des_Nichtbaugebietes
+OBJE 28     39     312.0     Naturschutzzone_kommunal                    Nk       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 29     40     313.0     Naturschutzzone_übergeordnet                Nü       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 30     42     321.1     Gewässer                                    G        Grundnutzungszone_des_Nichtbaugebietes
+OBJE 31     42     321.2     Gewässerzone                                GZ       Grundnutzungszone_des_Baugebietes
+OBJE 32     45     412.0     Strassenareal                               StrA     Grundnutzungszone_des_Nichtbaugebietes
+OBJE 33     46     413.0     Bahnareal                                   BahnA    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 34     47     414.0     Flugplatzareal                              FlugA    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 35     48     415.0     Materialabbauzone                           MA       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 36     49     416.0     Materialdeponiezone                         MD       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 37     50     417.0     Materialabbau-_und_Deponiezone              MAD      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 38     51     418.0     Materialabbau_und_-bewirtschaftungszone     MAB      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 39     52     421.0     Reservezone                                 Res      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 40     53     422.0     weiterer_Nicht-Bauzonentyp                  NBZw     Grundnutzungszone_des_Nichtbaugebietes
+OBJE 41     54     431.1     Wald                                        W        Grundnutzungszone_des_Nichtbaugebietes
+OBJE 42     54     431.2     Waldzone                                    WZ       Grundnutzungszone_des_Baugebietes
+OBJE 43     56     441.0     Weilerzone                                  Wei      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 44     57     442.0     Kleinsiedlung                               Klei     Grundnutzungszone_des_Nichtbaugebietes
+ETAB
+TABL Grundn_Zonentyp_Gde
+ETAB
+TABL Grundn_Zone_Gde
+ETAB
+TABL Grundn_Zone_Gde_Pos
+ETAB
+TABL Grundn_Dokument_Bez
+ETAB
+TABL Ueberl_Zonentyp_Kt
+OBJE 1     58     611.0   überlagernde_Ortsbildschutzzone                OS       Überlagernde_Zone
+OBJE 2     59     612.1   überlagernde_Naturschutzzone_kommunal          UNk      Überlagernde_Zone
+OBJE 3     59     612.2   überlagernde_Naturschutzzone_übergeordnet      UNü      Überlagernde_Zone
+OBJE 4     60     613.0   Grundwasserschutzzone                          GWS      Orientierungsinhalt
+OBJE 5     61     614.0   Landschaftsschutzzone                          LS       Überlagernde_Zone
+OBJE 6     62     615.0   Freihaltezone                                  FR       Überlagernde_Zone
+OBJE 7     63     616.1   ERS-_Gebiet                                    ERS      Überlagernde_Zone
+OBJE 8     63     616.2   BLN-_Gebiet                                    BLN      Überlagernde_Zone
+OBJE 9     63     616.3   Hecke,_Feldgehölz                              HFg      Orientierungsinhalt
+OBJE 10    63     616.4   Archäologische_Schutzzone                      AS       Überlagernde_Zone
+OBJE 11    64     621.0   Nutzungsanteilzone                             Naz      Überlagernde_Zone
+OBJE 12    65     622.0   überlagernde_Materialabbauzone                 UMA      Überlagernde_Zone
+OBJE 13    66     623.0   überlagernde_Materialdeponiezone               UMD      Überlagernde_Zone
+OBJE 14    67     624.0   Tourismus-_und_Erholungszone                   TE       Überlagernde_Zone
+OBJE 15    68     625.0   Verkehrsanlage_über_oder_unter_Bauten          VkuB     Überlagernde_Zone
+OBJE 16    69     626.0   Bauten_über_oder_unter_Verkehrsanlage          BuVk     Überlagernde_Zone
+OBJE 17    70     627.0   Bauten_im_Gewässerbereich                      BGw      Überlagernde_Zone
+OBJE 18    71     628.0   Verdichtungszone                               VZ       Überlagernde_Zone
+OBJE 19    72     629.0   Planungszone                                   PZ       Überlagernde_Zone
+OBJE 20    73     631.0   Zone_mit_Restgefährdung                        G4       keine_Darstellung
+OBJE 21    74     632.0   Zone_mit_geringer_Gefährdung                   G3       keine_Darstellung
+OBJE 22    75     633.0   Zone_mit_mittlerer_Gefährdung                  G2       keine_Darstellung
+OBJE 23    76     634.0   Zone_mit_erheblicher_Gefährdung                G1       keine_Darstellung
+OBJE 24    77     641.0   Quartierplanpflicht                            Qu       Überlagernde_Zone
+OBJE 25    78     642.0   Quartierplan_rechtsgültig                      Qur      Orientierungsinhalt
+OBJE 26    79     643.0   überlagernde_Reservezone                       URes     Überlagernde_Zone
+OBJE 27    80     644.0   Archäologische_Fundstelle                      AF       Überlagernde_Zone
+OBJE 28    81     645.0   erdgeschichtliche_Bedeutung                    Geo      Überlagernde_Zone
+OBJE 29    82     646.0   belasteter_Standort                            Bel      Überlagernde_Zone
+OBJE 30    83     647.0   Brücke_über_Gewässer                           BuG      Überlagernde_Zone
+OBJE 31    84     648.1   weitere_überlagernde_Flächenfestlegung         FL       Überlagernde_Zone
+OBJE 32    84     648.2   tiefere_Lärmempfindlichkeitsstufe              Lät      Überlagernde_Zone
+OBJE 33    84     648.3   höhere_Lärmempfindlichkeitsstufe               Läh      Überlagernde_Zone
+OBJE 34    84     648.4   Naturgefahrenzone                              NGZ      Überlagernde_Zone
+ETAB
+TABL Ueberl_Zonentyp_Gde
+ETAB
+TABL Ueberl_Zone_Gde
+ETAB
+TABL Ueberl_Zone_Gde_Pos
+ETAB
+TABL Ueberl_Dokument_Bez
+ETAB
+TABL Linienbez_Festl_Typ_Kt
+OBJE 1     85     711.1   Baulinie_Verkehr                               @        Linienbezogene_Festlegung
+OBJE 2     85     711.2   Gewässerabstandslinie                          @        Linienbezogene_Festlegung
+OBJE 3     85     711.3   Waldabstandslinie                              @        Linienbezogene_Festlegung
+OBJE 4     85     711.4   andere_Baulinie                                @        Linienbezogene_Festlegung
+OBJE 5     86     712.1   Bachverlauf_offen                              @        Hinweise_und_Informationen
+OBJE 6     86     712.2   Bachverlauf_eingedolt                          @        Hinweise_und_Informationen
+OBJE 7     90     716.1   Siedlungsrand                                  @        Hinweise_und_Informationen
+OBJE 8     90     716.2   Waldgrenze_nach_statischem_Waldbegriff         @        Orientierungsinhalt
+OBJE 9     90     716.3   weitere_linienbezogene_Festlegung              @        Linienbezogene_Festlegung
+ETAB
+TABL Linienbez_Festl_Typ_Gde
+ETAB
+TABL Linienbez_Festl_Gde
+ETAB
+TABL Linienbez_Festl_Gde_Pos
+ETAB
+TABL Linienbez_Dokument_Bez
+ETAB
+TABL Objektbez_Festl_Typ_Kt
+OBJE 1     91     811.1   inventarisierter_Baum                          Bi       Objektbezogene_Festlegung
+OBJE 2     91     811.2   geschützter_Baum                               Bg       Objektbezogene_Festlegung
+OBJE 3     91     811.3   anderes_inventarisiertes_Objekt                Oi       Objektbezogene_Festlegung
+OBJE 4     91     811.4   anderes_geschütztes_Objekt                     Og       Objektbezogene_Festlegung
+OBJE 5     91     811.5   Naturobjekt_kommunal                           NOk      Objektbezogene_Festlegung
+OBJE 6     91     811.6   Naturobjekt_übergeordnet                       NOü      Objektbezogene_Festlegung
+OBJE 7     91     811.7   anderes_Naturobjekt                            NO       Objektbezogene_Festlegung
+OBJE 8     92     812.1   Denkmalschutzobjekt_kommunal                   DOk      Objektbezogene_Festlegung
+OBJE 9     92     812.2   Denkmalschutzobjekt_übergeordnet               DOü      Objektbezogene_Festlegung
+OBJE 10    93     813.0   weitere_objektbezogene_Festlegung              Ow       Objektbezogene_Festlegung
+ETAB
+TABL Objektbez_Festl_Typ_Gde
+ETAB
+TABL Objektbez_Festl_Gde
+ETAB
+TABL Objektbez_Festl_Gde_Pos
+ETAB
+TABL Objektbez_Dokument_Bez
+ETAB
+TABL SH_Grundn_Zone_Beschr_Pos
+ETAB
+TABL SH_Ueberl_Zone_Beschr_Pos
+ETAB
+TABL SH_Linienbez_Festl_Beschr_Pos
+ETAB
+TABL SH_Objektbez_Festl_Beschr_Pos
+ETAB
+TABL SH_Masse
+ETAB
+TABL SH_Textmasken
+ETAB
+TABL SH_Darstellungslinie
+ETAB
+TABL SH_Text
+ETAB
+TABL SH_Koordinatenpunkt
+ETAB
+TABL SH_Koordinatenpunkt_Pos
+ETAB
+ETOP
+TOPI SH_Informationen
+TABL SH_Info
+ETAB
+TABL SH_Info_Text
+ETAB
+TABL SH_Info_Flaeche
+ETAB
+TABL SH_Info_Linie
+ETAB
+TABL SH_Info_Punkt
+ETAB
+TABL SH_Planrahmen
+ETAB
+TABL SH_Erschliessungsstand
+ETAB
+TABL SH_Erschliessungsstand_Pos
+ETAB
+TABL SH_Erschliessungsplan
+ETAB
+TABL SH_Erschliessungsplan_Pos
+ETAB
+TABL SH_innere_Reserve
+ETAB
+TABL SH_innere_Reserve_Pos
+ETAB
+ETOP
+TOPI Transfer_Metadaten
+TABL Organisation
+ETAB
+TABL Datenbestand
+ETAB
+ETOP
+TOPI Nutzungszonen_Gepl
+TABL Mutationshinweis_Gepl
+ETAB
+TABL Hauptnutzungen_CH_Gepl
+OBJE 1      11     Bauzonen                                Wohnzonen                                                      Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 2      12     Bauzonen                                Arbeitszonen                                                   Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 3      13     Bauzonen                                Mischzonen                                                     Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 4      14     Bauzonen                                Zentrumszonen                                                  Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 5      15     Bauzonen                                Zonen_für_öffentliche_Nutzungen                                Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 6      16     Bauzonen                                eingeschränkte_Bauzonen                                        Grundnutzungszone_Baugebiete_und_Bauzone
+OBJE 7      17     Bauzonen                                Tourismus-_und_Freizeitzonen                                   Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 8      18     Bauzonen                                Verkehrszonen_innerhalb_der_Bauzonen                           Grundnutzungszone_des_Baugebietes
+OBJE 9      19     Bauzonen                                weitere_Bauzonen                                               Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 10     21     Landwirtschaftszonen                    allgemeine_Landwirtschaftszonen                                Grundnutzungszone_des_Nichtbaugebietes
+OBJE 11     22     Landwirtschaftszonen                    Speziallandwirtschaftszonen                                    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 12     23     Landwirtschaftszonen                    Rebbauzonen                                                    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 13     29     Landwirtschaftszonen                    weitere_Landwirtschaftszonen                                   Grundnutzungszone_des_Nichtbaugebietes
+OBJE 14     31     Schutzzonen_ausserhalb_der_Bauzonen     Schutzzonen_für_Lebensräume_und_Landschaften                   Grundnutzungszone_des_Nichtbaugebietes
+OBJE 15     32     Schutzzonen_ausserhalb_der_Bauzonen     Zonen_für_Gewässer_und_ihre_Ufer                               Grundnutzungszone_des_Bau-_und_Nichtbaugebietes
+OBJE 16     39     Schutzzonen_ausserhalb_der_Bauzonen     weitere_Schutzzonen_ausserhalb_der_Bauzonen                    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 17     41     weitere_Zonen_ausserhalb_der_Bauzonen   Zonen_für_Kleinsiedlung                                        Grundnutzungszone_des_Nichtbaugebietes
+OBJE 18     42     weitere_Zonen_ausserhalb_der_Bauzonen   Verkehrsflächen                                                Grundnutzungszone_des_Nichtbaugebietes
+OBJE 19     43     weitere_Zonen_ausserhalb_der_Bauzonen   Reservezonen_nach_Art._18_Abs._2_RPG                           Grundnutzungszone_des_Nichtbaugebietes
+OBJE 20     44     weitere_Zonen_ausserhalb_der_Bauzonen   Wald                                                           Grundnutzungszone_des_Bau-_und_Nichtbaugebietes
+OBJE 21     49     weitere_Zonen_ausserhalb_der_Bauzonen   weitere_Zonen_nach_Art._18_Abs._1_RPG                          Grundnutzungszone_des_Nichtbaugebietes
+OBJE 22     51     überlagernde_Zonen                      überlagernde_Ortsbildschutzzonen                               Überlagernde_Zone
+OBJE 23     52     überlagernde_Zonen                      überlagernde_Schutzzonen_für_Lebensräume_und_Landschaften      Überlagernde_Zone
+OBJE 24     53     überlagernde_Zonen                      überlagernde_Gefahrenzonen                                     Überlagernde_Zone
+OBJE 25     59     überlagernde_Zonen                      weitere_überlagernde_Nutzungszonen                             Überlagernde_Zone
+OBJE 26     61     andere_flächenbezogene_Festlegungen     Bereiche_rechtsgültiger_Sondernutzungspläne                    Orientierungsinhalt
+OBJE 27     62     andere_flächenbezogene_Festlegungen     Bereiche_mit_Sondernutzungsplanungspflicht                     Überlagernde_Zone
+OBJE 28     63     andere_flächenbezogene_Festlegungen     Bereiche_einer_späteren_Erschliessungsetappe                   Überlagernde_Zone
+OBJE 29     69     andere_flächenbezogene_Festlegungen     weitere_flächenbezogene_Festlegungen                           Überlagernde_Zone
+OBJE 30     71     linienbezogene_Festlegungen             Baulinien                                                      Linienbezogene_Festlegung
+OBJE 31     79     linienbezogene_Festlegungen             weitere_linienbezogene_Festlegungen                            Linienbezogene_Festlegung
+OBJE 32     81     punktbezogene_Festlegungen              Naturobjekte                                                   Objektbezogene_Festlegung
+OBJE 33     82     punktbezogene_Festlegungen              Kulturobjekte                                                  Objektbezogene_Festlegung
+OBJE 34     89     punktbezogene_Festlegungen              weitere_punktbezogene_Festlegungen                             Objektbezogene_Festlegung
+ETAB
+TABL Hauptnutzungen_SIA_Gepl
+OBJE 1       1     111.0     Wohnzonen                             Wohnzone_a                                    Bauzonen_1.Wohnzonen_11.Wohnzone_a_111
+OBJE 2       1     112.0     Wohnzonen                             Wohnzone_b                                    Bauzonen_1.Wohnzonen_11.Wohnzone_b_112
+OBJE 3       1     113.0     Wohnzonen                             Wohnzone_c                                    Bauzonen_1.Wohnzonen_11.Wohnzone_c_113
+OBJE 4       1     114.0     Wohnzonen                             Wohnzone_d                                    Bauzonen_1.Wohnzonen_11.Wohnzone_d_114
+OBJE 5       1     115.0     Wohnzonen                             weiterer_Zonentyp                             Bauzonen_1.Wohnzonen_11.weiterer_Zonentyp_115
+OBJE 6       2     121.0     Arbeitszonen                          Arbeitszone_a                                 Bauzonen_1.Arbeitszonen_12.Arbeitszone_a_121
+OBJE 7       2     122.0     Arbeitszonen                          Arbeitszone_b                                 Bauzonen_1.Arbeitszonen_12.Arbeitszone_b_122
+OBJE 8       2     123.0     Arbeitszonen                          Arbeitszone_c                                 Bauzonen_1.Arbeitszonen_12.Arbeitszone_c_123
+OBJE 9       2     124.0     Arbeitszonen                          weiterer_Zonentyp                             Bauzonen_1.Arbeitszonen_12.weiterer_Zonentyp_124
+OBJE 10      3     131.0     Mischzonen                            Wohn_und_Arbeitszone_a                        Bauzonen_1.Mischzonen_13.Wohn_und_Arbeitszone_a_131
+OBJE 11      3     132.0     Mischzonen                            Wohn_und_Arbeitszone_b                        Bauzonen_1.Mischzonen_13.Wohn_und_Arbeitszone_b_132
+OBJE 12      3     133.0     Mischzonen                            weiterer_Zonentyp                             Bauzonen_1.Mischzonen_13.weiterer_Zonentyp_133
+OBJE 13      4     141.0     Zentrumszonen                         allgemeine_Zentrumszone                       Bauzonen_1.Zentrumszonen_14.allgemeine_Zentrumszone_141
+OBJE 14      4     142.0     Zentrumszonen                         Kernzone                                      Bauzonen_1.Zentrumszonen_14.Kernzone_142
+OBJE 15      4     143.0     Zentrumszonen                         Geschäftszone                                 Bauzonen_1.Zentrumszonen_14.Geschaeftszone_143
+OBJE 16      4     144.0     Zentrumszonen                         weiterer_Zonentyp                             Bauzonen_1.Zentrumszonen_14.weiterer_Zonentyp_144
+OBJE 17      5     151.0     Zonen_für_öffentliche_Nutzungen       Bauten_und_Anlagen                            Bauzonen_1.Zone_fuer_oeffentliche_Nutzungen_15.Bauten_und_Anlagen_151
+OBJE 18      5     152.0     Zonen_für_öffentliche_Nutzungen       Sport_und_Freizeitanlagen                     Bauzonen_1.Zone_fuer_oeffentliche_Nutzungen_15.Sport_und_Freizeitanlagen_152
+OBJE 19      5     153.0     Zonen_für_öffentliche_Nutzungen       weiterer_Zonentyp                             Bauzonen_1.Zone_fuer_oeffentliche_Nutzungen_15.weiterer_Zonentyp_153
+OBJE 20      6     161.0     eingeschränkte_Bauzonen               Grünzone                                      Bauzonen_1.eingeschraenkte_Bauzonen_16.Gruenzone_161
+OBJE 21      6     162.0     eingeschränkte_Bauzonen               weiterer_Zonentyp                             Bauzonen_1.eingeschraenkte_Bauzonen_16.weiterer_Zonentyp_162
+OBJE 22      7     171.0     Tourismus-_und_Freizeitzonen          Kurzone                                       Bauzonen_1.Tourismus_und_Freizeitzonen_17.Kurzone_171
+OBJE 23      7     172.0     Tourismus-_und_Freizeitzonen          Hotelzone                                     Bauzonen_1.Tourismus_und_Freizeitzonen_17.Hotelzone_172
+OBJE 24      7     173.0     Tourismus-_und_Freizeitzonen          Campingzone                                   Bauzonen_1.Tourismus_und_Freizeitzonen_17.Campingzone_173
+OBJE 25      7     174.0     Tourismus-_und_Freizeitzonen          weiterer_Zonentyp                             Bauzonen_1.Tourismus_und_Freizeitzonen_17.weiterer_Zonentyp_174
+OBJE 26      8     181.0     Verkehrszonen_innerhalb_Bauzone       Strassenzone                                  Bauzonen_1.Verkehrszonen_innerhalb_Bauzone_18.Strassenzone_181
+OBJE 27      8     182.0     Verkehrszonen_innerhalb_Bauzone       Bahnzone                                      Bauzonen_1.Verkehrszonen_innerhalb_Bauzone_18.Bahnzone_182
+OBJE 28      8     183.0     Verkehrszonen_innerhalb_Bauzone       Flugplatzzone                                 Bauzonen_1.Verkehrszonen_innerhalb_Bauzone_18.Flugplatzzone_183
+OBJE 29      8     184.0     Verkehrszonen_innerhalb_Bauzone       weiterer_Zonentyp                             Bauzonen_1.Verkehrszonen_innerhalb_Bauzone_18.weiterer_Zonentyp_184
+OBJE 30      9     191.0     weitere_Zonen_nach_Art_15_und_18_RPG  Sonderbauzone                                 Bauzonen_1.weitere_Zonen_nach_Art_15_und_18_RPG_19.Sonderbauzone_191
+OBJE 31      9     192.0     weitere_Zonen_nach_Art_15_und_18_RPG  weiterer_Zonentyp                             Bauzonen_1.weitere_Zonen_nach_Art_15_und_18_RPG_19.weiterer_Zonentyp_192
+OBJE 32     10     211.0     allgemeine_Landwirtschaftszonen       allgemeine_Landwirtschaftszone                Landwirtschaftszonen_2.Allgemeine_Landwirtschaftszonen_21.allgemeine_Landwirtschaftszone_211
+OBJE 33     10     212.0     allgemeine_Landwirtschaftszonen       weiterer_Zonentyp                             Landwirtschaftszonen_2.Allgemeine_Landwirtschaftszonen_21.weiterer_Zonentyp_212
+OBJE 34     11     221.0     Speziallandwirtschaftszonen           Speziallandwirtschaftszone                    Landwirtschaftszonen_2.Speziallandwirtschaftszonen_22.Speziallandwirtschaftszone_221
+OBJE 35     11     222.0     Speziallandwirtschaftszonen           weiterer_Zonentyp                             Landwirtschaftszonen_2.Speziallandwirtschaftszonen_22.weiterer_Zonentyp_222
+OBJE 36     12     231.0     Rebbauzonen                           Rebbauzone                                    Landwirtschaftszonen_2.Rebbauzonen_23.Rebbauzone_231
+OBJE 37     12     232.0     Rebbauzonen                           weiterer_Zonentyp                             Landwirtschaftszonen_2.Rebbauzone_23.weiterer_Zonentyp_232
+OBJE 38     14     311.0     Schutzzonen_für_Lebensräume_und_Landschaften     allgemeine_Schutzzone              Schutzzonen_3.Lebensraeume_und_Landschaften_31.allgemeine_Schutzzone_311
+OBJE 39     14     312.0     Schutzzonen_für_Lebensräume_und_Landschaften     Naturschutzzone_kommunal           Schutzzonen_3.Lebensraeume_und_Landschaften_31.Naturschutzzone_kommunal_312
+OBJE 40     14     313.0     Schutzzonen_für_Lebensräume_und_Landschaften     Naturschutzzone_kantonal           Schutzzonen_3.Lebensraeume_und_Landschaften_31.Naturschutzzone_kantonal_313
+OBJE 41     14     314.0     Schutzzonen_für_Lebensräume_und_Landschaften     weiterer_Zonentyp                  Schutzzonen_3.Lebensraeume_und_Landschaften_31.weiterer_Zonentyp_314
+OBJE 42     15     321.0     Bäche_Flüsse_Seen_Ufer                Gewässerzone                                  Schutzzonen_3.Baeche_Fluesse_Seen_Ufer_32.Gewaesserzone_321
+OBJE 43     15     322.0     Bäche_Flüsse_Seen_Ufer                weiterer_Zonentyp                             Schutzzonen_3.Baeche_Fluesse_Seen_Ufer_32.weiterer_Zonentyp_322
+OBJE 44     21     411.0     weitere_Zonen_nach_Abs_1_RPG          unkultivierbares_Land                         weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.unkultivierbares_Land_411
+OBJE 45     18     412.0     weitere_Zonen_nach_Abs_1_RPG          Strassenareal                                 weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Strassenareal_412
+OBJE 46     18     413.0     weitere_Zonen_nach_Abs_1_RPG          Bahnareal                                     weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Bahnareal_413
+OBJE 47     18     414.0     weitere_Zonen_nach_Abs_1_RPG          Flugplatzareal                                weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Flugplatzareal_414
+OBJE 48     21     415.0     weitere_Zonen_nach_Abs_1_RPG          Abbauzone                                     weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Abbauzone_415
+OBJE 49     21     416.0     weitere_Zonen_nach_Abs_1_RPG          Deponiezone                                   weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Deponiezone_416
+OBJE 50     21     417.0     weitere_Zonen_nach_Abs_1_RPG          Abbau_und_Deponiezone                         weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.Abbau_und_Deponiezone_417
+OBJE 51     21     418.0     weitere_Zonen_nach_Abs_1_RPG          weiterer_Zonentyp                             weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.weiterer_Zonentyp_418
+OBJE 52     19     421.0     weitere_Zonen_nach_Abs_2_RPG          Reservezone                                   weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_2_RPG_42.Reservezone_421
+OBJE 53     21     422.0     weitere_Zonen_nach_Abs_1_RPG          weiterer_Zonentyp                             weitere_Zonen_nach_Art_18_RPG_4.weitere_Zonen_nach_Abs_1_RPG_41.weiterer_Zonentyp_422
+OBJE 54     20     431.0     Waldzonen                             Wald                                          weitere_Zonen_nach_Art_18_RPG_4.Waldzonen_43.Wald_431
+OBJE 55     20     432.0     Waldzonen                             weiterer_Zonentyp                             weitere_Zonen_nach_Art_18_RPG_4.Waldzonen_43.weiterer_Zonentyp_432
+OBJE 56     17     441.0     Zonen_Kleinsiedlungen                 Weilerzone                                    weitere_Zonen_nach_Art_18_RPG_4.Zonen_Kleinsiedlungen_44.Weilerzone_441
+OBJE 57     17     442.0     Zonen_Kleinsiedlungen                 weiterer_Zonentyp                             weitere_Zonen_nach_Art_18_RPG_4.Zonen_Kleinsiedlungen_44.weiterer_Zonentyp_442
+OBJE 58     22     611.0     überlagernde_Schutzzonen              überlagernde_Ortsbildschutzzone               ueberl_Schutzzonen_61.ueberl_Ortsbildschutzzone_611
+OBJE 59     23     612.0     überlagernde_Schutzzonen              überlagernde_Naturschutzzone                  ueberl_Schutzzonen_61.ueberl_Naturschutzzone_612
+OBJE 60     23     613.0     überlagernde_Schutzzonen              Grundwasserschutzzone                         ueberl_Schutzzonen_61.Grundwasserschutzzone_613
+OBJE 61     23     614.0     überlagernde_Schutzzonen              Landschaftsschutzzone                         ueberl_Schutzzonen_61.Landschaftsschutzzone_614
+OBJE 62     23     615.0     überlagernde_Schutzzonen              Freihaltezone                                 ueberl_Schutzzonen_61.Freihaltezone_615
+OBJE 63     23     616.0     überlagernde_Schutzzonen              weiterer_Zonentyp                             ueberl_Schutzzonen_61.weiterer_Zonentyp_616
+OBJE 64     25     621.0     überlagernde_Nutzungszonen            Nutzungsanteilzone                            ueberl_Nutzungszonen_62.Nutzungsanteilzone_621
+OBJE 65     25     622.0     überlagernde_Nutzungszonen            überlagernde_Abbauzone                        ueberl_Nutzungszonen_62.ueberl_Abbauzone_622
+OBJE 66     25     623.0     überlagernde_Nutzungszonen            überlagernde_Deponiezone                      ueberl_Nutzungszonen_62.ueberl_Deponiezone_623
+OBJE 67     25     624.0     überlagernde_Nutzungszonen            überlagernde_Tourismus-_und_Erholungszone     ueberl_Nutzungszonen_62.ueberl_Tourismus_Erholungszone_624
+OBJE 68     25     625.0     überlagernde_Nutzungszonen            Verkehrszone_über_oder_unter_Bauten           ueberl_Nutzungszonen_62.Verkehrszone_ueber_od_unter_Bauten_625
+OBJE 69     25     626.0     überlagernde_Nutzungszonen            Zone_für_Bauten_über_oder_unter_Verkehrszone  ueberl_Nutzungszonen_62.Zone_fuer_Bauten_ueber_od_unter_Verkehrszone_626
+OBJE 70     25     627.0     überlagernde_Nutzungszonen            Zone_für_Bauten_im_Gewässerbereich            ueberl_Nutzungszonen_62.Zone_fuer_Bauten_im_Gewaesserbereich_627
+OBJE 71     25     628.0     überlagernde_Nutzungszonen            überlagernde_Bauzone                          ueberl_Nutzungszonen_62.ueberl_Bauzone_628
+OBJE 72     25     629.0     überlagernde_Nutzungszonen            weiterer_Zonentyp                             ueberl_Nutzungszonen_62.weiterer_Zonentyp_629
+OBJE 73     24     631.0     überlagernde_Gefahrenzonen            Zone_mit_Restgefährdung                       ueberl_Gefahrenzonen_63.Zone_mit_Restgefaehrdung_631
+OBJE 74     24     632.0     überlagernde_Gefahrenzonen            Zone_mit_geringer_Gefaehrdung                 ueberl_Gefahrenzonen_63.Zone_mit_geringer_Gefaehrdung_632
+OBJE 75     24     633.0     überlagernde_Gefahrenzonen            Zone_mit_mittlerer_Gefährdung                 ueberl_Gefahrenzonen_63.Zone_mit_mittlerer_Gefaehrdung_633
+OBJE 76     24     634.0     überlagernde_Gefahrenzonen            Zone_mit_erheblicher_Gefährdung               ueberl_Gefahrenzonen_63.Zone_mit_erheblicher_Gefaehrdung_634
+OBJE 77     27     641.0     überlagernde_Flaechenfestlegungen     Sondernutzungsplanungspflicht                 ueberl_Flaechenfestlegungen_64.Sondernutzungsplanungspflicht_641
+OBJE 78     26     642.0     überlagernde_Flaechenfestlegungen     rechtsgültige_Sondernutzungspläne             ueberl_Flaechenfestlegungen_64.rechtsguel_Sondernutzungsplaene_642
+OBJE 79     28     643.0     überlagernde_Flaechenfestlegungen     spätere_Erschliessungsetappe                  ueberl_Flaechenfestlegungen_64.spaetere_Erschliessungsetappe_643
+OBJE 80     29     644.0     überlagernde_Flaechenfestlegungen     Archäologische_Fundstelle                     ueberl_Flaechenfestlegungen_64.Archaeologische_Fundstelle_644
+OBJE 81     29     645.0     überlagernde_Flaechenfestlegungen     erdgeschichtliche_Bedeutung                   ueberl_Flaechenfestlegungen_64.erdgeschichtliche_Bedeutung_645
+OBJE 82     29     646.0     überlagernde_Flaechenfestlegungen     Bereich_Altlasten                             ueberl_Flaechenfestlegungen_64.Bereich_Altlasten_646
+OBJE 83     29     647.0     überlagernde_Flaechenfestlegungen     Brücke_über_Gewässer                          ueberl_Flaechenfestlegungen_64.Bruecke_ueber_Gewaesser_647
+OBJE 84     29     648.0     überlagernde_Flaechenfestlegungen     weitere_Flächenfestlegung                     ueberl_Flaechenfestlegungen_64.weitere_Flaechenfestlegung_648
+OBJE 85     30     711.0     linienbezogene_Festlegungen           Baulinie                                      Baulinie_711
+OBJE 86     31     712.0     linienbezogene_Festlegungen           Uferlinie_Bachlauf                            Uferlinie_Bachlauf_712
+OBJE 87     31     713.0     linienbezogene_Festlegungen           Allee                                         Allee_713
+OBJE 88     31     714.0     linienbezogene_Festlegungen           Hecke                                         Hecke_714
+OBJE 89     31     715.0     linienbezogene_Festlegungen           projektierte_bewilligte_Verkehrswege          projektierte_bewilligte_Verkehrswege_715
+OBJE 90     31     716.0     linienbezogene_Festlegungen           weitere_linienbezogene_Festlegung             weitere_linienbezogene_Festlegung_716
+OBJE 91     32     811.0     punktbezogene_Festlegungen            Naturobjekt                                   Naturobjekt_811
+OBJE 92     33     812.0     punktbezogene_Festlegungen            Denkmalschutz_und_Kulturobjekt                Denkmalschutz_und_Kulturobjekt_812.kommunales_Objekt_8121
+OBJE 93     34     813.0     punktbezogene_Festlegungen            weitere_objektbezogene_Festlegungen           weitere_objektbez_Festlegungen_813
+ETAB
+TABL Grundn_Zonentyp_Kt_Gepl
+OBJE 1       1     111.0     Wohnzone_1                                  W1       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 2       2     112.0     Wohnzone_2                                  W2       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 3       3     113.0     Wohnzone_3                                  W3       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 4       4     114.0     Wohnzone_4                                  W4       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 5       5     115.0     Wohnzone_mit_Gebäudehöhe                    WG       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 6       6     121.0     Arbeitszone_1                               A1       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 7       7     122.0     Arbeitszone_2                               A2       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 8       8     123.0     Arbeitszone_3                               A3       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 9       9     124.0     Arbeitszone_4                               A4       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 10     10     131.0     Wohn-_und_Arbeitszone                       WA       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 11     12     133.0     Wohn-_und_Arbeitszone_mit_Gebäudehöhe       WAG      Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 12     13     141.0     Zentrumszone                                Z        Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 13     14     142.0     Kern-,_Dorfkern-_und_Altstadtzone           K        Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 14     17     151.0     öffentliche_Bauten_und_Anlagen              ZöBA     Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 15     18     152.0     öffentliche_Sport-_und_Freizeitanlagen      ZöSF     Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 16     19     153.0     Familiengartenzone                          FG       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 17     20     161.0     Grünzone                                    Gr       Grundnutzungszone_des_Baugebietes
+OBJE 18     21     162.0     Reitzone                                    RA       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 19     23     172.0     Hotelzone                                   HZ       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 20     24     173.0     Campingzone                                 Ca       Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 21     26     181.0     Strassenzone                                Str      Grundnutzungszone_des_Baugebietes
+OBJE 22     27     182.0     Bahnzone                                    Bahn     Grundnutzungszone_des_Baugebietes
+OBJE 23     28     183.0     Flugplatzzone                               Flug     Grundnutzungszone_des_Baugebietes
+OBJE 24     31     192.0     weiterer_Bauzonentyp                        BZw      Grundnutzungszone_des_Baugebietes_(Bauzone)
+OBJE 25     32     211.0     allgemeine_Landwirtschaftszone              LW       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 26     34     221.0     Speziallandwirtschaftszone                  LWS      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 27     36     231.0     Rebbauzone                                  R        Grundnutzungszone_des_Nichtbaugebietes
+OBJE 28     39     312.0     Naturschutzzone_kommunal                    Nk       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 29     40     313.0     Naturschutzzone_übergeordnet                Nü       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 30     42     321.1     Gewässer                                    G        Grundnutzungszone_des_Nichtbaugebietes
+OBJE 31     42     321.2     Gewässerzone                                GZ       Grundnutzungszone_des_Baugebietes
+OBJE 32     45     412.0     Strassenareal                               StrA     Grundnutzungszone_des_Nichtbaugebietes
+OBJE 33     46     413.0     Bahnareal                                   BahnA    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 34     47     414.0     Flugplatzareal                              FlugA    Grundnutzungszone_des_Nichtbaugebietes
+OBJE 35     48     415.0     Materialabbauzone                           MA       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 36     49     416.0     Materialdeponiezone                         MD       Grundnutzungszone_des_Nichtbaugebietes
+OBJE 37     50     417.0     Materialabbau-_und_Deponiezone              MAD      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 38     51     418.0     Materialabbau_und_-bewirtschaftungszone     MAB      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 39     52     421.0     Reservezone                                 Res      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 40     53     422.0     weiterer_Nicht-Bauzonentyp                  NBZw     Grundnutzungszone_des_Nichtbaugebietes
+OBJE 41     54     431.1     Wald                                        W        Grundnutzungszone_des_Nichtbaugebietes
+OBJE 42     54     431.2     Waldzone                                    WZ       Grundnutzungszone_des_Baugebietes
+OBJE 43     56     441.0     Weilerzone                                  Wei      Grundnutzungszone_des_Nichtbaugebietes
+OBJE 44     57     442.0     Kleinsiedlung                               Klei     Grundnutzungszone_des_Nichtbaugebietes
+ETAB
+TABL Grundn_Zonentyp_Gde_Gepl
+ETAB
+TABL Grundn_Zone_Gde_Gepl
+ETAB
+TABL Grundn_Zone_Beschr_Pos_Gepl
+ETAB
+TABL Ueberl_Zonentyp_Kt_Gepl
+OBJE 1     58     611.0   überlagernde_Ortsbildschutzzone                OS       Überlagernde_Zone
+OBJE 2     59     612.1   überlagernde_Naturschutzzone_kommunal          UNk      Überlagernde_Zone
+OBJE 3     59     612.2   überlagernde_Naturschutzzone_übergeordnet      UNü      Überlagernde_Zone
+OBJE 4     60     613.0   Grundwasserschutzzone                          GWS      Orientierungsinhalt
+OBJE 5     61     614.0   Landschaftsschutzzone                          LS       Überlagernde_Zone
+OBJE 6     62     615.0   Freihaltezone                                  FR       Überlagernde_Zone
+OBJE 7     63     616.1   ERS-_Gebiet                                    ERS      Überlagernde_Zone
+OBJE 8     63     616.2   BLN-_Gebiet                                    BLN      Überlagernde_Zone
+OBJE 9     63     616.3   Hecke,_Feldgehölz                              HFg      Orientierungsinhalt
+OBJE 10    63     616.4   Archäologische_Schutzzone                      AS       Überlagernde_Zone
+OBJE 11    64     621.0   Nutzungsanteilzone                             Naz      Überlagernde_Zone
+OBJE 12    65     622.0   überlagernde_Materialabbauzone                 UMA      Überlagernde_Zone
+OBJE 13    66     623.0   überlagernde_Materialdeponiezone               UMD      Überlagernde_Zone
+OBJE 14    67     624.0   Tourismus-_und_Erholungszone                   TE       Überlagernde_Zone
+OBJE 15    68     625.0   Verkehrsanlage_über_oder_unter_Bauten          VkuB     Überlagernde_Zone
+OBJE 16    69     626.0   Bauten_über_oder_unter_Verkehrsanlage          BuVk     Überlagernde_Zone
+OBJE 17    70     627.0   Bauten_im_Gewässerbereich                      BGw      Überlagernde_Zone
+OBJE 18    71     628.0   Verdichtungszone                               VZ       Überlagernde_Zone
+OBJE 19    72     629.0   Planungszone                                   PZ       Überlagernde_Zone
+OBJE 20    73     631.0   Zone_mit_Restgefährdung                        G4       keine_Darstellung
+OBJE 21    74     632.0   Zone_mit_geringer_Gefährdung                   G3       keine_Darstellung
+OBJE 22    75     633.0   Zone_mit_mittlerer_Gefährdung                  G2       keine_Darstellung
+OBJE 23    76     634.0   Zone_mit_erheblicher_Gefährdung                G1       keine_Darstellung
+OBJE 24    77     641.0   Quartierplanpflicht                            Qu       Überlagernde_Zone
+OBJE 25    78     642.0   Quartierplan_rechtsgültig                      Qur      Orientierungsinhalt
+OBJE 26    79     643.0   überlagernde_Reservezone                       URes     Überlagernde_Zone
+OBJE 27    80     644.0   Archäologische_Fundstelle                      AF       Überlagernde_Zone
+OBJE 28    81     645.0   erdgeschichtliche_Bedeutung                    Geo      Überlagernde_Zone
+OBJE 29    82     646.0   belasteter_Standort                            Bel      Überlagernde_Zone
+OBJE 30    83     647.0   Brücke_über_Gewässer                           BuG      Überlagernde_Zone
+OBJE 31    84     648.1   weitere_überlagernde_Flächenfestlegung         FL       Überlagernde_Zone
+OBJE 32    84     648.2   tiefere_Lärmempfindlichkeitsstufe              Lät      Überlagernde_Zone
+OBJE 33    84     648.3   höhere_Lärmempfindlichkeitsstufe               Läh      Überlagernde_Zone
+OBJE 34    84     648.4   Naturgefahrenzone                              NGZ      Überlagernde_Zone
+ETAB
+TABL Ueberl_Zonentyp_Gde_Gepl
+ETAB
+TABL Ueberl_Zone_Gde_Gepl
+ETAB
+TABL Ueberl_Zone_Beschr_Pos_Gepl
+ETAB
+TABL Linienbez_Festl_Typ_Kt_Gepl
+OBJE 1     85     711.1   Baulinie_Verkehr                               @        Linienbezogene_Festlegung
+OBJE 2     85     711.2   Gewässerabstandslinie                          @        Linienbezogene_Festlegung
+OBJE 3     85     711.3   Waldabstandslinie                              @        Linienbezogene_Festlegung
+OBJE 4     85     711.4   andere_Baulinie                                @        Linienbezogene_Festlegung
+OBJE 5     86     712.1   Bachverlauf_offen                              @        Hinweise_und_Informationen
+OBJE 6     86     712.2   Bachverlauf_eingedolt                          @        Hinweise_und_Informationen
+OBJE 7     90     716.1   Siedlungsrand                                  @        Hinweise_und_Informationen
+OBJE 8     90     716.2   Waldgrenze_nach_statischem_Waldbegriff         @        Orientierungsinhalt
+OBJE 9     90     716.3   weitere_linienbezogene_Festlegung              @        Linienbezogene_Festlegung
+ETAB
+TABL Linienbez_Festl_Typ_Gde_Gepl
+ETAB
+TABL Linienbez_Festl_Gde_Gepl
+ETAB
+TABL Linienbez_Festl_Beschr_Pos_Gepl
+ETAB
+TABL Objektbez_Festl_Typ_Kt_Gepl
+OBJE 1     91     811.1   inventarisierter_Baum                          Bi       Objektbezogene_Festlegung
+OBJE 2     91     811.2   geschützter_Baum                               Bg       Objektbezogene_Festlegung
+OBJE 3     91     811.3   anderes_inventarisiertes_Objekt                Oi       Objektbezogene_Festlegung
+OBJE 4     91     811.4   anderes_geschütztes_Objekt                     Og       Objektbezogene_Festlegung
+OBJE 5     91     811.5   Naturobjekt_kommunal                           NOk      Objektbezogene_Festlegung
+OBJE 6     91     811.6   Naturobjekt_übergeordnet                       NOü      Objektbezogene_Festlegung
+OBJE 7     91     811.7   anderes_Naturobjekt                            NO       Objektbezogene_Festlegung
+OBJE 8     92     812.1   Denkmalschutzobjekt_kommunal                   DOk      Objektbezogene_Festlegung
+OBJE 9     92     812.2   Denkmalschutzobjekt_übergeordnet               DOü      Objektbezogene_Festlegung
+OBJE 10    93     813.0   weitere_objektbezogene_Festlegung              Ow       Objektbezogene_Festlegung
+ETAB
+TABL Objektbez_Festl_Typ_Gde_Gepl
+ETAB
+TABL Objektbez_Festl_Gde_Gepl
+ETAB
+TABL Objektbez_Festl_Beschr_Pos_Gepl
+ETAB
+TABL SH_Darstellungslinie_Gepl
+ETAB
+ETOP
+EMOD
+ENDE

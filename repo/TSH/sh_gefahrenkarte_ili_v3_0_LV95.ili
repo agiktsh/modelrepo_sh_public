@@ -1,0 +1,891 @@
+INTERLIS 2.3;
+
+/** Gefahrenkarte Kanton Schaffhausen.
+Modellierung der Gefahrenkarte im Kanton Schaffhausen.
+*/
+
+/*
+ INTERLIS 2 Beschreibung Naturgefahrenkarte Kanton Schaffhausen
+========================================================================
+   
+Das Datenmodell "Naturgefahrenkarte Kanton Schaffhausen" ist ein        
+eigenstaendiges Modell, welches mit dem BAFU abgesprochen ist.          
+   
+Version: 3.0                                                            
+  
+Filename: *.DOCX, *ILI* bzw. *FMT* (siehe Kopfzeile)                    
+     
+Letzter Update: 22. Oktober 2021 / fb, rfi                              
+
+Modifiziert: 24. Mai 2007 / ps (Pascal Sieber, Niederer + Pozzi)        
+     >Ergaenzung Extremereignis Intensitaet Rutschung und Sturz 
+     >Ergaenzung Erfassungsbueros 11 und 12                     
+	 >Ergaenzung Matrixfeld_Typ 'MF0' keine Intensitaet         
+ 
+     26. Juni 2007 / ps (Pascal Sieber, Niederer + Pozzi)       
+     >Ergaenzung Schutzziel Extremereignis                      
+     >Aenderung Objektkategorie_Typ analog Techn. Bericht:      
+         Kategorie1   > A           
+		 Kategorie2_1 > B           
+		 Kategorie2_2 > C           
+		 Kategorie2_3 > D           
+		 Kategorie3_1 > E           
+		 Kategorie3_2 > F           
+
+	 24. August 2007 / fb (Vermessungsamt SH)                   
+     >2 neue Tabellen: - Schadenpotenzial_Sonderrisiken         
+					   - Schutzdefizit_Sonderrisiken            
+
+     16. Juli 2015 / fb (AGI)                                   
+	 >diverse Modifikationen für die geplante Nachfuehrung des  
+	 Datensatzes; Anpassungen ans MGDM V1.1 des Bundes         
+	 >alle TextPos-Tabellen wurden geloescht                    
+   
+	 11. September 2015 / fb (AGI)                              
+	 >weitere Anpassungen des Entwurfs vom 16.7.2015            
+	 >Textlaengen generell auf TEXT*100 gestellt                
+    
+	 17. Dezember 2015 / rfi (AGI)                              
+	 >Anpassung Modellname mit Bezugsrahmen und Version         
+	 >Keine Overlaps in Flaechen                                
+	 >Herkunft in Table Perimeter geloescht                     
+	 >Einfuegen mobile Massnahmen                               
+    
+	 22. Oktober 2015 / fb, rfi (AGI), Nipo                     
+	 >TOPIC Gefahrenhinweiskarte neu                            
+	 >kleinere Modellanpassungen (zusaetzliche Attribute)      
+	 >Einführung Objektidentifikator OID als INTERLIS.UUIDOID
+  
+Erarbeitet durch:                                                       
+- Juerg Schulthess, Tiefbauamt des Kantons Schaffhausen                 
+- Juerg Sturzenegger, Tiefbauamt des Kantons Schaffhausen               
+- Thomas Marti, Niederer + Pozzi, Uznach                                
+- Mathias Ulmer, Ernst Basler und Partner                               
+- Romedi Filli, Amt fuer Geoinformation des Kantons Schaffhausen        
+ 
+INTERLIS-Modell erstellt durch:                                         
+- Felix Berger, Amt fuer Geoinformation des Kantons Schaffhausen        
+ 
+------------------------------------------------------------------------
+ 
+Legende:                                                                
+- grau hinterlegt  = Optionale Themen, Tabellen oder Attribute          
+- gelb hinterlegt  = Änderungen gegenüber Version 2.1                   
+- Farbe rot        = offene Fragen / Pendenzen                          
+  
+
+------------------------------------------------------------------------
+ 
+Allgemeine Bemerkungen zum Datenmodell:                                 
+  
+- Die Erfassung der Naturgefahrenkarten verfolgt das Ziel,              
+  Grundlagen fuer die Gemeinden zu liefern, um ihre Zonenplanungen und  
+  Bauordnungen auf Grund des Gefahrenpotentials anzupassen. Die         
+  Erfassung soll im ganzen Kanton einheitlich erfolgen und auch         
+  einheitlich dargestellt werden.                                       
+   
+- Die abgebildeten Daten beschraenken sich auf das Wesentliche.         
+  (moeglichst eine einfache und uebersichtliche Modellierung).          
+
+- Die jetzige Version des Datenmodells (V2.2, INTERLIS 1) bildet        
+  die Basis für die Transformation ins Modell V3.0 in INTERLIS 2.3.
+
+- Als Objektidentifikator wird eine UUID (z.B. 
+  d89778ed-242a-4642-9a32-1e1954675b0a) festgelegt.
+   
+------------------------------------------------------------------------
+
+  
+Hinweise zu Attributwerten und Datenerfassung:                          
+
+- In jeder Datentabelle ist das Attribut "Bemerkung" vorgesehen fuer    
+  allgemeine, individuelle Hinweise zum Objekt.                         
+- Definition ID_Gefahrenquelle: 1000 - 3999 = ID fuer Wasser, entspricht
+                                    der Bachnummer aus dem Gewaessernetz
+                                4000 - 4999 = ID fuer Rutschung         
+                                5000 - 5999 = ID fuer Sturz.            
+  bei mehreren Gefahrenquellen kommagetrennt erfassen                   
+ 
+------------------------------------------------------------------------
+   
+Darstellungsmodell:                                                     
+   
+- Es wird von einem Plantyp ausgegangen (Uebersichtsplan, Massstab      
+  in der Regel 1:5000).                                                 
+  
+- Die Planeinteilung fuer den Kanton Schaffhausen wird                  
+  durch das Tiefbauamt des Kantons Schaffhausen festgelegt.             
+  
+- Das Darstellungsmodell definiert Tiefbau Schaffhausen; als Basis      
+  dienen die Bundesvorgaben.                                            
+  
+------------------------------------------------------------------------
+Organisatorische Aspekte:                                               
+     
+- Datenmodellaenderungen und -erweiterungen duerfen nur durch           
+  das Amt fuer Geoinformation (AGI) erfolgen.                           
+   
+- Vor jeder Datenerfassung oder Datennachfuehrung ist das neueste       
+  Datenmodell beim AGI zu beziehen resp. anzuwenden.                    
+   
+- Verifikation nach Datenerfassungsarbeiten : Inhaltliche Belange sind  
+  durch das Tiefbauamt zu ueberpruefen; die INTERLIS-Daten wer-         
+  den durch das AGI lediglich bezueglich Syntax untersucht.             
+   
+- Der Abgleich mit dem neuen minimalen Geodatenmodell des BAFU          
+  (Version 1.3) ist erfolgt.                                            
+   
+========================================================================
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ IDGeoIV=166
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Naturgefahrenkarte, Naturgefahr, Übersarung, Rutschung, Sturzprozess, Wasserprozess, Fliesstiefe, Fliessgeschwindigkeit, Extremereignis"
+!!@ furtherMetadata=https://www.geocat.ch/geonetwork/srv/ger/catalog.search#/metadata/79326f6b-5d6f-4b7d-b54d-8ce7f5c97a4b
+
+MODEL Naturgefahrenkarte_Kt_SH_LV95_V3_0
+  AT "http://models.geo.sh.ch/TSH/"
+  VERSION "2021-10-22"  =
+  IMPORTS LocalisationCH_V1,GeometryCHLV95_V1;
+
+  DOMAIN
+    /**ohne Radien, in [m]
+    */
+    Einzelflaeche = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;
+    /**ohne Radien, in [m]
+    */
+    Flaechennetz = AREA WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.000;
+    /**[m]
+    */
+    Linienzug = POLYLINE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2;
+	
+    /*------------ spezielle Variabeln Naturgefahrenkarte -----------------------*/
+
+    Bestimmungsmethodentyp = (
+      nicht_rekonstruierbar,
+      Modellauswertung,
+      Gutachten
+    );
+    Objektkategorie_Typ = (
+      /**Landwirtschaftszone, Wald, Gewaesser
+      */
+      A,
+      /**Freihaltezone, Materialabbauzone, Gemeindestrasse
+      */
+      B,
+	  /**Kantonsstrasse, Materialdeponiestandort
+      */
+      C,
+	  /**Nationalstrasse, Kantonsstrasse mit hoher Bedeutung, Bahnlinie
+      */
+      D,
+	  /**Siedlungsgebiet
+      */
+      E,
+	  /**oeffentliche Bauten und Anlagen, Friedhofzone, Sonderrisiken
+      */
+      F
+    );
+    Prozessart_Typ = (
+      Ueberschwemmung,
+      Steinschlag,
+      Felssturz_Bergsturz,
+      Rutschung,
+      Hangmure
+    );
+    Beurteilungstyp_komplex = (
+      nicht_beurteilt,
+      Beurteilung_nicht_noetig,
+      beurteilt_und_vollstaendig,
+      beurteilt_und_nicht_vollstaendig,
+      beurteilt_und_nicht_bestimmbar,
+      beurteilt_und_in_Abklaerung
+    );
+    Fliesstiefe_Typ = (
+      /**Angaben in cm
+      */
+	  h_0,
+      h_0_bis_25,
+      h_25_bis_50,
+      h_50_bis_75,
+      h_75_bis_100,
+      h_100_bis_150,
+      h_150_bis_200,
+      h_200_bis_300,
+      h_300_bis_400,
+      h_ueber_400
+    );
+    Fliessgeschwindigkeit_Typ = (
+      /**Angaben in m/s
+      */
+	  v_0,
+	  /**0 bis 0.5 m/s
+      */
+      v_0_bis_0_5,
+	  /**0.5 bis 1 m/s
+      */
+      v_0_5_bis_1,
+	  /**1 bis 2 m/s
+      */
+      v_1_bis_2,
+	  /**2 bis 3 m/s
+      */
+      v_2_bis_3,
+	  /**3 bis 4 m/s
+      */
+      v_3_bis_4,
+	  /**4 bis 5 m/s
+      */
+      v_4_bis_5,
+	  /**mehr als 5  m/s
+      */
+      v_ueber_5
+    );
+    Matrixfeld_Typ = (
+      /**keine Intensitaet, keine Haeufigkeit
+      */
+	  MF0,
+	  /**Intensitaet schwach, Haeufigkeit gering
+      */
+      MF1,
+	  /**Intensitaet schwach, Haeufigkeit mittel
+      */
+      MF2,
+	  /**Intensitaet schwach, Haeufigkeit hoch
+      */
+      MF3,
+	  /**Intensitaet mittel, Haeufigkeit gering
+      */
+      MF4,
+	  /**Intensitaet mittel, Haeufigkeit mittel
+      */
+      MF5,
+	  /**Intensitaet mittel, Haeufigkeit hoch
+      */
+      MF6,
+	  /**Intensitaet stark, Haeufigkeit gering
+      */
+      MF7,
+	  /**Intensitaet stark, Haeufigkeit mittel
+      */
+      MF8,
+	  /**Intensitaet stark, Haeufigkeit hoch
+      */
+      MF9,
+	  /**Intensitaet unbestimmt, Haeufigkeit sehr gering
+      */
+      MF10
+    );
+    Hauptprozess_Typ = (
+      Wasser,
+      Rutschung,
+      Sturz
+    );
+	/**(Synonym: Gefahrenstufe synoptisch)
+    */
+    Gefahrenstufe_Typ = (
+      /**weiss (frueher „keine“)
+      */
+	  nicht_gefaehrdet,
+	  /**gelb_weiss
+      */
+      Restgefaehrdung,
+	  /**gelb
+      */
+      gering,
+	  /**blau
+      */
+      mittel,
+	  /**rot
+      */
+      erheblich
+    );
+    Intensitaet_Typ = (
+      keine_Einwirkung,
+      schwach,
+      mittel,
+      stark,
+      betroffen
+    );
+    Schutzdefizit_Typ = (
+      klein,
+      mittel,
+      gross
+    );
+    Beurteilungs_Typ = (
+      Gefahrenkarte,
+      Gefahrenhinweiskarte,
+      keine_Beurteilung
+    );
+  /**Grundlagen
+     ----------------------------------------------------------------------------
+  */
+
+  TOPIC Perimeter =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Perimeter_Modellierung =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Perimeter_Name : TEXT*100;
+      /**Erfassungsbuero
+      */
+      Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Bemerkungen : TEXT*100;
+    END Perimeter_Modellierung;
+
+    CLASS Erhebungsgebiet_Gefahrenkarte =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Flaechennetz;
+      Erhebungsstand_Ueberschwemmung : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Beurteilungstyp_komplex;
+      Erhebungsstand_Stein_Blockschlag : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Beurteilungstyp_komplex;
+      Erhebungsstand_Fels_Bergsturz : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Beurteilungstyp_komplex;
+      Erhebungsstand_Rutschung : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Beurteilungstyp_komplex;
+      Erhebungsstand_Hangmure : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Beurteilungstyp_komplex;
+	  /**Erfassungsbuero
+      */
+      Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Bemerkungen : TEXT*100;
+    END Erhebungsgebiet_Gefahrenkarte;
+
+  END Perimeter;
+  
+   /**Gefahrenquellen
+     ----------------------------------------------------------------------------
+  */
+
+  TOPIC Gefahrenquellen =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Gefahrenquelle_Wasser =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Linienzug;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Name : MANDATORY TEXT*100;
+      Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Beurteilungstyp : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Beurteilungs_Typ;
+      /**Unterteilung des Gewaessernetzes in einzelne Abschnitte ist moeglich. Bei den Abschnitten ist der jeweilige Beurteilungstyp und das Erstellungsdatum anzugeben.
+      */
+	  Bemerkungen : TEXT*100;
+    END Gefahrenquelle_Wasser;
+
+    CLASS Gefahrenquelle_Rutschung =
+      /**siehe Konsistenzbedingungen oben
+      */
+	  Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Flaechennetz;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Name : MANDATORY TEXT*100;
+      Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      /**fuer den ganzen Kanton muss die ID_Gefahrenquelle eindeutig sein, organisatorisch loesen!
+      */
+	  Bemerkungen : TEXT*100;
+	  UNIQUE ID_Gefahrenquelle;
+    END Gefahrenquelle_Rutschung;
+
+    CLASS Gefahrenquelle_Sturz =
+      /**siehe Konsistenzbedingungen oben
+      */
+	  Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Flaechennetz;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Name : MANDATORY TEXT*100;
+      Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+	  /**fuer den ganzen Kanton muss die ID_Gefahrenquelle eindeutig sein, organisatorisch loesen!
+      */
+      Bemerkungen : TEXT*100;
+      UNIQUE ID_Gefahrenquelle;
+    END Gefahrenquelle_Sturz;
+
+  END Gefahrenquellen;
+  
+   /**Sonderrisiken
+     ----------------------------------------------------------------------------
+  */
+
+ /**Die flaechenhaften Schadenpotenziale sollen ueber eine Auswertung (dynamisch) abgeleitet werden.
+ */
+  TOPIC Sonderrisiken =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Schadenpotenzial_Sonderrisiken =
+      Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+      Objektkategorie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Objektkategorie_Typ;
+      Schutzziel_Intensitaet_30 : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      Schutzziel_Intensitaet_100 : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      Schutzziel_Intensitaet_300 : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      Schutzziel_Intensitaet_Ext : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Bemerkungen : TEXT*100;
+    END Schadenpotenzial_Sonderrisiken;
+
+  END Sonderrisiken;
+
+   /**Wasser
+     ----------------------------------------------------------------------------
+  */
+
+  TOPIC Wasser =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Intensitaet_W_30 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_W_30;
+
+    CLASS Intensitaet_W_100 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_W_100;
+
+    CLASS Intensitaet_W_300 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_W_300;
+
+    CLASS Intensitaet_W_EHQ =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_W_EHQ;
+
+    CLASS Fliesstiefe_skaliert_30 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Fliesstiefe : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Fliesstiefe_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Fliesstiefe_skaliert_30;
+
+    CLASS Fliesstiefe_skaliert_100 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Fliesstiefe : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Fliesstiefe_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Fliesstiefe_skaliert_100;
+
+    CLASS Fliesstiefe_skaliert_300 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Fliesstiefe : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Fliesstiefe_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Fliesstiefe_skaliert_300;
+
+    CLASS Fliesstiefe_skaliert_EHQ =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Fliesstiefe : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Fliesstiefe_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Fliesstiefe_skaliert_EHQ;
+
+    CLASS Fliessgeschwindigkeit_30 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Fliessgeschwindigkeit : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Fliessgeschwindigkeit_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Fliessgeschwindigkeit_30;
+
+    CLASS Fliessgeschwindigkeit_100 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Fliessgeschwindigkeit : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Fliessgeschwindigkeit_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Fliessgeschwindigkeit_100;
+
+    CLASS Fliessgeschwindigkeit_300 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Fliessgeschwindigkeit : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Fliessgeschwindigkeit_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Fliessgeschwindigkeit_300;
+
+    CLASS Fliessgeschwindigkeit_EHQ =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Fliessgeschwindigkeit : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Fliessgeschwindigkeit_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+       /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Fliessgeschwindigkeit_EHQ;
+
+  END Wasser;
+  
+   /**Rutschungen
+     ----------------------------------------------------------------------------
+  */
+
+  TOPIC Rutschungen =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Intensitaet_R_30 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_R_30;
+
+    CLASS Intensitaet_R_100 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_R_100;
+
+    CLASS Intensitaet_R_300 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_R_300;
+
+    CLASS Intensitaet_R_Ext =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_R_Ext;
+
+    CLASS Intensitaet_R_permanent =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_R_permanent;
+
+  END Rutschungen;
+
+   /**Sturz
+     ----------------------------------------------------------------------------
+  */
+
+  TOPIC Sturz =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Intensitaet_S_30 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_S_30;
+
+    CLASS Intensitaet_S_100 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_S_100;
+
+    CLASS Intensitaet_S_300 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_S_300;
+
+    CLASS Intensitaet_S_Ext =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Intensitaet_S_Ext;
+
+  END Sturz;
+  
+  /**Gefahrenkarte
+     ----------------------------------------------------------------------------
+  */
+
+  TOPIC Gefahrenkarte =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Wassergefahren =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Matrixfeld : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Matrixfeld_Typ;
+      Gefaehrdung : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Gefahrenstufe_Typ;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Wassergefahren;
+
+    CLASS Rutschgefahren =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Matrixfeld : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Matrixfeld_Typ;
+      Gefaehrdung : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Gefahrenstufe_Typ;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Rutschgefahren;
+
+    CLASS Sturzgefahren =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Matrixfeld : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Matrixfeld_Typ;
+      Gefaehrdung : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Gefahrenstufe_Typ;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Sturzgefahren;
+
+    CLASS synoptische_Gefahrenkarte =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Flaechennetz;
+      Matrixfeld : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Matrixfeld_Typ;
+      Gefaehrdung : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Gefahrenstufe_Typ;
+      massgebender_Hauptprozess : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Hauptprozess_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END synoptische_Gefahrenkarte;
+
+  END Gefahrenkarte;
+  
+  /**Gefahrenhinweiskarte (Wasser)
+     ----------------------------------------------------------------------------
+  */
+
+  TOPIC Gefahrenhinweiskarte =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Gefahrenhinweis_W_30 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Gefahrenhinweis_W_30;
+
+    CLASS Gefahrenhinweis_W_100 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Gefahrenhinweis_W_100;
+
+    CLASS Gefahrenhinweis_W_300 =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Gefahrenhinweis_W_300;
+
+    CLASS Gefahrenhinweis_W_EHQ =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Intensitaet : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Intensitaet_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      Prozessart : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Prozessart_Typ;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Gefahrenhinweis_W_EHQ;
+
+  END Gefahrenhinweiskarte;
+  
+  /**Schutzdefizit
+     ----------------------------------------------------------------------------
+  */
+
+/**Die flaechenhaften Schutzdefizite (Wassergefahren, Rutschgefahren und Sturzgefahren) werden ueber eine Auswertung durch das Amt fuer Geoinformation,
+	Schaffhausen dynamisch abgeleitet und zur Verfuegung gestellt. Der Mechanismus der Auswertung definiert das Tiefbauamt des Kantons Schaffhausen zusammen mit der nachfuehrenden Stelle.
+  */
+  TOPIC Schutzdefizit =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Schutzdefizit_Sonderrisiken =
+      Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+      Objektkategorie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Objektkategorie_Typ;
+      Schutzdefizit : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Schutzdefizit_Typ;
+      ID_Gefahrenquelle : MANDATORY TEXT*100;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+      Herkunft : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Bestimmungsmethodentyp;
+      Bemerkungen : TEXT*100;
+    END Schutzdefizit_Sonderrisiken;
+
+  END Schutzdefizit;
+  
+  /**Schutzmassnahmen
+     ----------------------------------------------------------------------------
+  */
+
+ /**Fuer die Erfassung von Schutzmassnahmen
+ */
+ TOPIC Schutzmassnahmen =
+    OID AS INTERLIS.UUIDOID;
+
+    CLASS Mobile_Schutzmassnahmen =
+      Geometrie : MANDATORY Naturgefahrenkarte_Kt_SH_LV95_V3_0.Einzelflaeche;
+      Bezeichnung : MANDATORY TEXT*100;
+      Art : MANDATORY TEXT*100;
+      /**Erfassungsbuero
+      */
+	  Ersteller : MANDATORY TEXT*100;
+      Erstellungsdatum : MANDATORY INTERLIS.XMLDate;
+    END Mobile_Schutzmassnahmen;
+
+  END Schutzmassnahmen;
+
+END Naturgefahrenkarte_Kt_SH_LV95_V3_0.

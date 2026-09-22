@@ -1,0 +1,253 @@
+TRANSFER Waldfunktionsplanung_SH;
+
+!! + ======================================================================== +
+!! +                                                                          +
+!! + Waldfunktionsplanung des Kantons Schaffhausen                            +
+!! +                                                                          +
+!! + Filename: *.DOC, *.ILI bzw. *.FMT (siehe Fusszeile)                      +
+!! +                                                                          +
+!! + Letzter Update: 19. August 2013 / rfi                                    +
+!! +                                                                          +
+!! + Version: 2.1                                                             +
+!! +                                                                          +
+!! + Erarbeitet durch:                                                        +
+!! + - Peter Stoss, Forstamt Kanton Schaffhausen                              +
+!! + - Bruno Schmid, Forstamt Kanton Schaffhausen                             +
+!! + - Peter Hunziker, Forstingenieur, Schaffhausen                           +
+!! + - Rolf Wildberger, Wildberger Schuler Partner AG, Schaffhausen           +
+!! +                                                                          +
+!! + INTERLIS-Modell erstellt durch:                                          +
+!! + - Felix Berger, Vermessungsamt des Kantons Schaffhausen                  +
+!! +                                                                          +
+!! + ======================================================================== +
+!! +                                                                          +
+!! + Legende:                                                                 +
+!! + - Farbe blau       = Datenmodellierung abgeschlossen                     +
+!! + - grau hinterlegt  = Optionale Themen, Tabellen oder Attribute           +
+!! + - Farbe rot        = noch fragliche Elemente                             +
+!! +                                                                          +
+!! + ------------------------------------------------------------------------ +
+!! +                                                                          +
+!! + Allgemeine Bemerkungen                                                   +
+!! +                                                                          +
+!! + Gegeben�ber der Version 2.0a wurde das Modell grundlegend �berarbeitet.  +
+!! + Zum einen mit dem Ziel, die bereits erfassten Daten m�glichst effizient  +
+!! + in die Interlis-Form zu �berf�hren, zum anderen weil davon ausgegangen   +
+!! + wird, dass viele Komponenten der Ausgabe (Beschriftungen usw.) auto-     +
+!! + genriert werden k�nnen.  +
+!! +                                                                          +
+!! + Die Waldfunktionsplanung (insbesondere der Waldfunktionsplan) beinhaltet +
+!! + neben der rein forstlichen Planung auch dargestellte Informationen       +
+!! + anderer Themen (wie BLN-Gebiete, kommunale und kantonale Schutzobjekte   +
+!! + und Schutzzonen, sowie arch�ologische Fundstellen). Diese Themen sind    +
+!! + im Datenmodell der Waldfunktionsplanung grunds�tzlich nicht              +
+!! + implementiert. Lediglich die Textpositionen dieser Themen sind           +
+!! + modelliert und zu erfassen; die eigentlichen Geometrien (Fl�chen,        +
+!! + Linien und Punkte) sollen aus den entsprechenden Datens�tzen             +
+!! + importiert werden.                                                       +
+!! +                                                                          +
+!! + Die Attributsdeklaration OPTIONAL ist rein schnittstellentechnisch zu    +
+!! + verstehen und nicht als Vorschrift f�r die Datenerfassung.               +
+!! + Alle aufgef�hrten, den Objekten zugeh�rigen Attributwerte sind           +
+!! + zu erfassen, sofern deren Werte bekannt sind.                            +
+!! +                                                                          +
+!! + Identifikator der Tabelle Waldfunktion:                                  +
+!! + Setzt sich aus einer fortlaufenden Nummer (pro Gemarkung) und der        +
+!! + dreistelligen Abk�rzung f�r das Eigentum zusammen; <Nummer><Eigentum>    +
+!! + Beispiel: 032BER (f�r Objekt 32, das der Gemeinde Beringen geh�rt;       +
+!! + muss sich aber nicht zwingend auf Gemarkung Beringen befinden).          +
+!! + Die vorangestellten Nullen sind zwecks besserer Sortierm�glichkeit       +
+!! + zwingend zu erfassen.                                                    +
+!! +                                                                          +
+!! + Die Abk�rzungen des Eigentums lauten:                                    +
+!! + Kt:  Kanton                      P:   Privat                             +
+!! + A:   Andere                      U:   Unbekannt                          +
+!! +      [eigenst�ndige K�rperschaften wie die r�misch-katholische           +
+!! +       Kirchgemeinde Ramsen sind als "Andere" zu erfassen; z.B. 13A]      +
+!! +                                                                          +
+!! + F�r die einzelnen Gemeinden ist zu verwenden:                            +
+!! + ALT: Altdorf                     BAG: Bargen                             +
+!! + (BAZ: Barzheim)                  BEG: Beggingen                          +
+!! + BER: Beringen                    BIB: Bibern                             +
+!! + BUC: Buch                        BUB: Buchberg                           +
+!! + BUE: B�ttenhardt                 DOE: D�rflingen                         +
+!! + GAE: G�chlingen                  GUN: Guntmadingen                       +
+!! + HAL: Hallau                      HEH: Hemishofen                         +
+!! + HET: Hemmental                   HOF: Hofen                              +
+!! + LOE: L�hningen                   LOH: Lohn                               +
+!! + MER: Merishausen                 NAR: Neuhausen                          +
+!! + NEK: Neunkirch                   OBE: Oberhallau                         +
+!! + OPF: Opfertshofen                OST: Osterfingen                        +
+!! + RAM: Ramsen                      RUE: R�dlingen                          +
+!! + SHA: Schaffhausen                SHL: Schleitheim                        +
+!! + SIB: Siblingen                   SAR: Stein am Rhein                     +
+!! + STE: Stetten                     THA: Thayngen                           +
+!! + TRA: Trasadingen                 WIL: Wilchingen                         +
+!! +                                                                          +
+!! + ------------------------------------------------------------------------ +
+!! +                                                                          +
+!! + Anmerkung zur Darstellung der Waldfunktionen (Fl�chenf�llung):           +
+!! +                                                                          +
+!! + Code Waldfunktion                     Farbbezeichnung    RGB-Wert        +
+!! +  1   besondere Schutzfunktion         rot                254/ 31/ 14     +
+!! +  2   Schutzfunktion                   rosa               253/163/201     +
+!! +      Wohlfahrtsfunktionen:                                               +
+!! +  3   Im engeren Sinn                  gelb               254/240/ 19     +
+!! +  4   Erholungsfunktion                dito                  dito         +
+!! +  5   Landschaftsschutz                dito                  dito         +
+!! +  6   Lebensraum- und Naturschutzfunk. orange             254/173/  0     +
+!! +  7   Nutzfunktion I                   gr�n               214/254/ 29     +
+!! +  8   Nutzfunktion II                  blass dunkelgr�n   184/223/133     +
+!! +                                                                          +
+!! +      Umrandung aller Waldfunktionen   dunkelblau           0/  0/254     +
+!! +      (ausgezogen, Strichst�rke 0.13 mm)                                  +
+!! +                                                                          +
+!! +  Die Vorrangfunktion wird vollfl�chig dargestellt; kommt eine zweit-     +
+!! +  rangige Funktion zum Tragen, so wird diese horizontal schraffiert       +
+!! +  (�ber der Vorrangfunktion ) dargestellt.                                +
+!! +                                                                          +
+!! +  Bei Pl�nen im Massstab 1:5000 messen die Schraffurbreiten:              +
+!! +  - bei Vorrangfunktionen:                    4.0 mm                      +
+!! +  - bei Schraffur der zweitrangigen Funktion: 2.0 mm                      +
+!! +                                                                          +
+!! +  Das Verh�ltnis zwischen Vorrangfunktion und zweitrangiger Funktion      +
+!! +  betr�gt somit: 2:1                                                      +
+!! +                                                                          +
+!! + ------------------------------------------------------------------------ +
+!! +                                                                          +
+!! +  Ausbau resp Ausblick:                                                   +
+!! +  Das bestehende Datenmodell soll in einem k�nftigen Schritt um die       +
+!! +  Tabellen Bestandeskarte / Massnahmenkarte / Waldabt. erg�nzt werden.    +
+!! +  Am Schluss sind die Ideen kurz skizziert, sollen aber noch nicht        +
+!! +  umgesetzt bzw. angewendet werden.                                       +
+!! +                                                                          +
+!! + ------------------------------------------------------------------------ +
+
+MODEL Waldfunktionsplanung_SHLV95
+
+
+  DOMAIN
+    INTEGER3 =         [0 .. 999];
+    LKoordmm = COORD2  2650000.000    1230000.000 
+                       2740000.000    1330000.000;            !! angepasst Kt. SH
+    Orientierung =     GRADS 0.0 399.9;
+    Status =          (Vorentwurf,                       !! noch in Bearbeitung
+                       RRB);                   !! genehmigt durch Regierungsrat
+    Herkunftsart =    (unbekannt,
+                       AV_gerechnet,        !! Grenzpunkte mit Massen gerechnet
+                       AV_digitalisiert,!!Grenzpunkte auf GB-Plan digitalisiert
+                       Uep_5000);            !! Grundlage �bersichtsplan 1:5000
+    Schriftgroesse =  (klein,
+                       mittel,
+                       gross,
+                       keine_Darstellung);
+	
+	Funktionsart =   (Vorrangfunktion,
+					Zweitrangfunktion,
+					Drittrangfunktion);				
+    Gemeinden =    (Altdorf, Bargen, Beggingen,                 !! AVS_Id  0- 2
+                    Beringen, Bibern, Buch, Buchberg,           !! AVS_Id  3- 6
+                    Buettenhardt, Doerflingen, Gaechlingen,     !! AVS_Id  7- 9
+                    Guntmadingen, Hallau, Hemishofen, Hemmental,!! AVS_Id 10-13
+                    Hofen, Loehningen, Lohn, Merishausen,       !! AVS_Id 14-17
+                    Neuhausen, Neunkirch, Oberhallau,           !! AVS_Id 18-20
+                    Opfertshofen, Osterfingen, Ramsen,          !! AVS_Id 21-23
+                    Ruedlingen, Schaffhausen,                   !! AVS_Id 24-25
+                    Schleitheim, Siblingen, Stein_am_Rhein,     !! AVS_Id 26-28
+                    Stetten, Thayngen, Trasadingen, Wilchingen, !! AVS_Id 29-32
+                    andere);                                    !! AVS_Id 33
+                    !! "andere" nur ausserhalb des Kantons verwenden
+
+    Erfassungsbueros =
+                   (Buero_01, !! Wildberger Schuler Partner AG, SH
+                    Buero_02, !! B�rgin Winzeler Partner AG, SH
+                    Buero_03, !! W�st Bauingenieure AG, SH
+                    Buero_04, !! Vermessung & GIS GmbH, SH
+                    Buero_05, !! Oekogeo AG, SH
+                    Buero_06, !! G. Kiefer AG, Stein am Rhein
+                    Buero_07, !! Fuchs und Schellinger, Hofen
+                    Buero_08, !! K. Lienhard AG, Buchs AG
+                    Buero_09, !! B�chaz und Fl�kiger, Steckborn
+                    Buero_10, !! GIS-Bearbeitung P. Hunziker
+                    Buero_11, !! Vermessungsamt Kanton Schaffhausen
+                    Buero_12, !! ....
+                    Buero_13, !! ....
+                    Buero_14, !! ....
+                    Buero_15, !! ....
+                    Buero_16, !! ....
+                    Buero_17, !! ....
+                    Buero_18, !! ....
+                    Buero_19, !! ....
+                    Buero_20, !! ....
+                    Buero_21, !! ....
+                    Buero_22, !! ....
+                    Buero_23, !! ....
+                    Buero_24, !! ....
+                    Buero_25, !! ....
+                    Buero_26, !! ....
+                    Buero_27, !! ....
+                    Buero_28, !! ....
+                    Buero_29, !! ....
+                    Buero_30);!! ....
+                              !! Einf�gen zus�tzlicher B�ros bzw. Vergabe der
+                              !! Identifikatoren werden durch das
+                              !! Vermessungsamt des Kantons Schaffhausen
+                              !! (kva@ktsh.ch / Tel. 052 632 73 91)
+                              !! vorgenommen.
+
+
+!!       ----------------------------------------------------------------
+
+TOPIC Waldfunktionsplanung =
+	TABLE Funktion =				!!Code und Text werden in Tabelle
+									!!niedergeschrieben und anschliessend zu Wald-
+									!!funktion referenziert
+		Funktion_Code: [0 .. 100];
+		Funktion_Text: TEXT*50;
+	IDENT
+		Funktion_Code;
+	END Funktion;
+	
+    TABLE Waldfunktion =
+	  Identifikator: 	TEXT*5;			!!Laufnummer als Identifikator
+      Nummer:           TEXT*4;             !! Laufnummer f�r Beschriftung
+      Eigentum:         TEXT*3;               !! siehe "Allgemeine Bemerkungen"
+      Geometrie:        SURFACE WITH (STRAIGHTS, ARCS)
+						VERTEX LKoordmm;  !!Geometrie darf nicht
+										!!�berlappend sein. Um Aufwand klein zu
+										!!halten wurden trotzdem eine Surface
+										!!definiert. Grosse �berlappungen sollen 
+										!!bereinigt werden.
+      Gemarkung:        Gemeinden;
+
+      Vorrangfunktion:      -> Funktion; !!Vorrangfunktion mit Verkn�pfung auf
+										 !!Tabelle "Funktion"
+      Zweitrangfunktion:    -> Funktion; !!Zweitrangfunktion mit Verkn�pfung auf
+										 !!Tabelle "Funktion"
+      Drittrangfunktion:    -> Funktion; !!Drittrangfunktion mit Verkn�pfung auf
+										 !!Tabelle "Funktion"
+      letzte_Aenderung: DATE;         !! Erfassungsdatum oder Datum der letzten
+                                      !! �nderung
+      Rechtsstatus:     Status;
+      Herkunft:         Herkunftsart;
+      Erfassungsbuero:  Erfassungsbueros;
+      User:             OPTIONAL TEXT*25;  !! Platz reserviert f�r individuelle
+                                         !! Bemerkungen durch den Datenerfasser
+    IDENT
+      Identifikator, Gemarkung;
+    END Waldfunktion;
+
+  END Waldfunktionsplanung.                                        !! End TOPIC
+
+
+END Waldfunktionsplanung_SHLV95.                                       !! End MODEL
+
+
+!! FORMAT FREE                                             !! F�r Datentransfer
+FORMAT FIX WITH LINESIZE = 80, TIDSIZE = 10;           !! F�r INTERLIS-Compiler
+
+CODE
+  BLANK = DEFAULT, UNDEFINED = DEFAULT, CONTINUE = DEFAULT;
+  TID = ANY;
+END.
+

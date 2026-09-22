@@ -1,0 +1,67 @@
+INTERLIS 2.3;
+
+/** Jagdreviere Kanton Schaffhausen.
+Modellierung der Jagdreviere im Kanton Schaffhausen.
+*/
+
+/*
+Version    | Who   | Modification
+-----------------------------------------------------------------------------
+0000-00-00 | ---   | Version 1.1
+                   | - 
+                   | - 
+                   | - 
+-----------------------------------------------------------------------------
+2019-09-25 | AGI   | Version 1.0
+-----------------------------------------------------------------------------
+Fachtechnische Auskunft
+-------------------------------------------------------------------------------------------------------------------------------------------
+Amt für Jagd und Fischerei
+Telefon: +41 52 632 74 66
+URL: https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Departement-des-Innern/Jagd-und-Fischerei-3318-DE.html
+-------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ IDGeoIV=041-SH
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Administrative Einteilungen, Jagdrevier"
+!!@ furtherMetadata=https://www.geocat.ch/geonetwork/srv/ger/catalog.search#/metadata/d052a0e1-3de6-4080-af95-9da913b3854c
+
+MODEL Jagdreviere_LV95_V1_0 (de)
+AT "http://geo.sh.ch"
+VERSION "2020-04-02"  =
+  IMPORTS Units, GeometryCHLV95_V1;
+
+  TOPIC Jagdreviere =
+
+    CLASS Jagdrevier =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Name : MANDATORY TEXT*100;
+		Listennummer : MANDATORY TEXT*100;
+    END Jagdrevier;
+
+    CLASS Schonrevier =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Name : MANDATORY TEXT*100;
+		Listennummer : MANDATORY TEXT*100;
+    END Schonrevier;
+
+    CLASS Siedlungsflaeche =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Gemeinde : MANDATORY TEXT*100;
+    END Siedlungsflaeche;
+
+    CLASS Naturschutzgebiet =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Name : MANDATORY TEXT*100;
+    END Naturschutzgebiet;
+
+    CLASS Nichtjagdbare_Zone =
+		Geometrie : MANDATORY GeometryCHLV95_V1.Surface;
+		Name : MANDATORY TEXT*100;
+    END Nichtjagdbare_Zone;
+
+  END Jagdreviere;
+
+END Jagdreviere_LV95_V1_0.

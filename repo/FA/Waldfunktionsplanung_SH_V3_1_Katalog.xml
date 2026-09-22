@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3">
+<HEADERSECTION SENDER="ili2pg-4.6.1-63db90def1260a503f0f2d4cb846686cd4851184" VERSION="2.3"><MODELS><MODEL NAME="Waldfunktionsplanung_SH_V3_1" VERSION="2021-05-19" URI="http://geo.sh.ch"></MODEL></MODELS></HEADERSECTION>
+<DATASECTION>
+<Waldfunktionsplanung_SH_V3_1.Codeliste BID="3c589c3a-0dc9-4e7a-a271-e3284a7f4101">
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium0"><GIS_Code>0</GIS_Code><Waldfunktion>keine Funktion</Waldfunktion><Spezifikation>keine Funktion (Null als Platzhalter für Zweitrang ohne Funktion)</Spezifikation></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium1"><GIS_Code>1</GIS_Code><Waldfunktion>Schutzfunktion</Waldfunktion><Spezifikation>Schutzfunktion</Spezifikation><Ziele>Nachhaltige Sicherstellung der Schutzwirkung</Ziele><Kriterien>Basierend auf Vorgaben des Bundes (SilvaProtect-CH) und abschliessender Ausscheidung durch das Kantonsforstamt</Kriterien><Grundsaetze>Pflege und Verjüngung gemäss Grundsätzen nach NaiS (Nachhaltigkeit und Erfolgskontrolle im Schutzwald)</Grundsaetze></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium5"><GIS_Code>5</GIS_Code><Waldfunktion>Wohlfahrtsfunktion</Waldfunktion><Spezifikation>Landschaftsschutzfunktion</Spezifikation><Ziele>Nachhaltige Sicherstellung der günstigen Einflüsse des Waldes auf das Landschaftsbild</Ziele><Kriterien>-    Sichtschutz für störende Elemente in der Landschaft
+-    isolierte Wälder, Waldzungen, landschaftsgliedernde Waldpartien
+-    Waldbereiche angrenzend an Landschaftsschutzzonen
+-    BLN-Gebiete innerhalb des Waldareals</Kriterien><Grundsaetze>Bestockungsziel:
+-    standortgemässe und standortgerechte Bestände
+Pflege:
+-    Förderung der Stabilität durch Jungwaldpflege
+-    gezielte Durchforstungseingriffe im Baumholz zur Sicherstellung der Landschaftsschutzfunktion
+-    Förderung von Baumarten und Sträuchern, die für die Erfüllung der Landschaftsschutzfunktion besonders geeignet sind
+Verjüngung:
+-    Naturverjüngung und künstliche Verjüngung</Grundsaetze></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium4"><GIS_Code>4</GIS_Code><Waldfunktion>Wohlfahrtsfunktion</Waldfunktion><Spezifikation>Erholungsfunktion</Spezifikation><Ziele>Nachhaltige Sicherstellung der Erholungswirkung, Schaffung und Unterhalt von Erholungseinrichtungen</Ziele><Kriterien>-    Feste Erholungseinrichtungen
+-    Aussichtspunkte
+-    Naherholungsgebiete in Siedlungsnähe</Kriterien><Grundsaetze>Bestockungsziel:
+-    standortgemässe und standortgerechte Bestände
+Pflege:
+-    Förderung der Stabilität durch Jungwaldpflege
+-    Gezielte Durchforstungseingriffe im Baumholz zur Förderung stark strukturierter Bestände
+Verjüngung:
+-    Naturverjüngung und künstliche Verjüngung
+-    kleinflächige Verjüngung
+-    Schlagräumung
+Besonderes:
+-    Bau und Unterhalt geeigneter Erholungseinrichtungen</Grundsaetze></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium3"><GIS_Code>3</GIS_Code><Waldfunktion>Wohlfahrtsfunktion</Waldfunktion><Spezifikation>im Allgemeinen</Spezifikation><Ziele>Nachhaltige Sicherstellung der Wohlfahrtswirkung</Ziele><Kriterien>-    Trinkwasserschutz
+-    Wasserspeicher
+-    Windschutzwirkung
+-    Schutz vor Umwelteinflüssen
+-    Sichtschutz</Kriterien><Grundsaetze>Bestockungsziel:
+-    Standortgemässe und standortgerechte Bestände
+Pflege:
+-    Förderung der Stabilität durch Jungwaldpflege
+-    Grössere offen Fläche vermeiden
+-    Gezielte Durchforstungseingriffe
+-    Gezielte Förderung von Baumarten
+Verjüngung:
+-    kleinflächige natürliche oder künstliche Verjüngung</Grundsaetze></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium2"><GIS_Code>2</GIS_Code><Waldfunktion>Wohlfahrtsfunktion</Waldfunktion><Spezifikation>Wald-Erlebnisfunktion (WE)</Spezifikation><Ziele>Sicherstellung der Walderlebnisfunktion Schaffung und Unterhalt von festen Einrichtungen für spezifische Walderlebnisse (z.B. Seilpark, grössere Kinderspielplätze etc.)</Ziele><Kriterien>-    feste Einrichtungen für spezifische Walderlebnisse
+-    für das spezifische Walderlebnis geeignetes Gebiet (z.B. Erreichbarkeit mit öffentlichem Verkehr, Nähe zu Siedlungen, bestehende Infrastruktur wie z.B. Parkierungsmöglichkeiten)
+-    für das spezifische Walderlebnis geeignetes Gelände und geeignete Waldbestände</Kriterien><Grundsaetze>Bestockungsziel:
+-    standortgemässe und standortgerechte Bestände
+Pflege:
+-    Förderung der Stabilität durch Jungwaldpflege
+-    Auf das spezifische Walderlebnis abgestimmte waldbauliche Eingriff
+Verjüngung:
+-    Naturverjüngung und künstliche Verjüngung
+-    kleinflächige Verjüngung
+-    Schlagräumung
+Besonderes:
+-    Bau und Unterhalt geeigneter Einrichtungen für spezifische Walderlebnisse</Grundsaetze></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium8"><GIS_Code>8</GIS_Code><Waldfunktion>Nutzfunktion</Waldfunktion><Spezifikation>Nutzfunktion II</Spezifikation><Ziele>Sicherstellung der Voraussetzungen für die Holzproduktion und Bereitstellung von Brennholzreserven</Ziele><Kriterien>-    Bestände mit einer geringen Anzahl von Bäumen mit guter Schaftqualität auf Standorten geringerer Bonität
+-    extensive Nutzung</Kriterien><Grundsaetze>Bestockungsziel:
+-    standortsgemässe oder standortgerechte Bestände
+Pflege:
+-    gezielte Durchforstungseingriffe im Baumholz zur Sicherstellung des Nutzungspotenzials
+Verjüngung:
+-    Naturverjüngung und künstliche Verjüngung</Grundsaetze></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium6"><GIS_Code>6</GIS_Code><Waldfunktion>Lebensraum und Naturschutzfunktion</Waldfunktion><Spezifikation>im Allgemeinen</Spezifikation><Ziele>Nachhaltige Sicherstellung, bzw. Verbesserung der Lebensraum- und Naturschutzwirkung, Schutz von geomorphologischen, hydrologischen oder kulturhistorischen Objekten</Ziele><Kriterien>-    nationale, kantonale oder komunale Naturschutzzonen-objekte gemäss NHG
+-    Waldreservate
+-    seltene Waldgesellschaften
+-    lichter Wald
+-    Auenwälder (AU)
+-    naturnahe Waldbestände auf Standorten geringer Bonität
+-    Lebensräume seltener Pflanzen und Tiere
+-    Waldbestände direkt angrenzend an Gewässer
+-    Besonderheiten wie geomorphologische, hydrologische oder kulturhistorische Objekte
+-    ehemalige Nieder- und Mittelwälder
+-    Alte und oder totholzreiche Bestände</Kriterien><Grundsaetze>Bestockungsziel:
+-    standortgemässe Bestände
+Pflege:
+-    gezielte, auf spezifische Zielsetzung abgestimmte waldbauliche Eingriffe in allen Entwicklungsstufen
+-    Förderung von standortsgemässen Beständen
+-    Förderung von Minoritäten
+-    Naturautomatismen und Dynamik zulassen/fördern
+Verjüngung:
+-    gezielte, auf spezifische Zielsetzung abgestimmte Verjüngung
+-    Schaffung von Feuchtbiotopen, wie z.B. kleineren Weihern und Nassstellen</Grundsaetze></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium7"><GIS_Code>7</GIS_Code><Waldfunktion>Nutzfunktion</Waldfunktion><Spezifikation>Nutzfunktion I</Spezifikation><Ziele>Nachhaltige Holzproduktion bei möglichst hoher Qualität und Wertleistung</Ziele><Kriterien>-    Hangneigung &lt; 50%
+-    Standortsgüte mindestens "gut"
+-    Bestände mit ausreichender Anzahl an Bäumen mit guter Schaftqualität (inkl. Potential dazu)</Kriterien><Grundsaetze>Bestockungsziel:
+-    standortgemässe und standortgerechte Bestände
+Pflege:
+-    Förderung der Stabilität durch Jungwaldpflege
+-    Durchforstung, die auf eine höchstmögliche Wertleistung und Qualität der Bestände abzielt
+Verjüngung:
+-    Planmässige Ernte und Verjüngung der Bestände</Grundsaetze></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+<Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code TID="Kriterium9"><GIS_Code>9</GIS_Code><Waldfunktion>Lebensraum und Naturschutzfunktion</Waldfunktion><Spezifikation>Ruhefunktion</Spezifikation><Ziele>Nachhaltige Sicherstellung des Schutzes vor Störungen</Ziele><Kriterien>-    wenig begangene Waldgebiete
+-    Rückzugsgebiete für störungsanfällige Wildtierarten</Kriterien><Grundsaetze>Restriktionen:
+-    Besucherlenkung und -information
+-    keine Bewilligung von Anlässen
+-    keine Errichtung von neuen Erholungseinrichtungen
+-    kein Ausbau des Strassen und Wegenetzes</Grundsaetze></Waldfunktionsplanung_SH_V3_1.Codeliste.Kriterien_Code>
+</Waldfunktionsplanung_SH_V3_1.Codeliste>
+</DATASECTION>
+</TRANSFER>

@@ -1,0 +1,146 @@
+INTERLIS 2.3;
+
+ /** Entwurf Waldreservate für mgdm2oereb.
+Ein Entwurf Waldreservate 1.2, da Version 1.1 keine ÖREB-Inhalte hat und die Definitive Version 1.2 erst auf Ende 2023 angedacht ist, was für das Projekt mgdm2oereb zu spät ist.
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ furtherInformation=http:https://agi.sh.ch
+!!@ IDGeoIV=160.1
+!!@ tags="Kanton Schaffhausen, Entwurf Waldreservate für mgdm2oereb"
+
+MODEL SH_Waldreservate_V1_2 (de)
+AT "https://models.geo.sh.ch/FA/"
+VERSION "2021-12-02"  =
+  IMPORTS CatalogueObjects_V1,Units, GeometryCHLV95_V1, LocalisationCH_V1, CHAdminCodes_V1, InternationalCodes_V1;
+
+  /* Topic für externe Codelisten, die anschliessend importiert werden */  
+  TOPIC Codelisten
+  EXTENDS CatalogueObjects_V1.Catalogues =
+
+    CLASS MCPFE_Class_Catalogue
+    EXTENDS CatalogueObjects_V1.Catalogues.Item =
+      Symbol : MANDATORY BLACKBOX BINARY;
+      Code : MANDATORY TEXT*8;
+      Description : MANDATORY LocalisationCH_V1.MultilingualText;
+    END MCPFE_Class_Catalogue;
+
+    STRUCTURE MCPFE_Class_CatRef
+    EXTENDS CatalogueObjects_V1.Catalogues.CatalogueReference =
+      Reference (EXTENDED) : REFERENCE TO (EXTERNAL) MCPFE_Class_Catalogue;
+    END MCPFE_Class_CatRef;
+
+  END Codelisten;
+
+  TOPIC Waldreservate =
+    DEPENDS ON SH_Waldreservate_V1_2.Codelisten;
+
+    DOMAIN
+
+    Grundlage = (
+      WaG, 
+      NHG, 
+      KVO, 
+      Andere
+      );
+  
+    DokumentTyp = (
+      Rechtsvorschrift,
+      GesetzlicheGrundlage,
+      Hinweis
+      );
+
+    RechtsstatusArt = (
+      inKraft,
+      AenderungMitVorwirkung,
+      AenderungOhneVorwirkung
+      );
+
+    /* Flächen ohne Kreisbogen */
+      Polygon = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;
+
+    STRUCTURE LocalisedUri =
+      Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+      Text : MANDATORY URI;
+    END LocalisedUri;
+    
+    STRUCTURE MultilingualUri =
+      LocalisedText : BAG {1..*} OF LocalisedUri;
+      UNIQUE (LOCAL) LocalisedText:Language;
+    END MultilingualUri;
+
+    STRUCTURE LocalisedBlob =
+      Language : InternationalCodes_V1.LanguageCode_ISO639_1;
+      Blob : MANDATORY BLACKBOX BINARY;
+    END LocalisedBlob;
+
+    STRUCTURE MultilingualBlob =
+      LocalisedBlob : BAG {1..*} OF LocalisedBlob;
+      UNIQUE (LOCAL) LocalisedBlob:Language;
+    END MultilingualBlob;
+
+  /* Klasse für das gesamte Waldreservat */
+    CLASS Waldreservat =
+      ObjNummer : MANDATORY TEXT*30;
+      Name : MANDATORY TEXT*80;
+    END Waldreservat;
+
+  /* Klasse für die Waldreservat-Teilgebiete */
+    CLASS Waldreservat_Teilobjekt =
+      TeilObjNummer : MANDATORY TEXT*30;
+      MCPFE_Class : MANDATORY SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_CatRef;
+      GesGrundlage : MANDATORY Grundlage;
+      NFA : MANDATORY BOOLEAN;
+      Vertragsflaeche : MANDATORY 0.0 .. 999999.0 [Units.ha];  
+      Geo_Obj : MANDATORY Polygon;
+      Rechtsstatus : MANDATORY RechtsstatusArt;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis: INTERLIS.XMLDate;
+    END Waldreservat_Teilobjekt;
+  
+  CLASS Dokument =
+      Typ : MANDATORY DokumentTyp;
+      Titel : MANDATORY LocalisationCH_V1.MultilingualText;
+      Abkuerzung : LocalisationCH_V1.MultilingualText;
+      OffizielleNr : LocalisationCH_V1.MultilingualText;
+      NurInGemeinde : CHAdminCodes_V1.CHMunicipalityCode;
+      TextImWeb : MultilingualUri;
+      Dokument : MultilingualBlob;
+      AuszugIndex : MANDATORY -1000 .. 1000;
+      Rechtsstatus : MANDATORY RechtsstatusArt;
+      publiziertAb : MANDATORY INTERLIS.XMLDate;
+      publiziertBis : INTERLIS.XMLDate;
+      MANDATORY CONSTRAINT DEFINED(TextImWeb) OR DEFINED(Dokument);    
+    END Dokument;
+  
+  CLASS Amt =
+      Name : MANDATORY LocalisationCH_V1.MultilingualText;
+      AmtImWeb : MultilingualUri;
+      UID : TEXT*12;
+      Zeile1 : TEXT*80;
+      Zeile2 : TEXT*80;
+      Strasse : TEXT*100;
+      Hausnr : TEXT*7;
+      PLZ : TEXT*4;
+      Ort : TEXT*40;
+      UNIQUE UID;    
+    END Amt;
+
+    ASSOCIATION WaldreservatWaldreservat_Teilobjekt =
+      WR_Teilobjekt -- {1..*} Waldreservat_Teilobjekt;
+      WR -<#> {1} Waldreservat;
+    END WaldreservatWaldreservat_Teilobjekt;
+  
+    ASSOCIATION DokumentWaldreservat =
+      Dokument -- {0..*} Dokument;
+      Waldreservat_Teilobjekt -- {0..*} Waldreservat_Teilobjekt;
+    END DokumentWaldreservat;
+  
+    ASSOCIATION AmtDokument =
+      Amt -- {1} Amt;
+      Dokument -<> {0..*} Dokument;
+    END AmtDokument;
+
+  END Waldreservate;
+
+END SH_Waldreservate_V1_2.
