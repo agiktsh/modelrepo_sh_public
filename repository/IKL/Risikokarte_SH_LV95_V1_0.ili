@@ -16,6 +16,7 @@ AT "http://geo.sh.ch" VERSION "2018-05-3"  =
   TOPIC Risikokarte =
 	DOMAIN
 	RisikonutzungsTyp = (
+		null
 		gering,
 		mittel,
 		hoch,
@@ -25,7 +26,7 @@ AT "http://geo.sh.ch" VERSION "2018-05-3"  =
 	
 	  Risiko: RisikonutzungsTyp;
 	  Standorteigenschaft: TEXT*20;
-	  Bemerkungen: TEXT;
+	  Bemerkungen: TEXT*99;
 	  Geometry: GeometryCHLV95_V1.SurfaceWithOverlaps2mm;
 	  
 	  
