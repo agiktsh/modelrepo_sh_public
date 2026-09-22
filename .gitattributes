@@ -1,0 +1,4 @@
+# repo/ is a byte-exact mirror of https://models.geo.sh.ch/. The published
+# md5 checksums in repo/ilimodels.xml and repo/ilidata.xml are computed over
+# the original file bytes, so line endings must never be rewritten by git.
+repo/** -text
