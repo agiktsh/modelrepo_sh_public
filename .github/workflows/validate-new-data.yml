@@ -1,0 +1,102 @@
+name: Validate and index new data files
+
+# Runs when a pull request adds a new *.xml data/catalogue file under repo/.
+# The new file is first validated against its model with ilivalidator; only
+# if that succeeds is repo/ilidata.xml extended with an entry for it, and the
+# change committed back onto the PR branch.
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "repo/*.xml"
+      - "repo/**/*.xml"
+
+permissions:
+  contents: write
+
+env:
+  ILIVALIDATOR_VERSION: "1.15.0"
+
+jobs:
+  validate-and-index:
+    runs-on: ubuntu-latest
+    name: ilivalidator + update ilidata.xml
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Determine new data files
+        id: new-files
+        run: |
+          files=$(git diff --name-only --diff-filter=A \
+            "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" \
+            -- 'repo/*.xml' 'repo/**/*.xml' \
+            | grep -vE '/(ilidata|ilimodels|ilisite)\.xml$' \
+            | sed 's#^repo/##')
+          echo "New data files:"
+          echo "$files"
+          {
+            echo "files<<EOF"
+            echo "$files"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Set up JDK
+        if: steps.new-files.outputs.files != ''
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Cache ilivalidator distribution
+        if: steps.new-files.outputs.files != ''
+        uses: actions/cache@v4
+        with:
+          path: ~/ilitools/ilivalidator-${{ env.ILIVALIDATOR_VERSION }}
+          key: ilivalidator-${{ env.ILIVALIDATOR_VERSION }}
+
+      - name: Download ilivalidator
+        if: steps.new-files.outputs.files != ''
+        run: |
+          installDir=~/ilitools/ilivalidator-${ILIVALIDATOR_VERSION}
+          if [ ! -f "$installDir/ilivalidator-${ILIVALIDATOR_VERSION}.jar" ]; then
+            mkdir -p "$installDir"
+            curl -sSL -o /tmp/ilivalidator.zip "https://downloads.interlis.ch/ilivalidator/ilivalidator-${ILIVALIDATOR_VERSION}.zip"
+            unzip -q -o /tmp/ilivalidator.zip -d "$installDir"
+          fi
+          echo "ILIVALIDATOR_JAR=$installDir/ilivalidator-${ILIVALIDATOR_VERSION}.jar" >> "$GITHUB_ENV"
+
+      - name: Cache resolved external models
+        if: steps.new-files.outputs.files != ''
+        uses: actions/cache@v4
+        with:
+          path: ~/.ilicache
+          key: ilicache-${{ hashFiles('repo/**/*.ili') }}
+          restore-keys: |
+            ilicache-
+
+      - name: Validate new data files
+        if: steps.new-files.outputs.files != ''
+        run: .github/scripts/validate-new-data-files.sh ${{ steps.new-files.outputs.files }}
+
+      - name: Add ilidata.xml entries
+        if: steps.new-files.outputs.files != ''
+        run: .github/scripts/add-ilidata-entries.sh ${{ steps.new-files.outputs.files }}
+
+      - name: Commit updated ilidata.xml
+        if: steps.new-files.outputs.files != ''
+        run: |
+          if git diff --quiet -- repo/ilidata.xml; then
+            echo "ilidata.xml already up to date, nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add repo/ilidata.xml
+          git commit -m "Add ilidata.xml entries for new data files [skip ci]"
+          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
