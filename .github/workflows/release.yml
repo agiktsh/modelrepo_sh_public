@@ -1,8 +1,9 @@
 name: Release
 
-# Runs after every merge to main: packages the current repository/ content
-# (the model repository as served at models.geo.sh.ch) as a timestamped ZIP
-# and publishes it as a GitHub release.
+# Runs after every merge to main: re-validates the current repository/
+# content with ili2c, ilimanager and ilivalidator, packages it (the model
+# repository as served at models.geo.sh.ch) as a timestamped ZIP, and
+# publishes both the ZIP and the three tools' log output as a GitHub release.
 on:
   push:
     branches:
@@ -10,6 +11,11 @@ on:
 
 permissions:
   contents: write
+
+env:
+  ILI2C_VERSION: "5.6.9"
+  ILIMANAGER_VERSION: "0.9.1"
+  ILIVALIDATOR_VERSION: "1.15.0"
 
 jobs:
   release:
@@ -19,6 +25,75 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Cache ili2c distribution
+        uses: actions/cache@v4
+        with:
+          path: ~/ilitools/ili2c-${{ env.ILI2C_VERSION }}
+          key: ili2c-${{ env.ILI2C_VERSION }}
+
+      - name: Download ili2c
+        run: |
+          installDir=~/ilitools/ili2c-${ILI2C_VERSION}
+          if [ ! -f "$installDir/ili2c.jar" ]; then
+            mkdir -p "$installDir"
+            curl -sSL -o /tmp/ili2c.zip "https://downloads.interlis.ch/ili2c/ili2c-${ILI2C_VERSION}.zip"
+            unzip -q -o /tmp/ili2c.zip -d "$installDir"
+          fi
+          echo "ILI2C_JAR=$installDir/ili2c.jar" >> "$GITHUB_ENV"
+
+      - name: Cache ilimanager distribution
+        uses: actions/cache@v4
+        with:
+          path: ~/ilitools/ilimanager-${{ env.ILIMANAGER_VERSION }}
+          key: ilimanager-${{ env.ILIMANAGER_VERSION }}
+
+      - name: Download ilimanager
+        run: |
+          installDir=~/ilitools/ilimanager-${ILIMANAGER_VERSION}
+          if [ ! -f "$installDir/ilimanager-${ILIMANAGER_VERSION}.jar" ]; then
+            mkdir -p "$installDir"
+            curl -sSL -o /tmp/ilimanager.zip "https://downloads.interlis.ch/ilimanager/ilimanager-${ILIMANAGER_VERSION}.zip"
+            unzip -q -o /tmp/ilimanager.zip -d "$installDir"
+          fi
+          echo "ILIMANAGER_JAR=$installDir/ilimanager-${ILIMANAGER_VERSION}.jar" >> "$GITHUB_ENV"
+
+      - name: Cache ilivalidator distribution
+        uses: actions/cache@v4
+        with:
+          path: ~/ilitools/ilivalidator-${{ env.ILIVALIDATOR_VERSION }}
+          key: ilivalidator-${{ env.ILIVALIDATOR_VERSION }}
+
+      - name: Download ilivalidator
+        run: |
+          installDir=~/ilitools/ilivalidator-${ILIVALIDATOR_VERSION}
+          if [ ! -f "$installDir/ilivalidator-${ILIVALIDATOR_VERSION}.jar" ]; then
+            mkdir -p "$installDir"
+            curl -sSL -o /tmp/ilivalidator.zip "https://downloads.interlis.ch/ilivalidator/ilivalidator-${ILIVALIDATOR_VERSION}.zip"
+            unzip -q -o /tmp/ilivalidator.zip -d "$installDir"
+          fi
+          echo "ILIVALIDATOR_JAR=$installDir/ilivalidator-${ILIVALIDATOR_VERSION}.jar" >> "$GITHUB_ENV"
+
+      - name: Cache resolved external models
+        uses: actions/cache@v4
+        with:
+          path: ~/.ilicache
+          key: ilicache-${{ hashFiles('repository/**/*.ili') }}
+          restore-keys: |
+            ilicache-
+
+      # Re-runs ili2c, ilimanager and ilivalidator against repository/ and
+      # writes their raw output to /tmp/release-logs/*.log. Fails (and skips
+      # the steps below) if any of them reports a problem, so a release is
+      # only ever published for content that passed all three checks.
+      - name: Validate and collect logs
+        run: .github/scripts/release-validation-logs.sh
 
       # Zips the *contents* of repository/ (not the folder itself), so the
       # archive root matches the layout served at models.geo.sh.ch
@@ -36,5 +111,8 @@ jobs:
         run: |
           gh release create "${{ steps.archive.outputs.name }}" \
             "${{ steps.archive.outputs.name }}.ZIP" \
+            /tmp/release-logs/ili2c.log \
+            /tmp/release-logs/ilimanager.log \
+            /tmp/release-logs/ilivalidator.log \
             --title "${{ steps.archive.outputs.name }}" \
-            --notes "Automated release of the models.geo.sh.ch model repository, built from commit ${{ github.sha }}."
+            --notes "Automated release of the models.geo.sh.ch model repository, built from commit ${{ github.sha }}. Includes validation logs from ili2c, ilimanager and ilivalidator."
