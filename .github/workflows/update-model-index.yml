@@ -1,0 +1,101 @@
+name: Update model index
+
+# Runs whenever a customer edit to a model (*.ili) or catalogue (*.xml) is
+# pushed to a working branch. ilimodels.xml is regenerated first so that
+# brand-new (not yet indexed) models are included in the ili2c check too -
+# ili2c --check-repo-ilis only compiles models it finds in ilimodels.xml, so
+# checking before updating the index would silently skip new files. If ili2c
+# fails, the index update is discarded and the job fails red. If it succeeds,
+# the updated ilimodels.xml is committed back to the same branch.
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - "repo/**/*.ili"
+      - "repo/**/*.xml"
+
+permissions:
+  contents: write
+
+env:
+  ILI2C_VERSION: "5.6.9"
+  ILIMANAGER_VERSION: "0.9.1"
+
+jobs:
+  check-and-update-index:
+    runs-on: ubuntu-latest
+    name: ili2c check + update ilimodels.xml
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Cache ili2c distribution
+        uses: actions/cache@v4
+        with:
+          path: ~/ilitools/ili2c-${{ env.ILI2C_VERSION }}
+          key: ili2c-${{ env.ILI2C_VERSION }}
+
+      - name: Download ili2c
+        run: |
+          installDir=~/ilitools/ili2c-${ILI2C_VERSION}
+          if [ ! -f "$installDir/ili2c.jar" ]; then
+            mkdir -p "$installDir"
+            curl -sSL -o /tmp/ili2c.zip "https://downloads.interlis.ch/ili2c/ili2c-${ILI2C_VERSION}.zip"
+            unzip -q -o /tmp/ili2c.zip -d "$installDir"
+          fi
+          echo "ILI2C_JAR=$installDir/ili2c.jar" >> "$GITHUB_ENV"
+
+      - name: Cache ilimanager distribution
+        uses: actions/cache@v4
+        with:
+          path: ~/ilitools/ilimanager-${{ env.ILIMANAGER_VERSION }}
+          key: ilimanager-${{ env.ILIMANAGER_VERSION }}
+
+      - name: Download ilimanager
+        run: |
+          installDir=~/ilitools/ilimanager-${ILIMANAGER_VERSION}
+          if [ ! -f "$installDir/ilimanager-${ILIMANAGER_VERSION}.jar" ]; then
+            mkdir -p "$installDir"
+            curl -sSL -o /tmp/ilimanager.zip "https://downloads.interlis.ch/ilimanager/ilimanager-${ILIMANAGER_VERSION}.zip"
+            unzip -q -o /tmp/ilimanager.zip -d "$installDir"
+          fi
+          echo "ILIMANAGER_JAR=$installDir/ilimanager-${ILIMANAGER_VERSION}.jar" >> "$GITHUB_ENV"
+
+      - name: Cache resolved external models
+        uses: actions/cache@v4
+        with:
+          path: ~/.ilicache
+          key: ilicache-${{ hashFiles('repo/**/*.ili') }}
+          restore-keys: |
+            ilicache-
+
+      # Regenerates ilimodels.xml in place so new (not yet indexed) models
+      # are picked up before the ili2c check below.
+      - name: Update ilimodels.xml
+        run: java -jar "$ILIMANAGER_JAR" --updateIliModels --repos repo --out repo/ilimodels.xml
+
+      # Compiles every model now listed in ilimodels.xml, including the
+      # change that was just pushed. Fails the job (and leaves the working
+      # tree's ilimodels.xml change uncommitted) on any INTERLIS error.
+      - name: Run ili2c --check-repo-ilis
+        run: java -jar "$ILI2C_JAR" --check-repo-ilis repo
+
+      - name: Commit updated ilimodels.xml
+        run: |
+          if git diff --quiet -- repo/ilimodels.xml; then
+            echo "ilimodels.xml already up to date, nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add repo/ilimodels.xml
+          git commit -m "Update ilimodels.xml [skip ci]"
+          git push origin HEAD:"${{ github.ref_name }}"
