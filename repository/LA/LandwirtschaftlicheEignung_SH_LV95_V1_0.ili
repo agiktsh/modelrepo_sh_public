@@ -23,8 +23,7 @@ AT "http://geo.sh.ch" VERSION "2018-05-3"  =
 		Futterbaubetonte_Fruchtfolge_gutes_Wiesland,
 		Futterbaubetonte_Fruchtfolge_maessig_gutes_Wiesland,
 		Ausschliesslich_Futterbau_aus_Maehweide,
-		Ausschliesslich_Futterbau_als_Weide,
-		andere
+		Ausschliesslich_Futterbau_als_Weide
 	);
 	CLASS LandwirtschaftlicheEignung =
 	

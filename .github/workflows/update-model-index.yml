@@ -7,6 +7,12 @@ name: Update model index
 # checking before updating the index would silently skip new files. If ili2c
 # fails, the index update is discarded and the job fails red. If it succeeds,
 # the updated ilimodels.xml is committed back to the same branch.
+#
+# The commit is pushed WITHOUT "[skip ci]": that would stop validate-models.yml
+# (and this workflow itself) from ever reporting a status for that commit, so
+# a PR's required checks would hang forever on "waiting for status to be
+# reported". Re-triggering is safe: ilimanager's in-place update is
+# idempotent, so the re-run here finds nothing to commit and simply ends.
 on:
   push:
     branches-ignore:
@@ -97,5 +103,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add repository/ilimodels.xml
-          git commit -m "Update ilimodels.xml [skip ci]"
+          git commit -m "Update ilimodels.xml"
           git push origin HEAD:"${{ github.ref_name }}"
