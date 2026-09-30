@@ -4,6 +4,12 @@ name: Validate and index new data files
 # repository/. The new file is first validated against its model with
 # ilivalidator; only if that succeeds is repository/ilidata.xml extended with
 # an entry for it, and the change committed back onto the PR branch.
+#
+# The commit is pushed WITHOUT "[skip ci]": that would also stop this
+# workflow (and validate-models.yml) from ever reporting a status for that
+# commit, so a PR's required checks would hang forever on "waiting for status
+# to be reported". Re-triggering is safe: with no further new files added,
+# "Determine new data files" finds nothing and the job ends immediately.
 on:
   pull_request:
     branches:
@@ -98,5 +104,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add repository/ilidata.xml
-          git commit -m "Add ilidata.xml entries for new data files [skip ci]"
+          git commit -m "Add ilidata.xml entries for new data files"
           git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
