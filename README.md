@@ -38,6 +38,16 @@ Jeder Themenordner kann einen Unterordner `replaced/` enthalten – dort liegen 
 
 Alle Tool-Versionen (ili2c, ilimanager, ilivalidator) sind in den jeweiligen Workflows als `env:`-Variablen gepinnt und werden bei Bedarf von downloads.interlis.ch heruntergeladen und gecacht.
 
+Kernbefehle (Tool-Jar jeweils per `java -jar ...` aufgerufen):
+
+```sh
+# ili2c: kompiliert alle in ilimodels.xml referenzierten Modelle
+java -jar ili2c.jar --check-repo-ilis repository
+
+# ilimanager: regeneriert ilimodels.xml aus dem aktuellen Dateistand (in place)
+java -jar ilimanager.jar --updateIliModels --repos repository --out repository/ilimodels.xml
+```
+
 ### Scripts (`.github/scripts/`)
 
 | Script | Verwendet von | Zweck |
