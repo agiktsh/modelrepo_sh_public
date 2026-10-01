@@ -101,7 +101,34 @@
           </LocalisationCH_V1.MultilingualText>
         </Description>
       </SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_Catalogue>
-
+     <SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_Catalogue TID="2004">
+        <Symbol>
+       <BINBLBOX>iVBORw0KGgoAAAANSUhEUgAAAWMAAACyCAMAAACgCV7tAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJUExURXCoADyoAD+oAHBuUeEAAAADdFJOU7K/zbok4toAAAAJcEhZcwAAFxEAABcRAcom8z8AAAGASURBVHhe7dAxAQAwEAOhfvyLrgq2QwLvFuveXqx1zHXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17HXsdex17O3dQu0+IsYISeSymxgAAAAASUVORK5CYII=</BINBLBOX>
+        </Symbol>
+        <Code>MCPFE1.4</Code>
+        <Description>
+          <LocalisationCH_V1.MultilingualText>
+            <LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>de</Language>
+                <Text>Restflaechen</Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>fr</Language>
+                <Text></Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>it</Language>
+                <Text></Text>
+              </LocalisationCH_V1.LocalisedText>
+              <LocalisationCH_V1.LocalisedText>
+                <Language>en</Language>
+                <Text></Text>
+              </LocalisationCH_V1.LocalisedText>
+            </LocalisedText>
+          </LocalisationCH_V1.MultilingualText>
+        </Description>
+      </SH_Waldreservate_V1_2.Codelisten.MCPFE_Class_Catalogue>
     </SH_Waldreservate_V1_2.Codelisten>
 
   </DATASECTION>
