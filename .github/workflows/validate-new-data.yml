@@ -31,11 +31,18 @@ jobs:
     name: ilivalidator + update ilidata.xml
 
     steps:
+      # Uses a PAT (BOT_PUSH_TOKEN), not the default GITHUB_TOKEN: GitHub
+      # never triggers a new workflow run for a push made with GITHUB_TOKEN
+      # (anti-recursion measure), so the bot's own commit below would
+      # otherwise never get a status from validate-models.yml and a PR's
+      # required checks would hang on "waiting for status to be reported"
+      # forever.
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
+          token: ${{ secrets.BOT_PUSH_TOKEN }}
 
       - name: Determine changed data files
         id: changed-files
