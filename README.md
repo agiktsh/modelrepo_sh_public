@@ -68,80 +68,43 @@ java -jar ilimanager.jar --updateIliModels --repos repository --out repository/i
 
 ## Anwendungsdokumentation
 
-### Usecase#1: Ein publiziertes Modell ändern
+### 1. Repository lokal klonen / letzte Aktualisierungen nach lokal pullen (mit Visual Studio Code)
 
-#### 1. Repository lokal klonen / letzte Aktualisierungen nach lokal pullen (mit Visual Studio Code)
+Vor der lokalen Anpassung muss der aktuelle Stand vom Repository gezogen werden.
+In Visual Studio Code:
+1. Workspace / Ordner öffnen oder frisch klonen
+2. In der Source Control auf dem main-Branch alle Änderungen pullen:
+<img width="504" height="195" alt="image" src="https://github.com/user-attachments/assets/08ad8edd-8de3-4c04-8259-1b3451a6048e" />
 
-
-
-
-#### 2. Branch eröffnen und publizieren für das Änderungsvorhaben
-
-1. Branch > Create new branch: Anschliessend Namen für das Vorhaben eingeben (zB. "Modellanpassungen-092026-LA-LandwirtschaftlicheEignung")
-2. Anschliessend den Branch publizieren (damit ist er auf GitHub und nicht nur lokal sichtbar)
-3. Sicherstellen, dass in Visual Studio Code der neue Branch gesetzt ist 
-
-#### 3. Änderung durchführen
-
-In der lokalen Modelldatei die Änderung einpflegen.
-
-#### 4. Änderung auf den Branch committen
-
-Änderung committen und pushen
-
-Nun läuft eine GitHub Action ab, welche
-1. ilimodels.xml aufgrund der Änderung aktualisiert
-2. Das Repository auf Validität prüft
-3. ilimodels.xml auf dem aktuellen Branch aktualisiert
-
-#### 5. Pullrequest erstellen
-
-Beim Erstellen des PullRequests laufen zwei Checks ab, welche beide bestanden werden müssen (Dauer: ca. 100s). Solange die Tests nicht bestanden sind, ist das Merging auf main blockiert.
-
-#### 6. Pullrequest in Hauptentwicklungsast mergen und Branch löschen
-
-
-
-#### 7. Repository publizieren
-
-anschliessend kann das öffentliche Rpository mit dem Stand des main-Branches (komplett) aktualisiert werden.
-Dazu kann das ZIP-File aus Releases verwendet werden: https://github.com/agiktsh/modelrepo_sh_public/releases
-
-### Usecase#2: Einen publizierten Katalog ändern
-
-#### 1. Repository lokal klonen / letzte Aktualisierungen nach lokal pullen (mit Visual Studio Code)
-
-
-
-
-#### 2. Branch eröffnen und publizieren für das Änderungsvorhaben
+### 2. Branch eröffnen und publizieren für das Änderungsvorhaben
 
 1. Branch > Create new branch: Anschliessend Namen für das Vorhaben eingeben (zB. "Modellanpassungen-092026-LA-LandwirtschaftlicheEignung")
 2. Anschliessend den Branch publizieren (damit ist er auf GitHub und nicht nur lokal sichtbar)
-3. Sicherstellen, dass in Visual Studio Code der neue Branch gesetzt ist 
+3. Sicherstellen, dass in Visual Studio Code der neue Branch gesetzt ist (unten links)
 
-#### 3. Änderung durchführen
+### 3. Änderung durchführen
 
-In der lokalen Modelldatei die Änderung einpflegen.
+In der lokalen Modelldatei oder Katalog die Änderung einpflegen. Bei Major-Changes die aktuelle Datei vorgängig in den \replaced-Ordner kopieren.
 
-#### 4. Änderung auf den Branch committen
+### 4. Änderung auf den Branch committen
 
-Änderung committen und pushen
+Änderung(en) committen und pushen
 
 Nun läuft eine GitHub Action ab, welche
-1. ilimodels.xml aufgrund der Änderung aktualisiert
+1. ilimodels.xml und ilidata.xml aufgrund der Änderung aktualisiert
 2. Das Repository auf Validität prüft
-3. ilimodels.xml auf dem aktuellen Branch aktualisiert
+3. ilimodels.xml und ilidata.xml auf dem aktuellen Branch aktualisiert
 
-#### 5. Pullrequest erstellen
+### 5. Pullrequest erstellen
 
-Beim Erstellen des PullRequests laufen zwei Checks ab, welche beide bestanden werden müssen (Dauer: ca. 100s). Solange die Tests nicht bestanden sind, ist das Merging auf main blockiert.
+Beim Erstellen des PullRequests laufen drei Checks ab, welche alle bestanden werden müssen (Dauer: ca. 100s). Solange die Tests nicht bestanden sind, ist das Merging auf main blockiert.
 
-#### 6. Pullrequest in Hauptentwicklungsast mergen und Branch löschen
+### 6. Pullrequest in Hauptentwicklungsast mergen und Branch löschen
 
+Ein erfolgreich gecheckter Pullrequest kann nun auf main gemerged werden.
+Anschliessend den Branch löschen. Die Änderung ist nun vollzogen.
 
+### 7. Repository publizieren
 
-#### 7. Repository publizieren
-
-anschliessend kann das öffentliche Rpository mit dem Stand des main-Branches (komplett) aktualisiert werden.
-Dazu kann das ZIP-File aus Releases verwendet werden: https://github.com/agiktsh/modelrepo_sh_public/releases
+anschliessend kann das öffentliche Rpository manuell mit dem Stand des main-Branches (komplett) aktualisiert werden.
+Dazu kann das ZIP-File aus Releases verwendet werden: https://github.com/agiktsh/modelrepo_sh_public/releases/latest
