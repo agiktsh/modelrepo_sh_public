@@ -62,7 +62,7 @@ jobs:
             echo "$modified"
             echo "EOF"
             echo "all<<EOF"
-            printf '%s\n%s\n' "$added" "$modified"
+            printf '%s\n%s\n' "$added" "$modified" | grep -v '^$' || true
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
