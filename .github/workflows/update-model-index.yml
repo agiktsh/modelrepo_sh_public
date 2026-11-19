@@ -20,6 +20,11 @@ on:
     paths:
       - "repository/**/*.ili"
       - "repository/**/*.xml"
+      # The index files are outputs of the bots, not customer edits. Without
+      # this, every bot commit to ilimodels.xml / ilidata.xml re-triggers this
+      # workflow for nothing.
+      - "!repository/ilimodels.xml"
+      - "!repository/ilidata.xml"
 
 permissions:
   contents: write

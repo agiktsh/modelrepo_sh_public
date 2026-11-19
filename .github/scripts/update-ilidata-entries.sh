@@ -30,6 +30,25 @@ findDatasetId() {
   ' repository/ilidata.xml
 }
 
+# Prints the md5 recorded for the given path in the NEWEST (highest <version>)
+# entry of the given dataset id, or nothing if there is none.
+latestIndexedMd5() {
+  DATASET_ID="$1" PATH_TO_FIND="$2" perl -0777 -ne '
+    my ($id, $target) = ($ENV{DATASET_ID}, $ENV{PATH_TO_FIND});
+    my ($bestVer, $bestMd5) = (-1, "");
+    while (/<DatasetIdx16\.DataIndex\.DatasetMetadata\b.*?<\/DatasetIdx16\.DataIndex\.DatasetMetadata>/sg) {
+      my $block = $&;
+      next unless $block =~ /<id>\Q$id\E<\/id>/;
+      next unless $block =~ /<version>(\d+)<\/version>/;
+      my $ver = $1;
+      if ($block =~ /<path>\Q$target\E<\/path>\s*<md5>([0-9a-fA-F]+)<\/md5>/ && $ver > $bestVer) {
+        ($bestVer, $bestMd5) = ($ver, lc $1);
+      }
+    }
+    print $bestMd5;
+  ' repository/ilidata.xml
+}
+
 scriptDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 for path in "$@"; do
@@ -40,6 +59,17 @@ for path in "$@"; do
     # rather than failing the PR for a pre-existing gap.
     echo "No existing ilidata.xml entry for repository/$path - adding it as new instead."
     "$scriptDir/add-ilidata-entries.sh" "$path"
+    continue
+  fi
+
+  # Idempotency: the PR workflow diffs against the base branch, so a modified
+  # file is reported again after our own bot commit. Skip if the newest
+  # indexed version already carries the file's current md5; otherwise every
+  # run appends another version and re-triggers the workflow endlessly.
+  currentMd5=$(md5sum "repository/$path" | cut -d' ' -f1)
+  indexedMd5=$(latestIndexedMd5 "$datasetId" "$path")
+  if [ "$currentMd5" = "$indexedMd5" ]; then
+    echo "ilidata.xml already has md5 $currentMd5 for dataset '$datasetId' - nothing to update (repository/$path)."
     continue
   fi
 
