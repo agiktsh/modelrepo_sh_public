@@ -32,8 +32,7 @@ Jeder Themenordner kann einen Unterordner `replaced/` enthalten – dort liegen 
 | Workflow | Trigger | Zweck |
 |---|---|---|
 | **validate-models.yml** | Push/PR auf `main` | Zwei Required-Status-Checks: `ili2c --check-repo-ilis` (kompiliert alle Modelle aus `ilimodels.xml`) und `ilimanager index freshness` (regeneriert `ilimodels.xml` und `ilidata.xml` zum Abgleich, prüft `ilidata.xml` auf tote Pfade) |
-| **update-model-index.yml** | Push auf Arbeits-Branches (nicht `main`), bei geänderten `*.ili`/`*.xml` | Aktualisiert `ilimodels.xml` automatisch (via ilimanager) und validiert den gesamten Stand mit ili2c, bevor der Branch grün wird |
-| **validate-new-data.yml** | PR gegen `main`, bei neuen `*.xml`-Dateien | Validiert neue Kataloge/Daten mit `ilivalidator` gegen ihr Modell und ergänzt bei Erfolg automatisch `ilidata.xml` |
+| **update-model-index.yml** | Push auf Arbeits-Branches (nicht `main`), bei geänderten `*.ili`/`*.xml` | Aktualisiert `ilimodels.xml` automatisch (via ilimanager) und validiert den gesamten Stand mit ili2c. Neue oder gegenüber `main` geänderte Kataloge/Daten (`*.xml`) werden mit `ilivalidator` gegen ihr Modell geprüft und in `ilidata.xml` eingetragen (neuer Eintrag bzw. neue Dataset-Version, nur wenn der md5 noch nicht indexiert ist). Beide Indexdateien landen in einem einzigen Bot-Commit |
 | **release.yml** | Push auf `main` | Re-validiert den finalen Stand mit allen drei Tools, baut `repository/` als ZIP (`models.geo.sh.ch_YYYYMMDDHHmm.ZIP`) und veröffentlicht ZIP + Tool-Logs + Datei-Changelog als GitHub Release |
 
 Alle Tool-Versionen (ili2c, ilimanager, ilivalidator) sind in den jeweiligen Workflows als `env:`-Variablen gepinnt und werden bei Bedarf von downloads.interlis.ch heruntergeladen und gecacht.
@@ -54,8 +53,9 @@ java -jar ilimanager.jar --updateIliModels --repos repository --out repository/i
 |---|---|---|
 | `check-ilimodels-index.sh` | validate-models.yml | Prüft, ob `ilimodels.xml` dem aktuellen Dateistand entspricht (ordnungsunabhängiger Vergleich) |
 | `check-ilidata-paths.sh` | validate-models.yml | Prüft, ob alle `<path>`-Einträge in `ilidata.xml` auf existierende Dateien zeigen |
-| `validate-new-data-files.sh` | validate-new-data.yml, release.yml | Validiert gegebene Dateien mit ilivalidator |
-| `add-ilidata-entries.sh` | validate-new-data.yml | Ergänzt `ilidata.xml` um Einträge für neue Dateien |
+| `validate-new-data-files.sh` | update-model-index.yml, release.yml | Validiert gegebene Dateien mit ilivalidator |
+| `add-ilidata-entries.sh` | update-model-index.yml | Ergänzt `ilidata.xml` um Einträge für neue Dateien (überspringt bereits indexierte Pfade) |
+| `update-ilidata-entries.sh` | update-model-index.yml | Hängt für geänderte Dateien eine neue Dataset-Version an `ilidata.xml` an (überspringt, wenn der md5 schon in der neuesten Version steht) |
 | `release-validation-logs.sh` | release.yml | Führt ili2c/ilimanager/ilivalidator erneut aus und schreibt ihre Logs nach `/tmp/release-logs/` |
 | `generate-changelog.sh` | release.yml | Erstellt die Markdown-Changelog-Sektion der Release-Notes aus dem Datei-Diff zum letzten Release |
 
@@ -63,7 +63,7 @@ java -jar ilimanager.jar --updateIliModels --repos repository --out repository/i
 
 - **Branch Protection auf `main`:** Pull Request zwingend erforderlich (kein direkter Push), Required Status Checks `ili2c --check-repo-ilis` und `ilimanager index freshness`, keine Umgehung durch Admins.
 - **`.gitattributes`:** `repository/** -text` – verhindert, dass Git die Zeilenenden der gespiegelten Dateien verändert (sonst würden die md5-Prüfsummen in `ilimodels.xml`/`ilidata.xml` nicht mehr stimmen, je nach Betriebssystem des Checkouts).
-- **Bot-Commits ohne `[skip ci]`:** Die automatischen Commits von `update-model-index.yml` und `validate-new-data.yml` enthalten bewusst **kein** `[skip ci]` – das würde auch `validate-models.yml` für diesen Commit unterdrücken, wodurch ein PR dauerhaft auf „Waiting for status to be reported" hängen bliebe. Ein erneuter Durchlauf auf dem eigenen Bot-Commit ist ungefährlich, da beide Workflows idempotent sind (finden nichts mehr zu tun und beenden sich).
+- **Bot-Commits ohne `[skip ci]`:** Die automatischen Commits von `update-model-index.yml` enthalten bewusst **kein** `[skip ci]` – das würde auch `validate-models.yml` für diesen Commit unterdrücken, wodurch ein PR dauerhaft auf „Waiting for status to be reported" hängen bliebe. Der Bot-Commit ändert nur `ilimodels.xml`/`ilidata.xml`, die vom Trigger ausgenommen sind, und startet den Workflow deshalb nicht erneut. Ein erneuter Durchlauf bei einem späteren Push ist ungefährlich, da die Schritte idempotent sind (bereits indexierte Pfade bzw. md5-Werte werden übersprungen).
 
 
 ## Anwendungsdokumentation
