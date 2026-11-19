@@ -20,7 +20,7 @@ Version    | wer | Aenderung
 
 MODEL Richtplan_SH_V2_1 (de)
 AT "http://models.geo.admin.ch"
-VERSION "2026-11-31"  =
+VERSION "2026-11-30"  =
   IMPORTS GeometryCHLV95_V2, CHAdminCodes_V2;
   IMPORTS UNQUALIFIED INTERLIS;
  
