@@ -18,6 +18,14 @@ nextTid=$(grep -oP '(?<=DatasetMetadata TID=")\d+' repository/ilidata.xml | sort
 nextTid=$((${nextTid:--1} + 1))
 
 for path in "$@"; do
+  # Idempotency: a file that is "added" compared to main stays added on every
+  # later push of the branch. Skip it if ilidata.xml already references it,
+  # otherwise each run would append a duplicate entry.
+  if grep -qF "<path>$path</path>" repository/ilidata.xml; then
+    echo "ilidata.xml already has an entry for $path - nothing to add."
+    continue
+  fi
+
   echo "$path" > /tmp/ilidata-srcfiles.txt
   java -jar "$ILIVALIDATOR_JAR" --createIliData --ilidata /tmp/ilidata-new-entry.xml --repos repository --srcfiles /tmp/ilidata-srcfiles.txt
 
