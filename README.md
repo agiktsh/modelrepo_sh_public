@@ -68,43 +68,50 @@ java -jar ilimanager.jar --updateIliModels --repos repository --out repository/i
 
 ## Anwendungsdokumentation
 
-### 1. Repository lokal klonen / letzte Aktualisierungen nach lokal pullen (mit Visual Studio Code)
+### Zweck und Zielgruppe
 
-Vor der lokalen Anpassung muss der aktuelle Stand vom Repository gezogen werden.
-In Visual Studio Code:
-1. Workspace / Ordner öffnen oder frisch klonen
-2. In der Source Control auf dem main-Branch alle Änderungen pullen:
-<img width="504" height="195" alt="image" src="https://github.com/user-attachments/assets/08ad8edd-8de3-4c04-8259-1b3451a6048e" />
+Modelle (`*.ili`) und Kataloge (`*.xml`) des Kantons Schaffhausen werden nur noch über einen Pull Request geändert; die Indexdateien pflegt die Automation. Diese Schulung zeigt den Ablauf an einem konkreten Beispiel.
 
-### 2. Branch eröffnen und publizieren für das Änderungsvorhaben
+Sie richtet sich an Mitarbeitende, die Modelle oder Kataloge anpassen. 
+Das INTERLIS-Repository ist der Quellstand für [models.geo.sh.ch](https://models.geo.sh.ch/).
 
-1. Branch > Create new branch: Anschliessend Namen für das Vorhaben eingeben (zB. "Modellanpassungen-092026-LA-LandwirtschaftlicheEignung")
-2. Anschliessend den Branch publizieren (damit ist er auf GitHub und nicht nur lokal sichtbar)
-3. Sicherstellen, dass in Visual Studio Code der neue Branch gesetzt ist (unten links)
+### Überblick: Repository und Automation
 
-### 3. Änderung durchführen
+Der Ordner `repository/` ist ein byte-genauer Spiegel des öffentlichen Modell-Repositories. Zwei Indexdateien darin dürfen Sie nicht von Hand ändern, weil sie von der Automation gepflegt werden.
 
-In der lokalen Modelldatei oder Katalog die Änderung einpflegen. Bei Major-Changes die aktuelle Datei vorgängig in den \replaced-Ordner kopieren.
+| Datei / Ordner | Inhalt | Gepflegt von |
+| --- | --- | --- |
+| `ilimodels.xml` | Index aller Modelle (`*.ili`) | ilimanager (Bot) |
+| `ilidata.xml` | Index der Kataloge und Daten (`*.xml`), je Datei mit Version und md5 | ilivalidator (Bot) |
+| `ilisite.xml` | Standort-Metadaten | manuell |
+| `PNA/`, `AGI/`, `LA/` … | Modelle und Kataloge je Amt | Sie |
+| `<Amt>/replaced/` | abgelöste Modellversionen, die weiter referenzierbar bleiben müssen | Sie |
 
-### 4. Änderung auf den Branch committen
+Zwei Workflows laufen automatisch:
 
-Änderung(en) committen und pushen
+| Workflow | Wann | Was passiert |
+| --- | --- | --- |
+| Update model index | Push auf einen Arbeits-Branch, bei geänderten `*.ili` oder `*.xml`; die Indexdateien selbst lösen ihn nicht aus | `ilimanager` aktualisiert `ilimodels.xml`, `ili2c` kompiliert alle Modelle, `ilivalidator` prüft neue oder gegenüber `main` geänderte Kataloge, und `ilidata.xml` wird ergänzt. Bei Erfolg folgt ein einziger Bot-Commit »Update ilimodels.xml and ilidata.xml« |
+| Validate INTERLIS models | Pull Request und Push auf `main` | Pflichtchecks `ili2c --check-repo-ilis` und `ilimanager index freshness`; ohne grünen Status ist der Merge gesperrt |
 
-Nun läuft eine GitHub Action ab, welche
-1. ilimodels.xml und ilidata.xml aufgrund der Änderung aktualisiert
-2. Das Repository auf Validität prüft
-3. ilimodels.xml und ilidata.xml auf dem aktuellen Branch aktualisiert
+Nach dem Merge baut ein dritter Workflow (`release.yml`) das ZIP des Repositories als GitHub Release.
 
-### 5. Pullrequest erstellen
+### Ablauf Schritt für Schritt
 
-Beim Erstellen des PullRequests laufen drei Checks ab, welche alle bestanden werden müssen (Dauer: ca. 100s). Solange die Tests nicht bestanden sind, ist das Merging auf main blockiert.
+Eine Anpassung erfolgt in sechs Schritten. Schritt 4 läuft automatisch.
 
-### 6. Pullrequest in Hauptentwicklungsast mergen und Branch löschen
+1. **Aktuellen Stand holen.** In Visual Studio Code auf `main` wechseln und pullen. Ohne diesen Schritt fehlen Ihnen spätere Korrekturen an der Automation.
+2. **Branch anlegen.** Neuen Branch mit sprechendem Namen erstellen, zum Beispiel `Modellanpassungen-092026-PNA-Schutzinstrumente`. Unten links prüfen, dass der neue Branch aktiv ist.
+3. **Änderung durchführen, committen und pushen.** Modell oder Katalog anpassen. Bei einer neuen Hauptversion eines Modells die bisherige Datei zuerst in den Ordner `replaced/` des Amtes verschieben und die neue Version als neue Datei ablegen.
+Die Änderungen anschliessend committen und pushen.
+4. **Automatik auf dem Branch: Modell- und Katalogindex.** Nach dem Push läuft »Update model index«: 
+   * `ilimodels.xml` wird aktualisiert, alle Modelle werden mit `ili2c` kompiliert.
+   * neue oder geänderte Kataloge werden mit `ilivalidator` geprüft und in `ilidata.xml` eingetragen. 
+Bei Erfolg erscheint ein einziger Bot-Commit »Update ilimodels.xml and ilidata.xml« welcher die beiden neuen Dateien enthält. Vergesse nicht, diese Dateien lokal zu pullen, da sie auf dem Server erstellt wurden.
 
-Ein erfolgreich gecheckter Pullrequest kann nun auf main gemerged werden.
-Anschliessend den Branch löschen. Die Änderung ist nun vollzogen.
+![alt text](image.png)
 
-### 7. Repository publizieren
+Nach diesem Schritt umfasst der Change auch die angepassten Index-Files (ilimodels.xml / ilidata.xml)
 
-anschliessend kann das öffentliche Rpository manuell mit dem Stand des main-Branches (komplett) aktualisiert werden.
-Dazu kann das ZIP-File aus Releases verwendet werden: https://github.com/agiktsh/modelrepo_sh_public/releases/latest
+1. **Pull Request erstellen und prüfen.** Die Pflichtchecks müssen grün sein (rund 100 Sekunden). Bis dahin ist der Merge gesperrt.
+2. **Mergen und Branch löschen.** Danach erzeugt der Release-Workflow das ZIP unter https://github.com/agiktsh/modelrepo_sh_public/releases; dessen Inhalt veröffentlicht man manuell auf [models.geo.sh.ch](https://models.geo.sh.ch/).
