@@ -1,4 +1,4 @@
-INTERLIS 2.3;
+INTERLIS 2.4;
 
 /** Richtplan Kanton Schaffhausen.
 Modellierung des Richtplans im Kanton Schaffhausen.
@@ -18,10 +18,10 @@ Version    | wer | Aenderung
 !!@ tags="Kanton Schaffhausen, Raumplanung, Richtplan"
 !!@ furtherMetadata=https://www.geocat.ch/geonetwork/srv/ger/catalog.search#/metadata/396f1dad-d745-46f3-9e70-b53e5b943ce6
 
-MODEL Richtplan_SH_V1_1 (de)
+MODEL Richtplan_SH_V2_1 (de)
 AT "http://models.geo.admin.ch"
-VERSION "2020-08-28"  =
-  IMPORTS GeometryCHLV95_V1, CHAdminCodes_V1;
+VERSION "2026-11-31"  =
+  IMPORTS GeometryCHLV95_V2, CHAdminCodes_V2;
   IMPORTS UNQUALIFIED INTERLIS;
  
   DOMAIN
@@ -45,35 +45,11 @@ VERSION "2020-08-28"  =
 	  Archiv
 	);  
 	  
-    Surface = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;
-    Line = POLYLINE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2;
+    Surface = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V2.Coord2 WITHOUT OVERLAPS > 0.001;
+    Line = POLYLINE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V2.Coord2;
 	  
   TOPIC Richtplaninhalte =
     OID AS INTERLIS.UUIDOID;
-     
-    STRUCTURE SurfaceStructure =
-      Surface: Surface;
-    END SurfaceStructure;
-    
-    STRUCTURE MultiSurface =
-      Surfaces: BAG {1..*} OF SurfaceStructure;
-    END MultiSurface;
-	  
-    STRUCTURE LineStructure = 
-      Line: Line;
-    END LineStructure;
-    
-    STRUCTURE MultiLine =
-      Lines: BAG {1..*} OF LineStructure;
-    END MultiLine;
-	
-    STRUCTURE PointStructure =
-      Point : GeometryCHLV95_V1.Coord2;
-    END PointStructure;
-  
-    STRUCTURE MultiPoint =
-      Points : BAG {1..*} OF PointStructure;
-    END MultiPoint;
   
     CLASS Richtplanrevision =
       Richtplanrevision : MANDATORY TEXT*255;
@@ -101,11 +77,11 @@ VERSION "2020-08-28"  =
 	  Bezeichnung : MANDATORY TEXT*255;
 	  Richtplan_Nummer : MANDATORY TEXT*100;
 	  Struktur : TEXT*20;
-	  Koordinationsstand : MANDATORY Richtplan_SH_V1_1.Koordinationsstand;
+	  Koordinationsstand : MANDATORY Richtplan_SH_V2_1.Koordinationsstand;
 	  Federfuehrung : TEXT*255;
 	  PDF : TEXT*255;
-	  Status : MANDATORY Richtplan_SH_V1_1.Status;
-	  Erlass_RR : XMLDate;
+	  Status : MANDATORY Richtplan_SH_V2_1.Status;
+	  Erlass_RR : MANDATORY XMLDate;
 	  Genehmigung_KR : XMLDate;
 	  Genehmigung_Bund : XMLDate;
 	  Bemerkungen : TEXT*255;
@@ -133,18 +109,18 @@ VERSION "2020-08-28"  =
     END Sachbereichsgruppe_Richtplanobjekt;	
 
     CLASS Richtplanobjekt_Flaeche EXTENDS Richtplanobjekt =
-	  Geometrie : MultiSurface;
+	  Geometrie : GeometryCHLV95_V2.MultiSurface;
     END Richtplanobjekt_Flaeche;
 
     CLASS Richtplanobjekt_Linie EXTENDS Richtplanobjekt =
-	  Geometrie : MultiLine;
+	  Geometrie : GeometryCHLV95_V2.MultiLine;
     END Richtplanobjekt_Linie;
 
     CLASS Richtplanobjekt_Punkt EXTENDS Richtplanobjekt =
-	  Geometrie : MultiPoint;
+	  Geometrie : GeometryCHLV95_V2.MultiPoint;
     END Richtplanobjekt_Punkt;
 	
 
   END Richtplaninhalte;
    
-END Richtplan_SH_V1_1.
+END Richtplan_SH_V2_1.

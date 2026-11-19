@@ -1,0 +1,150 @@
+INTERLIS 2.3;
+
+/** Richtplan Kanton Schaffhausen.
+Modellierung des Richtplans im Kanton Schaffhausen.
+*/
+
+/*
+-----------------------------------------------------------------------------
+Version    | wer | Aenderung
+------------------------------------------------------------------------------
+2020-08-28 | stp | Ersterfassung
+2021-02-08 | rfi | Einführen Richtplanrevision, div. kleinere Anpassungen
+*/
+
+!!@ technicalContact=mailto:gis@sh.ch
+!!@ IDGeoIV=69
+!!@ furtherInformation=https://geo.sh.ch
+!!@ tags="Kanton Schaffhausen, Raumplanung, Richtplan"
+!!@ furtherMetadata=https://www.geocat.ch/geonetwork/srv/ger/catalog.search#/metadata/396f1dad-d745-46f3-9e70-b53e5b943ce6
+
+MODEL Richtplan_SH_V1_1 (de)
+AT "http://models.geo.admin.ch"
+VERSION "2020-08-28"  =
+  IMPORTS GeometryCHLV95_V1, CHAdminCodes_V1;
+  IMPORTS UNQUALIFIED INTERLIS;
+ 
+  DOMAIN
+
+	Koordinationsstand = (
+	  Ausgangslage,
+	  Vororientierung,
+	  Zwischenergebnis,
+	  Festsetzung,
+	  Aufgehoben,
+	  Ausgefuehrt
+	);
+	
+	Status = (
+	  Bearbeitung,
+	  Regierungsrat,
+	  Mitwirkung,
+	  Kantonsrat,
+	  Bund,
+	  Genehmigt,
+	  Archiv
+	);  
+	  
+    Surface = SURFACE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2 WITHOUT OVERLAPS > 0.001;
+    Line = POLYLINE WITH (STRAIGHTS) VERTEX GeometryCHLV95_V1.Coord2;
+	  
+  TOPIC Richtplaninhalte =
+    OID AS INTERLIS.UUIDOID;
+     
+    STRUCTURE SurfaceStructure =
+      Surface: Surface;
+    END SurfaceStructure;
+    
+    STRUCTURE MultiSurface =
+      Surfaces: BAG {1..*} OF SurfaceStructure;
+    END MultiSurface;
+	  
+    STRUCTURE LineStructure = 
+      Line: Line;
+    END LineStructure;
+    
+    STRUCTURE MultiLine =
+      Lines: BAG {1..*} OF LineStructure;
+    END MultiLine;
+	
+    STRUCTURE PointStructure =
+      Point : GeometryCHLV95_V1.Coord2;
+    END PointStructure;
+  
+    STRUCTURE MultiPoint =
+      Points : BAG {1..*} OF PointStructure;
+    END MultiPoint;
+  
+    CLASS Richtplanrevision =
+      Richtplanrevision : MANDATORY TEXT*255;
+    END Richtplanrevision;
+  
+    CLASS Thema =
+      Thema : MANDATORY TEXT*255;
+      Struktur : TEXT*20;
+      Reihenfolge : 1 .. 999999;
+    END Thema;
+  
+    CLASS Sachbereichsgruppe =
+      Sachbereichsgruppe : MANDATORY TEXT*255;
+      Struktur : TEXT*20;
+      Reihenfolge : 1 .. 999999;
+    END Sachbereichsgruppe;
+  
+    CLASS Sachbereich =
+      Sachbereich : MANDATORY TEXT*255;
+      Struktur : TEXT*20;
+      Reihenfolge : 1 .. 999999;
+    END Sachbereich;
+
+    CLASS Richtplanobjekt (ABSTRACT) =
+	  Bezeichnung : MANDATORY TEXT*255;
+	  Richtplan_Nummer : MANDATORY TEXT*100;
+	  Struktur : TEXT*20;
+	  Koordinationsstand : MANDATORY Richtplan_SH_V1_1.Koordinationsstand;
+	  Federfuehrung : TEXT*255;
+	  PDF : TEXT*255;
+	  Status : MANDATORY Richtplan_SH_V1_1.Status;
+	  Erlass_RR : XMLDate;
+	  Genehmigung_KR : XMLDate;
+	  Genehmigung_Bund : XMLDate;
+	  Bemerkungen : TEXT*255;
+	  Reihenfolge : 1 .. 999999;
+    END Richtplanobjekt;
+	
+    ASSOCIATION Richtplanrevision_Richtplanobjekt =
+      Richtplanobjekt -- {1..*} Richtplanobjekt;
+      Richtplanrevision -- {1} Richtplanrevision;
+    END Richtplanrevision_Richtplanobjekt;	
+	
+    ASSOCIATION Thema_Richtplanobjekt =
+      Richtplanobjekt -<> {1..*} Richtplanobjekt;
+      Thema -- {1} Thema;
+    END Thema_Richtplanobjekt;	
+
+    ASSOCIATION Sachbereich_Richtplanobjekt =
+      Richtplanobjekt -<> {1..*} Richtplanobjekt;
+      Sachbereich -- {1} Sachbereich;
+    END Sachbereich_Richtplanobjekt;	
+
+    ASSOCIATION Sachbereichsgruppe_Richtplanobjekt =
+      Richtplanobjekt -<> {1..*} Richtplanobjekt;
+      Sachbereichsgruppe -- {1} Sachbereichsgruppe;
+    END Sachbereichsgruppe_Richtplanobjekt;	
+
+    CLASS Richtplanobjekt_Flaeche EXTENDS Richtplanobjekt =
+	  Geometrie : MultiSurface;
+    END Richtplanobjekt_Flaeche;
+
+    CLASS Richtplanobjekt_Linie EXTENDS Richtplanobjekt =
+	  Geometrie : MultiLine;
+    END Richtplanobjekt_Linie;
+
+    CLASS Richtplanobjekt_Punkt EXTENDS Richtplanobjekt =
+	  Geometrie : MultiPoint;
+    END Richtplanobjekt_Punkt;
+	
+
+  END Richtplaninhalte;
+   
+END Richtplan_SH_V1_1.
