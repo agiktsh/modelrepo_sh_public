@@ -1,18 +1,28 @@
 name: Update model index
 
 # Runs whenever a customer edit to a model (*.ili) or catalogue (*.xml) is
-# pushed to a working branch. ilimodels.xml is regenerated first so that
-# brand-new (not yet indexed) models are included in the ili2c check too -
-# ili2c --check-repo-ilis only compiles models it finds in ilimodels.xml, so
-# checking before updating the index would silently skip new files. If ili2c
-# fails, the index update is discarded and the job fails red. If it succeeds,
-# the updated ilimodels.xml is committed back to the same branch.
+# pushed to a working branch and brings the two index files up to date:
+#
+#  - ilimodels.xml is regenerated first so that brand-new (not yet indexed)
+#    models are included in the ili2c check too - ili2c --check-repo-ilis only
+#    compiles models it finds in ilimodels.xml, so checking before updating the
+#    index would silently skip new files.
+#  - Catalogues/data files (*.xml) that were added or modified compared to
+#    main are validated against their model with ilivalidator, and
+#    ilidata.xml gets a new entry (added files) or a new dataset version
+#    (modified files, only if the file's md5 is not yet indexed).
+#
+# If ili2c or ilivalidator fails, nothing is committed and the job fails red.
+# If everything succeeds, the updated ilimodels.xml / ilidata.xml are
+# committed back to the same branch in ONE commit.
 #
 # The commit is pushed WITHOUT "[skip ci]": that would stop validate-models.yml
-# (and this workflow itself) from ever reporting a status for that commit, so
-# a PR's required checks would hang forever on "waiting for status to be
-# reported". Re-triggering is safe: ilimanager's in-place update is
-# idempotent, so the re-run here finds nothing to commit and simply ends.
+# from ever reporting a status for that commit, so a PR's required checks
+# would hang forever on "waiting for status to be reported". The bot commit
+# only touches ilimodels.xml / ilidata.xml, which are excluded from the
+# trigger paths below, so it does not start this workflow again. If a later
+# push re-runs it, the steps are idempotent (md5 / path already indexed ->
+# nothing to commit).
 on:
   push:
     branches-ignore:
@@ -32,11 +42,12 @@ permissions:
 env:
   ILI2C_VERSION: "5.6.9"
   ILIMANAGER_VERSION: "0.9.1"
+  ILIVALIDATOR_VERSION: "1.15.0"
 
 jobs:
   check-and-update-index:
     runs-on: ubuntu-latest
-    name: ili2c check + update ilimodels.xml
+    name: ili2c check + update ilimodels.xml and ilidata.xml
 
     steps:
       # Uses a PAT (BOT_PUSH_TOKEN), not the default GITHUB_TOKEN: GitHub
@@ -45,9 +56,12 @@ jobs:
       # otherwise never get a status from validate-models.yml and a PR's
       # required checks would hang on "waiting for status to be reported"
       # forever.
+      # fetch-depth 0: origin/main is needed to find the files changed on
+      # this branch.
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           token: ${{ secrets.BOT_PUSH_TOKEN }}
 
       - name: Set up JDK
@@ -103,18 +117,87 @@ jobs:
 
       # Compiles every model now listed in ilimodels.xml, including the
       # change that was just pushed. Fails the job (and leaves the working
-      # tree's ilimodels.xml change uncommitted) on any INTERLIS error.
+      # tree's index changes uncommitted) on any INTERLIS error.
       - name: Run ili2c --check-repo-ilis
         run: java -jar "$ILI2C_JAR" --check-repo-ilis repository
 
-      - name: Commit updated ilimodels.xml
+      # Data/catalogue files added or modified on this branch compared to
+      # main (three-dot diff = against the merge base, so later changes on
+      # main do not show up as ours). Only committed changes count; the
+      # ilimodels.xml change above is still uncommitted.
+      - name: Determine changed data files
+        id: changed-files
         run: |
-          if git diff --quiet -- repository/ilimodels.xml; then
-            echo "ilimodels.xml already up to date, nothing to commit."
+          added=$(git diff --name-only --diff-filter=A origin/main...HEAD \
+            -- 'repository/*.xml' 'repository/**/*.xml' \
+            | grep -vE '/(ilidata|ilimodels|ilisite)\.xml$' | sed 's#^repository/##' || true)
+          modified=$(git diff --name-only --diff-filter=M origin/main...HEAD \
+            -- 'repository/*.xml' 'repository/**/*.xml' \
+            | grep -vE '/(ilidata|ilimodels|ilisite)\.xml$' | sed 's#^repository/##' || true)
+
+          echo "Added data files:"
+          echo "$added"
+          echo "Modified data files:"
+          echo "$modified"
+
+          {
+            echo "added<<EOF"
+            echo "$added"
+            echo "EOF"
+            echo "modified<<EOF"
+            echo "$modified"
+            echo "EOF"
+            echo "all<<EOF"
+            printf '%s\n%s\n' "$added" "$modified" | grep -v '^$' || true
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Cache ilivalidator distribution
+        if: steps.changed-files.outputs.all != ''
+        uses: actions/cache@v4
+        with:
+          path: ~/ilitools/ilivalidator-${{ env.ILIVALIDATOR_VERSION }}
+          key: ilivalidator-${{ env.ILIVALIDATOR_VERSION }}
+
+      - name: Download ilivalidator
+        if: steps.changed-files.outputs.all != ''
+        run: |
+          installDir=~/ilitools/ilivalidator-${ILIVALIDATOR_VERSION}
+          if [ ! -f "$installDir/ilivalidator-${ILIVALIDATOR_VERSION}.jar" ]; then
+            mkdir -p "$installDir"
+            curl -sSL -o /tmp/ilivalidator.zip "https://downloads.interlis.ch/ilivalidator/ilivalidator-${ILIVALIDATOR_VERSION}.zip"
+            unzip -q -o /tmp/ilivalidator.zip -d "$installDir"
+          fi
+          echo "ILIVALIDATOR_JAR=$installDir/ilivalidator-${ILIVALIDATOR_VERSION}.jar" >> "$GITHUB_ENV"
+
+      # The data files are passed through env vars, not interpolated into the
+      # script text, so odd file names cannot inject shell commands.
+      - name: Validate changed data files
+        if: steps.changed-files.outputs.all != ''
+        env:
+          ALL_FILES: ${{ steps.changed-files.outputs.all }}
+        run: .github/scripts/validate-new-data-files.sh $ALL_FILES
+
+      - name: Add ilidata.xml entries for new files
+        if: steps.changed-files.outputs.added != ''
+        env:
+          ADDED_FILES: ${{ steps.changed-files.outputs.added }}
+        run: .github/scripts/add-ilidata-entries.sh $ADDED_FILES
+
+      - name: Update ilidata.xml entries for modified files
+        if: steps.changed-files.outputs.modified != ''
+        env:
+          MODIFIED_FILES: ${{ steps.changed-files.outputs.modified }}
+        run: .github/scripts/update-ilidata-entries.sh $MODIFIED_FILES
+
+      - name: Commit updated index files
+        run: |
+          if git diff --quiet -- repository/ilimodels.xml repository/ilidata.xml; then
+            echo "ilimodels.xml and ilidata.xml already up to date, nothing to commit."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add repository/ilimodels.xml
-          git commit -m "Update ilimodels.xml"
+          git add repository/ilimodels.xml repository/ilidata.xml
+          git commit -m "Update ilimodels.xml and ilidata.xml"
           git push origin HEAD:"${{ github.ref_name }}"
