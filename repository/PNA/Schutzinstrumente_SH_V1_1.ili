@@ -48,7 +48,7 @@ AT "http://models.geo.sh.ch" VERSION "2025-11-19"  =
 		RRB_Bezeichnung: TEXT*100;
 		Datum: INTERLIS.XMLDate;
 		Dokument: TEXT*500;
-		ProjektleiterIn: MANDATORY TEXT*100
+		ProjektleiterIn: MANDATORY TEXT*100;
 	END Anhang;
 
   	CLASS Partner =
